@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.OrderMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.OrderEx" extends="com.paidang.dao.OrderMapper.BaseResultMap">
+    <result column="order_estate" property="estate"/>
+    <result column="order_eIsBalance" property="eIsBalance"/>
+    <result column="user_name" property="userName"/>
+  </resultMap>
+
+
+  <select id="selectOrderAdminList" resultMap="BaseResultMap">
+    select
+    A.*,
+    (
+    select DISTINCT B.express_data from p_express B where A.ship_code = B.express_code and B.fid = A.id
+    )as expressData,
+    C.trade_no as tradNo,
+    D.name as orgName
+    from p_order A
+    left join b_pay_log C
+    on A.id = C.order_id
+    left join
+    p_pawn_org D
+    on A.org_id = D.id
+    where 1 = 1
+      <if test="goodsSource == 1">
+        and A.org_id = 0 and A.goods_source = 3
+      </if>
+      <if test="goodsSource == 2">
+        and A.org_id = 0 and A.goods_source = 2
+      </if>
+      <if test="goodsSource == 3">
+        and A.goods_source = 2
+      </if>
+      <if test="goodsSource == 4">
+        and A.goods_source = 4
+      </if>
+      <if test="goodsName != null and goodsName !=''">
+        and A.goods_name like '%${goodsName}%'
+      </if>
+      <if test="orderCode != null and orderCode !=''">
+        and A.code like '%${orderCode}%'
+      </if>
+      <if test="state !=null and state!= ''">
+        and A.state = #{state}
+      </if>
+    order by A.create_time desc
+  </select>
+
+  <!--机构端后台绝当订单-->
+  <select id="getOrgOrderList" resultMap="BaseResultMap">
+    SELECT o.*,
+    (CASE o.state
+    WHEN  -1 THEN  '已取消'
+    WHEN 1 THEN '等待付款'
+    WHEN 2 THEN '已付款'
+    WHEN 3 THEN '已发货'
+    WHEN 4 THEN '确认收货'
+    WHEN 5 THEN '已评价'
+    ELSE '状态未知'
+    END ) order_estate
+    FROM p_order o
+    <where>
+      <if test="orgId != null">
+        and o.org_id = #{orgId}
+      </if>
+      <if test="goodsSource != null">
+        and o.goods_source = #{goodsSource}
+      </if>
+      <if test="goodsName != null and goodsName !=''">
+        and o.goods_name like '%${goodsName}%'
+      </if>
+    </where>
+    ORDER BY o.create_time desc
+  </select>
+
+  <update id="updateState" >
+    update p_order
+    set
+    state = #{state,jdbcType=TINYINT},
+    ship_firm = #{shipFirm,jdbcType=VARCHAR},
+    ship_code = #{shipCode,jdbcType=VARCHAR}
+    WHERE
+    id = #{id}
+  </update>
+
+  <select id="selectMyStoreOrderList" resultMap="BaseResultMap">
+    select
+    A.*,
+    B.express_state as expressState,
+    B.id as expressId
+    from p_order A
+    left join p_express B on A.id = B.fid
+    where A.user_id = #{user_id}
+    <if test="is_del == 0">
+        and A.is_del = #{is_del}
+    </if>
+    <if test="is_del == 1">
+        and A.is_del = #{is_del}
+    </if>
+    <if test="orderState != null and orderState != '' and orderState != 0 and orderState != 5">
+        and A.state = #{orderState}
+    </if>
+    <if test="orderState == 5">
+        and A.ref_state != 0
+    </if>
+    <if test="orderState == 2">
+       and A.ref_state = 0
+    </if>
+    <if test="commentState !=null and orderState==4 ">
+        and A.comment_state=#{commentState}
+    </if>
+    order by A.create_time desc
+  </select>
+
+  <select id="selectByKey" resultMap="BaseResultMap">
+     SELECT o.*,
+    (CASE o.state
+    WHEN  -1 THEN  '已取消'
+    WHEN 1 THEN '等待付款'
+    WHEN 2 THEN '已付款'
+    WHEN 3 THEN '已发货'
+    WHEN 4 THEN '确认收货'
+    WHEN 5 THEN '已评价'
+    ELSE '状态未知'
+    END ) order_estate,
+    (CASE o.is_balance
+    WHEN 1 THEN '已结算'
+    WHEN 0 THEN '未结算'
+    ELSE '状态未知'
+    END ) order_eIsBalance,
+    u.name user_name
+    FROM p_order o
+    LEFT JOIN  b_user u on o.user_id = u.id
+    where o.id = #{id}
+    ORDER BY o.create_time desc
+  </select>
+
+  <!-- 订单超过24小时，未付款。设置为已取消 -->
+  <select id="selectTask" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    A.*
+    from p_order A
+    where A.state = 1  and A.create_time &lt; #{time}
+  </select>
+
+  <!-- 查询超过30分钟未付款 -->
+  <select id="selectRelease" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    A.*
+    from p_order A
+    where A.state = 1 and TIMESTAMPDIFF(MINUTE,A.create_time,now()) &gt; 5
+  </select>
+
+
+  <update id="updateOrderList" parameterType="java.util.List">
+    update p_order set state = -1 where id in
+    <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+      ${item.id}
+    </foreach>
+  </update>
+
+
+  <update id="updateGoodsList" parameterType="java.util.List">
+    update p_goods set total = 1,sold_out = 0,is_online = 1 where id in
+    <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+      ${item.goodsId}
+    </foreach>
+  </update>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.VideoOnlineCommentMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.VideoOnlineCommentEx" extends="com.paidang.dao.VideoOnlineCommentMapper.BaseResultMap">
+  </resultMap>
+
+
+  <select id="selectByUser" resultMap="BaseResultMap">
+      select
+      A.*,
+      B.nick_name as nickName,
+      B.head_img as headImg
+      from p_video_online_comment A
+      left join b_user B
+      on A.user_id = B.id
+      where A.video_id = #{video_id}
+      order by A.create_time desc;
+  </select>
+</mapper>

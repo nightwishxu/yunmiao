@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.ArticleMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.ArticleEx" extends="com.item.dao.ArticleMapper.BaseResultMap">
+  </resultMap>
+
+  <update id="updateArticleCount">
+    UPDATE  t_article set
+    <set>
+      <if test="type==0">
+        comment_count=comment_count+#{num}
+      </if>
+      <if test="type==1">
+        collect_count=collect_count+#{num}
+      </if>
+      <if test="type==2">
+        praise_count=praise_count+#{num}
+      </if>
+    </set>
+    where id=#{id}
+
+  </update>
+
+  <select id="getArticleCount" resultType="java.lang.Integer">
+    SELECT count(*) from t_article where user_id=#{userId} and status=2
+  </select>
+
+</mapper>

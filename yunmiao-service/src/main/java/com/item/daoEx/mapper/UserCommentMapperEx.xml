@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.UserCommentMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.UserCommentEx" extends="com.item.dao.UserCommentMapper.BaseResultMap">
+  </resultMap>
+
+    <select id="findList" parameterType="com.item.dao.model.UserComment" resultMap="BaseResultMap">
+      select uc.*,u.head_img as userHeadImg from p_user_comment uc left join b_user u on uc.user_id=u.id
+      where 1=1
+      <if test="orgId!=null">
+        and uc.org_id=#{orgId}
+      </if>
+      <if test="goodsId!=null">
+        and uc.goods_id=#{goodsId}
+      </if>
+      <if test="status!=null">
+        and uc.status=#{status}
+      </if>
+      order by uc.create_time desc
+    </select>
+
+</mapper>

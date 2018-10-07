@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.ExpressMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.Express" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="source" property="source" jdbcType="TINYINT" />
+        <result column="source_id" property="sourceId" jdbcType="INTEGER" />
+        <result column="fid" property="fid" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="express_name" property="expressName" jdbcType="VARCHAR" />
+        <result column="express_code" property="expressCode" jdbcType="VARCHAR" />
+        <result column="express_state" property="expressState" jdbcType="TINYINT" />
+        <result column="post_name" property="postName" jdbcType="VARCHAR" />
+        <result column="post_phone" property="postPhone" jdbcType="VARCHAR" />
+        <result column="receive_name" property="receiveName" jdbcType="VARCHAR" />
+        <result column="receive_phone" property="receivePhone" jdbcType="VARCHAR" />
+        <result column="recevice_address" property="receviceAddress" jdbcType="VARCHAR" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="com.paidang.dao.model.Express" extends="BaseResultMap" >
+        <result column="express_data" property="expressData" jdbcType="LONGVARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,source,source_id,fid,type,express_name,express_code,express_state,post_name,post_phone,receive_name,receive_phone,recevice_address,modify_time,create_time
+    </sql>
+
+    <sql id="Blob_Column_List" >
+        express_data
+    </sql>
+
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from p_express
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_express
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" >
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from p_express
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_express
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_express
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_express (source,source_id,
+        fid,type,express_name,
+        express_code,express_state,express_data,
+        post_name,post_phone,receive_name,
+        receive_phone,recevice_address,modify_time,
+        create_time
+        )
+        values (#{source,jdbcType=TINYINT},#{sourceId,jdbcType=INTEGER},
+        #{fid,jdbcType=INTEGER},#{type,jdbcType=TINYINT},#{expressName,jdbcType=VARCHAR},
+        #{expressCode,jdbcType=VARCHAR},#{expressState,jdbcType=TINYINT},#{expressData,jdbcType=LONGVARCHAR},
+        #{postName,jdbcType=VARCHAR},#{postPhone,jdbcType=VARCHAR},#{receiveName,jdbcType=VARCHAR},
+        #{receivePhone,jdbcType=VARCHAR},#{receviceAddress,jdbcType=VARCHAR},#{modifyTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_express
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="source != null" >
+                source,
+            </if>
+            <if test="sourceId != null" >
+                source_id,
+            </if>
+            <if test="fid != null" >
+                fid,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="expressName != null" >
+                express_name,
+            </if>
+            <if test="expressCode != null" >
+                express_code,
+            </if>
+            <if test="expressState != null" >
+                express_state,
+            </if>
+            <if test="expressData != null" >
+                express_data,
+            </if>
+            <if test="postName != null" >
+                post_name,
+            </if>
+            <if test="postPhone != null" >
+                post_phone,
+            </if>
+            <if test="receiveName != null" >
+                receive_name,
+            </if>
+            <if test="receivePhone != null" >
+                receive_phone,
+            </if>
+            <if test="receviceAddress != null" >
+                recevice_address,
+            </if>
+            <if test="modifyTime != null" >
+                modify_time,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="source != null" >
+                #{source,jdbcType=TINYINT},
+            </if>
+            <if test="sourceId != null" >
+                #{sourceId,jdbcType=INTEGER},
+            </if>
+            <if test="fid != null" >
+                #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="expressName != null" >
+                #{expressName,jdbcType=VARCHAR},
+            </if>
+            <if test="expressCode != null" >
+                #{expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="expressState != null" >
+                #{expressState,jdbcType=TINYINT},
+            </if>
+            <if test="expressData != null" >
+                #{expressData,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="postName != null" >
+                #{postName,jdbcType=VARCHAR},
+            </if>
+            <if test="postPhone != null" >
+                #{postPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveName != null" >
+                #{receiveName,jdbcType=VARCHAR},
+            </if>
+            <if test="receivePhone != null" >
+                #{receivePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="receviceAddress != null" >
+                #{receviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_express
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_express
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.source != null" >
+                source = #{record.source,jdbcType=TINYINT},
+            </if>
+            <if test="record.sourceId != null" >
+                source_id = #{record.sourceId,jdbcType=INTEGER},
+            </if>
+            <if test="record.fid != null" >
+                fid = #{record.fid,jdbcType=INTEGER},
+            </if>
+            <if test="record.type != null" >
+                type = #{record.type,jdbcType=TINYINT},
+            </if>
+            <if test="record.expressName != null" >
+                express_name = #{record.expressName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.expressCode != null" >
+                express_code = #{record.expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.expressState != null" >
+                express_state = #{record.expressState,jdbcType=TINYINT},
+            </if>
+            <if test="record.expressData != null" >
+                express_data = #{record.expressData,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.postName != null" >
+                post_name = #{record.postName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.postPhone != null" >
+                post_phone = #{record.postPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiveName != null" >
+                receive_name = #{record.receiveName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receivePhone != null" >
+                receive_phone = #{record.receivePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receviceAddress != null" >
+                recevice_address = #{record.receviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExampleWithBLOBs" >
+        update p_express
+        set id = #{id,jdbcType=INTEGER},
+        source = #{source,jdbcType=TINYINT},
+        source_id = #{sourceId,jdbcType=INTEGER},
+        fid = #{fid,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        express_name = #{expressName,jdbcType=VARCHAR},
+        express_code = #{expressCode,jdbcType=VARCHAR},
+        express_state = #{expressState,jdbcType=TINYINT},
+        express_data = #{expressData,jdbcType=LONGVARCHAR},
+        post_name = #{postName,jdbcType=VARCHAR},
+        post_phone = #{postPhone,jdbcType=VARCHAR},
+        receive_name = #{receiveName,jdbcType=VARCHAR},
+        receive_phone = #{receivePhone,jdbcType=VARCHAR},
+        recevice_address = #{receviceAddress,jdbcType=VARCHAR},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_express
+        set id = #{id,jdbcType=INTEGER},
+        source = #{source,jdbcType=TINYINT},
+        source_id = #{sourceId,jdbcType=INTEGER},
+        fid = #{fid,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        express_name = #{expressName,jdbcType=VARCHAR},
+        express_code = #{expressCode,jdbcType=VARCHAR},
+        express_state = #{expressState,jdbcType=TINYINT},
+        post_name = #{postName,jdbcType=VARCHAR},
+        post_phone = #{postPhone,jdbcType=VARCHAR},
+        receive_name = #{receiveName,jdbcType=VARCHAR},
+        receive_phone = #{receivePhone,jdbcType=VARCHAR},
+        recevice_address = #{receviceAddress,jdbcType=VARCHAR},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_express
+        <set >
+            <if test="source != null" >
+                source = #{source,jdbcType=TINYINT},
+            </if>
+            <if test="sourceId != null" >
+                source_id = #{sourceId,jdbcType=INTEGER},
+            </if>
+            <if test="fid != null" >
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="expressName != null" >
+                express_name = #{expressName,jdbcType=VARCHAR},
+            </if>
+            <if test="expressCode != null" >
+                express_code = #{expressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="expressState != null" >
+                express_state = #{expressState,jdbcType=TINYINT},
+            </if>
+            <if test="expressData != null" >
+                express_data = #{expressData,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="postName != null" >
+                post_name = #{postName,jdbcType=VARCHAR},
+            </if>
+            <if test="postPhone != null" >
+                post_phone = #{postPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveName != null" >
+                receive_name = #{receiveName,jdbcType=VARCHAR},
+            </if>
+            <if test="receivePhone != null" >
+                receive_phone = #{receivePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="receviceAddress != null" >
+                recevice_address = #{receviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" >
+        update p_express
+        set source = #{source,jdbcType=TINYINT},
+        source_id = #{sourceId,jdbcType=INTEGER},
+        fid = #{fid,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        express_name = #{expressName,jdbcType=VARCHAR},
+        express_code = #{expressCode,jdbcType=VARCHAR},
+        express_state = #{expressState,jdbcType=TINYINT},
+        express_data = #{expressData,jdbcType=LONGVARCHAR},
+        post_name = #{postName,jdbcType=VARCHAR},
+        post_phone = #{postPhone,jdbcType=VARCHAR},
+        receive_name = #{receiveName,jdbcType=VARCHAR},
+        receive_phone = #{receivePhone,jdbcType=VARCHAR},
+        recevice_address = #{receviceAddress,jdbcType=VARCHAR},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_express
+        set source = #{source,jdbcType=TINYINT},
+        source_id = #{sourceId,jdbcType=INTEGER},
+        fid = #{fid,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        express_name = #{expressName,jdbcType=VARCHAR},
+        express_code = #{expressCode,jdbcType=VARCHAR},
+        express_state = #{expressState,jdbcType=TINYINT},
+        post_name = #{postName,jdbcType=VARCHAR},
+        post_phone = #{postPhone,jdbcType=VARCHAR},
+        receive_name = #{receiveName,jdbcType=VARCHAR},
+        receive_phone = #{receivePhone,jdbcType=VARCHAR},
+        recevice_address = #{receviceAddress,jdbcType=VARCHAR},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+</mapper>

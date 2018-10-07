@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.FocusMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.FocusEx" extends="com.item.dao.FocusMapper.BaseResultMap">
+    <result column="goods_name" property="goodsName"/>
+    <result column="redirect_name" property="redirectName"/>
+  </resultMap>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    	f.*
+    from b_focus f
+    where f.location = #{location}
+    <if test="areaCode != null and areaCode != ''">and f.area_code = #{areaCode}</if>
+    order by f.location,f.sort_order desc
+  </select>
+
+  <select id="selectListTo" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    f.*
+    from b_focus f
+    order by f.sort_order desc
+  </select>
+
+  <select id="listToStore" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    f.*,g.name goods_name
+    from b_focus f
+    LEFT JOIN p_goods g on f.redirect_content = g.id
+    order by f.sort_order desc
+  </select>
+
+  <select id="findByLocation" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    f.*,
+    (CASE f.redirect_type
+      WHEN 0 then '不跳转'
+      WHEN 1 then '网页'
+      WHEN 2 then '视频'
+      WHEN 3 THEN '商城'
+      ELSE '状态未知'
+      END ) redirect_name
+    from b_focus f
+    WHERE
+    f.location = #{location}
+    order by f.sort_order desc
+  </select>
+
+</mapper>

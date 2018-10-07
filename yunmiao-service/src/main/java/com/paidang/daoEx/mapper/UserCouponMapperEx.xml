@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.UserCouponMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.UserCouponEx" extends="com.paidang.dao.UserCouponMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="selectByGoods" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+
+    select A.*,
+    (select B.id as goodsPrice from p_goods B
+    where (A.full - B.price) &lt;= 100 || (A.full - B.price) &gt;= -100 and (B.source = 1 or B.source = 3) LIMIT 1) as goodsId,
+    (select price from p_goods where id = goodsId) as goodsPrice,
+    (select name from p_goods where id = goodsId) as goodsName
+    from p_user_coupon A where A.end_time &gt;= now() and A.user_id = #{user_id} and A.state = 1
+    order by A.create_time desc;
+
+  </select>
+</mapper>

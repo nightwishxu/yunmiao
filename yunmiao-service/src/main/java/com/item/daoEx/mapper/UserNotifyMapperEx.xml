@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.UserNotifyMapperEx" >
+	<resultMap id="BaseResultMap" type="com.item.daoEx.model.UserNotifyEx" extends="com.item.dao.UserNotifyMapper.BaseResultMap">
+	
+	</resultMap>
+
+	<insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		insert into b_user_notify (user_id,nid,type,title,content,redirect_type,redirect_content,is_read,create_time)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.userId},#{item.nid},#{item.type},#{item.title},#{item.content}
+				,#{item.redirectType},#{item.redirectContent},#{item.isRead},#{item.createTime})
+		</foreach>
+	</insert>
+</mapper>

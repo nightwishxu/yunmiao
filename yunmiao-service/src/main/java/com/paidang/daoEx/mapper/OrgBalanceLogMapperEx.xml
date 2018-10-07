@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.OrgBalanceLogMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.OrgBalanceLogEx" extends="com.paidang.dao.OrgBalanceLogMapper.BaseResultMap">
+    <result column="pawner_name" property="pawnerName"></result>
+    <result column="pawner_phone" property="pawnerTel"></result>
+    <result column="pawner_account" property="pawnerAccount"></result>
+  </resultMap>
+
+    <!--  原符号   < 	    <= 	      > 	  >= 	  & 	  ' 	  "
+        替换符号 	&lt; 	&lt;= 	&gt; 	&gt;= 	&amp; 	&apos; 	&quot; -->
+
+
+  <select id="getCapitalRunningAccountList" resultMap="BaseResultMap">
+      SELECT l.* , u.name AS pawner_name , u.phone AS pawner_phone, u.account AS pawner_account FROM p_org_balance_log l
+      LEFT JOIN p_user_pawn p ON p.id = l.fid
+      LEFT JOIN b_user u ON u.id = p.user_id
+      <where>
+          <if test="orgId != null" >
+              l.org_id  = #{orgId}
+          </if>
+        <if test="beginDate!= null" >
+          AND l.create_time  &gt;= #{beginDate}
+        </if>
+        <if test="endDate != null">
+          AND l.create_time &lt;=  #{endDate}
+        </if>
+      </where>
+      ORDER BY l.create_time DESC
+  </select>
+</mapper>

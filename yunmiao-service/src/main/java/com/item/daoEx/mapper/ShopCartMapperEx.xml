@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.ShopCartMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.ShopCartEx" extends="com.item.dao.ShopCartMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="findList" resultType="com.item.daoEx.model.ShopCartEx" parameterType="java.lang.Integer">
+    SELECT
+	sc.id AS id,
+	sc.org_id AS orgId,
+	sc.num AS num,
+	sc.goods_id AS goodsId,
+	sc.create_time createTime,
+	sc.modify_time AS modifyTime,
+	g.NAME AS goodsName,
+	g.price AS goodsPrice,
+	g.img AS goodsImg,
+	g.info AS goodsInfo,
+	g.total AS goodsTotal,
+	g.is_online AS isOnline,
+	g.spec AS spec,
+	po.NAME AS orgName,
+	g.source AS source,
+	po.org_logo AS orgLogo
+FROM
+	p_shop_cart sc
+	LEFT JOIN p_goods g ON sc.goods_id = g.id
+	LEFT JOIN p_pawn_org po ON sc.org_id = po.id
+WHERE
+	sc.user_id = #{userId}
+  </select>
+
+</mapper>

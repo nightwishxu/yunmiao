@@ -1,0 +1,96 @@
+body{
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    background-color:rgb(240,240,240);
+}
+.wrap{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+}
+.wrapper{
+    width: 100%;
+    box-sizing: border-box;
+    font-family:"Microsoft Yahei","Helvetica",Helvetica,Arial,"Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    font-size: .24rem;
+}
+/**和田玉展示**/
+.demo{
+    background-color: rgb(255,255,255);
+    margin: .2rem 0;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.demo dt{
+    font-size: .24rem;
+    color: #666666;
+    padding: .1rem .1rem 0 .1rem;
+}
+.demo dd{
+    text-align: center;
+}
+.demo dd img{
+    margin: .2rem 0;
+    width: 4.88rem;
+    background-size: cover;
+}
+
+/* 弹出文字提示 */
+.confirm_wrap{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.6);
+}
+.confirm_box{
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 90%;
+    padding: .3rem .4rem .4rem;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 8px;
+}
+.confirm_head{
+    text-align: center;
+    font-size: .3rem;
+    color: #d11b1a;
+}
+.confirm_info{
+    padding: .3rem;
+}
+.confirm_info .info_title{
+    margin-top: 0.2rem;
+    font-size: .3rem;
+    color: #333;
+}
+.confirm_info .info_desc{
+    margin-top: .1rem;
+    font-size: .24rem;
+    color: #666;
+}
+.confirm_btn{
+    display: block;
+    width: 100%;
+    text-align: center;
+    height: .8rem;
+    line-height: .8rem;
+    border-radius: .8rem;
+    font-size: .32rem;
+    color: #fff;
+    background: #d11b1a;
+}
+.close_confirm{
+    position: absolute;
+    top: .16rem;
+    right: .2rem;
+    font-size: .4rem;
+    color: #999;
+}

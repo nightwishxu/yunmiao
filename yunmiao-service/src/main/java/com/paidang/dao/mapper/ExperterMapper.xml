@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.ExperterMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.Experter" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="expert_name" property="expertName" jdbcType="VARCHAR" />
+        <result column="domain_id" property="domainId" jdbcType="INTEGER" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,expert_name,domain_id,phone,create_time
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_experter
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from p_experter
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_experter
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_experter
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_experter (expert_name,domain_id,
+        phone,create_time
+        )
+        values (#{expertName,jdbcType=VARCHAR},#{domainId,jdbcType=INTEGER},
+        #{phone,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_experter
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="expertName != null" >
+                expert_name,
+            </if>
+            <if test="domainId != null" >
+                domain_id,
+            </if>
+            <if test="phone != null" >
+                phone,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="expertName != null" >
+                #{expertName,jdbcType=VARCHAR},
+            </if>
+            <if test="domainId != null" >
+                #{domainId,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null" >
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_experter
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_experter
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.expertName != null" >
+                expert_name = #{record.expertName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.domainId != null" >
+                domain_id = #{record.domainId,jdbcType=INTEGER},
+            </if>
+            <if test="record.phone != null" >
+                phone = #{record.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_experter
+        set id = #{id,jdbcType=INTEGER},
+        expert_name = #{expertName,jdbcType=VARCHAR},
+        domain_id = #{domainId,jdbcType=INTEGER},
+        phone = #{phone,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_experter
+        <set >
+            <if test="expertName != null" >
+                expert_name = #{expertName,jdbcType=VARCHAR},
+            </if>
+            <if test="domainId != null" >
+                domain_id = #{domainId,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null" >
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_experter
+        set expert_name = #{expertName,jdbcType=VARCHAR},
+        domain_id = #{domainId,jdbcType=INTEGER},
+        phone = #{phone,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+</mapper>

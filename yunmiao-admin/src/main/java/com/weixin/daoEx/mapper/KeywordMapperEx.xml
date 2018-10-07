@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weixin.daoEx.KeywordMapperEx" >
+	<resultMap id="BaseResultMap" type="com.weixin.daoEx.model.KeywordEx" extends="com.weixin.dao.KeywordMapper.BaseResultMap">
+		<result column="resource" property="resource" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectList" resultMap="BaseResultMap" parameterType="String" >
+	    select
+	    	k.*,r.title as resource
+	    from wx_keyword k
+	    left join wx_resource r on r.id = k.res_id and r.fid = #{fid}
+	    where k.fid = #{fid}
+        order by k.create_time desc
+    </select>	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.CouponMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.CouponEx" extends="com.paidang.dao.CouponMapper.BaseResultMap">
+  </resultMap>
+
+ <!-- <select id="selectGoods" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select B.price as goodsPrice,B.name as goodsName,A.* from p_coupon A,p_goods B
+    where abs(A.full - B.price) &gt;= 100 order by A.create_time desc
+    limit 1
+
+  </select>-->
+
+  <select id="selectGoods" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    C.* ,
+    (
+    select
+        count(*)
+        from
+        p_user_coupon A
+        left join
+        p_coupon B
+        on A.coupon_id = B.id
+        where A.user_id = #{user_id}
+        and TO_DAYS(A.create_time)=TO_DAYS(now())
+    )as cnt
+    from p_coupon C
+    where C.type = 2
+    order by C.create_time desc
+    limit 1
+  </select>
+</mapper>

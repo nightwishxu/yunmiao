@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.UserBankCardMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.UserBankCardEx" extends="com.paidang.dao.UserBankCardMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="selectByUser" resultMap="BaseResultMap">
+      select
+      A.*,
+      B.name as userName,
+      B.account as userAccount
+      from p_user_bank_card A
+      left join b_user B
+      on A.user_id = B.id
+      where A.id = #{bankCardId} and B.id = #{user_id}
+  </select>
+</mapper>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.PlatformGoodsBuyMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.PlatformGoodsBuy" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="source" property="source" jdbcType="TINYINT" />
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="bank_card_name" property="bankCardName" jdbcType="VARCHAR" />
+        <result column="bank_card_no" property="bankCardNo" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="TINYINT" />
+        <result column="ticket" property="ticket" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,source,goods_id,price,bank_card_name,bank_card_no,user_name,user_phone,state,ticket,create_time,modify_time
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_platform_goods_buy
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from p_platform_goods_buy
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_platform_goods_buy
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_platform_goods_buy
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_platform_goods_buy (source,goods_id,
+        price,bank_card_name,bank_card_no,
+        user_name,user_phone,state,
+        ticket,create_time,modify_time
+        )
+        values (#{source,jdbcType=TINYINT},#{goodsId,jdbcType=INTEGER},
+        #{price,jdbcType=DECIMAL},#{bankCardName,jdbcType=VARCHAR},#{bankCardNo,jdbcType=VARCHAR},
+        #{userName,jdbcType=VARCHAR},#{userPhone,jdbcType=VARCHAR},#{state,jdbcType=TINYINT},
+        #{ticket,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{modifyTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_platform_goods_buy
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="source != null" >
+                source,
+            </if>
+            <if test="goodsId != null" >
+                goods_id,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="bankCardName != null" >
+                bank_card_name,
+            </if>
+            <if test="bankCardNo != null" >
+                bank_card_no,
+            </if>
+            <if test="userName != null" >
+                user_name,
+            </if>
+            <if test="userPhone != null" >
+                user_phone,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="ticket != null" >
+                ticket,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="modifyTime != null" >
+                modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="source != null" >
+                #{source,jdbcType=TINYINT},
+            </if>
+            <if test="goodsId != null" >
+                #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="price != null" >
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="bankCardName != null" >
+                #{bankCardName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardNo != null" >
+                #{bankCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null" >
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null" >
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="ticket != null" >
+                #{ticket,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_platform_goods_buy
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_platform_goods_buy
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.source != null" >
+                source = #{record.source,jdbcType=TINYINT},
+            </if>
+            <if test="record.goodsId != null" >
+                goods_id = #{record.goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.price != null" >
+                price = #{record.price,jdbcType=DECIMAL},
+            </if>
+            <if test="record.bankCardName != null" >
+                bank_card_name = #{record.bankCardName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bankCardNo != null" >
+                bank_card_no = #{record.bankCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userName != null" >
+                user_name = #{record.userName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userPhone != null" >
+                user_phone = #{record.userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.state != null" >
+                state = #{record.state,jdbcType=TINYINT},
+            </if>
+            <if test="record.ticket != null" >
+                ticket = #{record.ticket,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_platform_goods_buy
+        set id = #{id,jdbcType=INTEGER},
+        source = #{source,jdbcType=TINYINT},
+        goods_id = #{goodsId,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
+        bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+        bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        state = #{state,jdbcType=TINYINT},
+        ticket = #{ticket,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_platform_goods_buy
+        <set >
+            <if test="source != null" >
+                source = #{source,jdbcType=TINYINT},
+            </if>
+            <if test="goodsId != null" >
+                goods_id = #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="price != null" >
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="bankCardName != null" >
+                bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCardNo != null" >
+                bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null" >
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null" >
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                state = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="ticket != null" >
+                ticket = #{ticket,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_platform_goods_buy
+        set source = #{source,jdbcType=TINYINT},
+        goods_id = #{goodsId,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
+        bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+        bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        state = #{state,jdbcType=TINYINT},
+        ticket = #{ticket,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+</mapper>

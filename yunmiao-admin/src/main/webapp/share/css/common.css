@@ -1,0 +1,118 @@
+/*浏览器重置*/
+body, h1, h2, h3, h4, h5, h6, hr, p,
+blockquote,
+dl, dt, dd, ul, ol, li,
+pre,
+form, fieldset, legend, button, input,textarea,
+th, td,
+img{
+    border:none;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust: 100%!important;
+}
+/**{*/
+    /*-webkit-touch-callout:none*/
+    /*-webkit-user-select: none;*/
+    /*user-select: none;*/
+/*}*/
+body{
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+body,button, input, select, textarea {
+    /*font:12px "Microsoft Yahei","Helvetica",Helvetica,Arial,"Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;*/
+    font:12px "黑体","Helvetica",Helvetica,Arial,"Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight:normal;
+}
+:focus {
+    outline: 0;
+}
+img {
+    border: medium none;
+    vertical-align:middle;
+}
+em,i{
+    font-style: normal
+}
+ul,ol{
+    list-style: none;
+}
+a{
+    color: #666;
+    text-decoration: none;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: #c5c5c5;
+}
+table{border-collapse:collapse;}
+textarea{ resize:none; overflow:auto;}
+a,button,input,textarea,select{
+    background: none;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
+    outline:none;
+    -webkit-appearance:none;
+}
+/*公用样式*/
+.clearfix:after{
+    content:".";
+    display:block;
+    visibility:hidden;
+    height:0;
+    clear:both;
+}
+.clearfix { zoom: 1; }
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.dis_none{
+    display:none;
+}
+.dis_block{
+    display:block;
+}
+.colred{
+    color: #d11b1b;
+}
+.c2{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(255,255,255);
+    margin-bottom: .2rem;
+}
+.c3{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(255,255,255);
+    margin: .2rem 0;
+    padding: .2rem .3rem;
+    border-top:1px solid #ececec ;
+    border-bottom: 1px solid #ececec;
+}
+.c4{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(255,255,255);
+    border-top:1px solid #ececec ;
+    border-bottom: 1px solid #ececec;
+    margin-bottom: .2rem;
+}
+.pd20{
+    padding: .2rem;
+    box-sizing: border-box;
+}
+.btn-link{
+    margin-top: .36rem;
+    width: 100%;
+    padding: 0 .3rem;
+    box-sizing: border-box;
+}

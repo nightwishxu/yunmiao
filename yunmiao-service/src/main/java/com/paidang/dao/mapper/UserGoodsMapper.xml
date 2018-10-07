@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.UserGoodsMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.UserGoods" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="belong_id" property="belongId" jdbcType="INTEGER" />
+        <result column="belong_type" property="belongType" jdbcType="TINYINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="images" property="images" jdbcType="VARCHAR" />
+        <result column="goods_imgs" property="goodsImgs" jdbcType="VARCHAR" />
+        <result column="video" property="video" jdbcType="VARCHAR" />
+        <result column="buy_time" property="buyTime" jdbcType="DATE" />
+        <result column="buy_price" property="buyPrice" jdbcType="DECIMAL" />
+        <result column="info" property="info" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="authenticate_require" property="authenticateRequire" jdbcType="VARCHAR" />
+        <result column="cate_id" property="cateId" jdbcType="INTEGER" />
+        <result column="cate_code" property="cateCode" jdbcType="VARCHAR" />
+        <result column="auth_result" property="authResult" jdbcType="TINYINT" />
+        <result column="auth_price_test" property="authPriceTest" jdbcType="DECIMAL" />
+        <result column="auth_price" property="authPrice" jdbcType="DECIMAL" />
+        <result column="back_images" property="backImages" jdbcType="VARCHAR" />
+        <result column="back_video" property="backVideo" jdbcType="VARCHAR" />
+        <result column="open_goods_video" property="openGoodsVideo" jdbcType="VARCHAR" />
+        <result column="plat_goods_receive_video" property="platGoodsReceiveVideo" jdbcType="VARCHAR" />
+        <result column="plat_goods_auth_video" property="platGoodsAuthVideo" jdbcType="VARCHAR" />
+        <result column="not_verify_reason" property="notVerifyReason" jdbcType="VARCHAR" />
+        <result column="go_video" property="goVideo" jdbcType="VARCHAR" />
+        <result column="goto_pawn" property="gotoPawn" jdbcType="TINYINT" />
+        <result column="go_sell" property="goSell" jdbcType="TINYINT" />
+        <result column="location" property="location" jdbcType="TINYINT" />
+        <result column="post_state" property="postState" jdbcType="TINYINT" />
+        <result column="post_user_name" property="postUserName" jdbcType="VARCHAR" />
+        <result column="post_user_phone" property="postUserPhone" jdbcType="VARCHAR" />
+        <result column="post_express" property="postExpress" jdbcType="VARCHAR" />
+        <result column="post_express_code" property="postExpressCode" jdbcType="VARCHAR" />
+        <result column="back_user_name" property="backUserName" jdbcType="VARCHAR" />
+        <result column="back_user_phone" property="backUserPhone" jdbcType="VARCHAR" />
+        <result column="back_user_express" property="backUserExpress" jdbcType="VARCHAR" />
+        <result column="back_express" property="backExpress" jdbcType="VARCHAR" />
+        <result column="back_express_code" property="backExpressCode" jdbcType="VARCHAR" />
+        <result column="back_state" property="backState" jdbcType="TINYINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="is_online" property="isOnline" jdbcType="TINYINT" />
+        <result column="rate" property="rate" jdbcType="DECIMAL" />
+        <result column="money_rate" property="moneyRate" jdbcType="DECIMAL" />
+        <result column="plat_user_name" property="platUserName" jdbcType="VARCHAR" />
+        <result column="plat_user_phone" property="platUserPhone" jdbcType="VARCHAR" />
+        <result column="plat_user_address" property="platUserAddress" jdbcType="VARCHAR" />
+        <result column="org_user_name" property="orgUserName" jdbcType="VARCHAR" />
+        <result column="org_user_address" property="orgUserAddress" jdbcType="VARCHAR" />
+        <result column="org_user_phone" property="orgUserPhone" jdbcType="VARCHAR" />
+        <result column="plat_org_state" property="platOrgState" jdbcType="TINYINT" />
+        <result column="plat_org_video" property="platOrgVideo" jdbcType="VARCHAR" />
+        <result column="plat_org_verify" property="platOrgVerify" jdbcType="TINYINT" />
+        <result column="plat_org_express_code" property="platOrgExpressCode" jdbcType="VARCHAR" />
+        <result column="plat_org_time" property="platOrgTime" jdbcType="TIMESTAMP" />
+        <result column="is_verify" property="isVerify" jdbcType="TINYINT" />
+        <result column="experter_info_id" property="experterInfoId" jdbcType="INTEGER" />
+        <result column="sf_protect_price" property="sfProtectPrice" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,user_id,belong_id,belong_type,name,images,goods_imgs,video,buy_time,buy_price,info,content,city,user_name,user_phone,authenticate_require,cate_id,cate_code,auth_result,auth_price_test,auth_price,back_images,back_video,open_goods_video,plat_goods_receive_video,plat_goods_auth_video,not_verify_reason,go_video,goto_pawn,go_sell,location,post_state,post_user_name,post_user_phone,post_express,post_express_code,back_user_name,back_user_phone,back_user_express,back_express,back_express_code,back_state,create_time,modify_time,is_online,rate,money_rate,plat_user_name,plat_user_phone,plat_user_address,org_user_name,org_user_address,org_user_phone,plat_org_state,plat_org_video,plat_org_verify,plat_org_express_code,plat_org_time,is_verify,experter_info_id,sf_protect_price
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_user_goods
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from p_user_goods
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_user_goods
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_user_goods
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_user_goods (user_id,belong_id,
+        belong_type,name,images,
+        goods_imgs,video,buy_time,
+        buy_price,info,content,
+        city,user_name,user_phone,
+        authenticate_require,cate_id,cate_code,
+        auth_result,auth_price_test,auth_price,
+        back_images,back_video,open_goods_video,
+        plat_goods_receive_video,plat_goods_auth_video,not_verify_reason,
+        go_video,goto_pawn,go_sell,
+        location,post_state,post_user_name,
+        post_user_phone,post_express,post_express_code,
+        back_user_name,back_user_phone,back_user_express,
+        back_express,back_express_code,back_state,
+        create_time,modify_time,is_online,
+        rate,money_rate,plat_user_name,
+        plat_user_phone,plat_user_address,org_user_name,
+        org_user_address,org_user_phone,plat_org_state,
+        plat_org_video,plat_org_verify,plat_org_express_code,
+        plat_org_time,is_verify,experter_info_id,
+        sf_protect_price
+        )
+        values (#{userId,jdbcType=INTEGER},#{belongId,jdbcType=INTEGER},
+        #{belongType,jdbcType=TINYINT},#{name,jdbcType=VARCHAR},#{images,jdbcType=VARCHAR},
+        #{goodsImgs,jdbcType=VARCHAR},#{video,jdbcType=VARCHAR},#{buyTime,jdbcType=DATE},
+        #{buyPrice,jdbcType=DECIMAL},#{info,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},
+        #{city,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{userPhone,jdbcType=VARCHAR},
+        #{authenticateRequire,jdbcType=VARCHAR},#{cateId,jdbcType=INTEGER},#{cateCode,jdbcType=VARCHAR},
+        #{authResult,jdbcType=TINYINT},#{authPriceTest,jdbcType=DECIMAL},#{authPrice,jdbcType=DECIMAL},
+        #{backImages,jdbcType=VARCHAR},#{backVideo,jdbcType=VARCHAR},#{openGoodsVideo,jdbcType=VARCHAR},
+        #{platGoodsReceiveVideo,jdbcType=VARCHAR},#{platGoodsAuthVideo,jdbcType=VARCHAR},#{notVerifyReason,jdbcType=VARCHAR},
+        #{goVideo,jdbcType=VARCHAR},#{gotoPawn,jdbcType=TINYINT},#{goSell,jdbcType=TINYINT},
+        #{location,jdbcType=TINYINT},#{postState,jdbcType=TINYINT},#{postUserName,jdbcType=VARCHAR},
+        #{postUserPhone,jdbcType=VARCHAR},#{postExpress,jdbcType=VARCHAR},#{postExpressCode,jdbcType=VARCHAR},
+        #{backUserName,jdbcType=VARCHAR},#{backUserPhone,jdbcType=VARCHAR},#{backUserExpress,jdbcType=VARCHAR},
+        #{backExpress,jdbcType=VARCHAR},#{backExpressCode,jdbcType=VARCHAR},#{backState,jdbcType=TINYINT},
+        #{createTime,jdbcType=TIMESTAMP},#{modifyTime,jdbcType=TIMESTAMP},#{isOnline,jdbcType=TINYINT},
+        #{rate,jdbcType=DECIMAL},#{moneyRate,jdbcType=DECIMAL},#{platUserName,jdbcType=VARCHAR},
+        #{platUserPhone,jdbcType=VARCHAR},#{platUserAddress,jdbcType=VARCHAR},#{orgUserName,jdbcType=VARCHAR},
+        #{orgUserAddress,jdbcType=VARCHAR},#{orgUserPhone,jdbcType=VARCHAR},#{platOrgState,jdbcType=TINYINT},
+        #{platOrgVideo,jdbcType=VARCHAR},#{platOrgVerify,jdbcType=TINYINT},#{platOrgExpressCode,jdbcType=VARCHAR},
+        #{platOrgTime,jdbcType=TIMESTAMP},#{isVerify,jdbcType=TINYINT},#{experterInfoId,jdbcType=INTEGER},
+        #{sfProtectPrice,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_user_goods
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="belongId != null" >
+                belong_id,
+            </if>
+            <if test="belongType != null" >
+                belong_type,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="images != null" >
+                images,
+            </if>
+            <if test="goodsImgs != null" >
+                goods_imgs,
+            </if>
+            <if test="video != null" >
+                video,
+            </if>
+            <if test="buyTime != null" >
+                buy_time,
+            </if>
+            <if test="buyPrice != null" >
+                buy_price,
+            </if>
+            <if test="info != null" >
+                info,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="city != null" >
+                city,
+            </if>
+            <if test="userName != null" >
+                user_name,
+            </if>
+            <if test="userPhone != null" >
+                user_phone,
+            </if>
+            <if test="authenticateRequire != null" >
+                authenticate_require,
+            </if>
+            <if test="cateId != null" >
+                cate_id,
+            </if>
+            <if test="cateCode != null" >
+                cate_code,
+            </if>
+            <if test="authResult != null" >
+                auth_result,
+            </if>
+            <if test="authPriceTest != null" >
+                auth_price_test,
+            </if>
+            <if test="authPrice != null" >
+                auth_price,
+            </if>
+            <if test="backImages != null" >
+                back_images,
+            </if>
+            <if test="backVideo != null" >
+                back_video,
+            </if>
+            <if test="openGoodsVideo != null" >
+                open_goods_video,
+            </if>
+            <if test="platGoodsReceiveVideo != null" >
+                plat_goods_receive_video,
+            </if>
+            <if test="platGoodsAuthVideo != null" >
+                plat_goods_auth_video,
+            </if>
+            <if test="notVerifyReason != null" >
+                not_verify_reason,
+            </if>
+            <if test="goVideo != null" >
+                go_video,
+            </if>
+            <if test="gotoPawn != null" >
+                goto_pawn,
+            </if>
+            <if test="goSell != null" >
+                go_sell,
+            </if>
+            <if test="location != null" >
+                location,
+            </if>
+            <if test="postState != null" >
+                post_state,
+            </if>
+            <if test="postUserName != null" >
+                post_user_name,
+            </if>
+            <if test="postUserPhone != null" >
+                post_user_phone,
+            </if>
+            <if test="postExpress != null" >
+                post_express,
+            </if>
+            <if test="postExpressCode != null" >
+                post_express_code,
+            </if>
+            <if test="backUserName != null" >
+                back_user_name,
+            </if>
+            <if test="backUserPhone != null" >
+                back_user_phone,
+            </if>
+            <if test="backUserExpress != null" >
+                back_user_express,
+            </if>
+            <if test="backExpress != null" >
+                back_express,
+            </if>
+            <if test="backExpressCode != null" >
+                back_express_code,
+            </if>
+            <if test="backState != null" >
+                back_state,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="modifyTime != null" >
+                modify_time,
+            </if>
+            <if test="isOnline != null" >
+                is_online,
+            </if>
+            <if test="rate != null" >
+                rate,
+            </if>
+            <if test="moneyRate != null" >
+                money_rate,
+            </if>
+            <if test="platUserName != null" >
+                plat_user_name,
+            </if>
+            <if test="platUserPhone != null" >
+                plat_user_phone,
+            </if>
+            <if test="platUserAddress != null" >
+                plat_user_address,
+            </if>
+            <if test="orgUserName != null" >
+                org_user_name,
+            </if>
+            <if test="orgUserAddress != null" >
+                org_user_address,
+            </if>
+            <if test="orgUserPhone != null" >
+                org_user_phone,
+            </if>
+            <if test="platOrgState != null" >
+                plat_org_state,
+            </if>
+            <if test="platOrgVideo != null" >
+                plat_org_video,
+            </if>
+            <if test="platOrgVerify != null" >
+                plat_org_verify,
+            </if>
+            <if test="platOrgExpressCode != null" >
+                plat_org_express_code,
+            </if>
+            <if test="platOrgTime != null" >
+                plat_org_time,
+            </if>
+            <if test="isVerify != null" >
+                is_verify,
+            </if>
+            <if test="experterInfoId != null" >
+                experter_info_id,
+            </if>
+            <if test="sfProtectPrice != null" >
+                sf_protect_price,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="belongId != null" >
+                #{belongId,jdbcType=INTEGER},
+            </if>
+            <if test="belongType != null" >
+                #{belongType,jdbcType=TINYINT},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="images != null" >
+                #{images,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsImgs != null" >
+                #{goodsImgs,jdbcType=VARCHAR},
+            </if>
+            <if test="video != null" >
+                #{video,jdbcType=VARCHAR},
+            </if>
+            <if test="buyTime != null" >
+                #{buyTime,jdbcType=DATE},
+            </if>
+            <if test="buyPrice != null" >
+                #{buyPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="info != null" >
+                #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null" >
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null" >
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null" >
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="authenticateRequire != null" >
+                #{authenticateRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="cateId != null" >
+                #{cateId,jdbcType=INTEGER},
+            </if>
+            <if test="cateCode != null" >
+                #{cateCode,jdbcType=VARCHAR},
+            </if>
+            <if test="authResult != null" >
+                #{authResult,jdbcType=TINYINT},
+            </if>
+            <if test="authPriceTest != null" >
+                #{authPriceTest,jdbcType=DECIMAL},
+            </if>
+            <if test="authPrice != null" >
+                #{authPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="backImages != null" >
+                #{backImages,jdbcType=VARCHAR},
+            </if>
+            <if test="backVideo != null" >
+                #{backVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="openGoodsVideo != null" >
+                #{openGoodsVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="platGoodsReceiveVideo != null" >
+                #{platGoodsReceiveVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="platGoodsAuthVideo != null" >
+                #{platGoodsAuthVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="notVerifyReason != null" >
+                #{notVerifyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="goVideo != null" >
+                #{goVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="gotoPawn != null" >
+                #{gotoPawn,jdbcType=TINYINT},
+            </if>
+            <if test="goSell != null" >
+                #{goSell,jdbcType=TINYINT},
+            </if>
+            <if test="location != null" >
+                #{location,jdbcType=TINYINT},
+            </if>
+            <if test="postState != null" >
+                #{postState,jdbcType=TINYINT},
+            </if>
+            <if test="postUserName != null" >
+                #{postUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="postUserPhone != null" >
+                #{postUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="postExpress != null" >
+                #{postExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="postExpressCode != null" >
+                #{postExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="backUserName != null" >
+                #{backUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="backUserPhone != null" >
+                #{backUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="backUserExpress != null" >
+                #{backUserExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="backExpress != null" >
+                #{backExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="backExpressCode != null" >
+                #{backExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="backState != null" >
+                #{backState,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isOnline != null" >
+                #{isOnline,jdbcType=TINYINT},
+            </if>
+            <if test="rate != null" >
+                #{rate,jdbcType=DECIMAL},
+            </if>
+            <if test="moneyRate != null" >
+                #{moneyRate,jdbcType=DECIMAL},
+            </if>
+            <if test="platUserName != null" >
+                #{platUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="platUserPhone != null" >
+                #{platUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="platUserAddress != null" >
+                #{platUserAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="orgUserName != null" >
+                #{orgUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgUserAddress != null" >
+                #{orgUserAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="orgUserPhone != null" >
+                #{orgUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="platOrgState != null" >
+                #{platOrgState,jdbcType=TINYINT},
+            </if>
+            <if test="platOrgVideo != null" >
+                #{platOrgVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="platOrgVerify != null" >
+                #{platOrgVerify,jdbcType=TINYINT},
+            </if>
+            <if test="platOrgExpressCode != null" >
+                #{platOrgExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="platOrgTime != null" >
+                #{platOrgTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isVerify != null" >
+                #{isVerify,jdbcType=TINYINT},
+            </if>
+            <if test="experterInfoId != null" >
+                #{experterInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="sfProtectPrice != null" >
+                #{sfProtectPrice,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_user_goods
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_user_goods
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null" >
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.belongId != null" >
+                belong_id = #{record.belongId,jdbcType=INTEGER},
+            </if>
+            <if test="record.belongType != null" >
+                belong_type = #{record.belongType,jdbcType=TINYINT},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.images != null" >
+                images = #{record.images,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsImgs != null" >
+                goods_imgs = #{record.goodsImgs,jdbcType=VARCHAR},
+            </if>
+            <if test="record.video != null" >
+                video = #{record.video,jdbcType=VARCHAR},
+            </if>
+            <if test="record.buyTime != null" >
+                buy_time = #{record.buyTime,jdbcType=DATE},
+            </if>
+            <if test="record.buyPrice != null" >
+                buy_price = #{record.buyPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.info != null" >
+                info = #{record.info,jdbcType=VARCHAR},
+            </if>
+            <if test="record.content != null" >
+                content = #{record.content,jdbcType=VARCHAR},
+            </if>
+            <if test="record.city != null" >
+                city = #{record.city,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userName != null" >
+                user_name = #{record.userName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userPhone != null" >
+                user_phone = #{record.userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authenticateRequire != null" >
+                authenticate_require = #{record.authenticateRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cateId != null" >
+                cate_id = #{record.cateId,jdbcType=INTEGER},
+            </if>
+            <if test="record.cateCode != null" >
+                cate_code = #{record.cateCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authResult != null" >
+                auth_result = #{record.authResult,jdbcType=TINYINT},
+            </if>
+            <if test="record.authPriceTest != null" >
+                auth_price_test = #{record.authPriceTest,jdbcType=DECIMAL},
+            </if>
+            <if test="record.authPrice != null" >
+                auth_price = #{record.authPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.backImages != null" >
+                back_images = #{record.backImages,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backVideo != null" >
+                back_video = #{record.backVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.openGoodsVideo != null" >
+                open_goods_video = #{record.openGoodsVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platGoodsReceiveVideo != null" >
+                plat_goods_receive_video = #{record.platGoodsReceiveVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platGoodsAuthVideo != null" >
+                plat_goods_auth_video = #{record.platGoodsAuthVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.notVerifyReason != null" >
+                not_verify_reason = #{record.notVerifyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goVideo != null" >
+                go_video = #{record.goVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.gotoPawn != null" >
+                goto_pawn = #{record.gotoPawn,jdbcType=TINYINT},
+            </if>
+            <if test="record.goSell != null" >
+                go_sell = #{record.goSell,jdbcType=TINYINT},
+            </if>
+            <if test="record.location != null" >
+                location = #{record.location,jdbcType=TINYINT},
+            </if>
+            <if test="record.postState != null" >
+                post_state = #{record.postState,jdbcType=TINYINT},
+            </if>
+            <if test="record.postUserName != null" >
+                post_user_name = #{record.postUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.postUserPhone != null" >
+                post_user_phone = #{record.postUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.postExpress != null" >
+                post_express = #{record.postExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.postExpressCode != null" >
+                post_express_code = #{record.postExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backUserName != null" >
+                back_user_name = #{record.backUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backUserPhone != null" >
+                back_user_phone = #{record.backUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backUserExpress != null" >
+                back_user_express = #{record.backUserExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backExpress != null" >
+                back_express = #{record.backExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backExpressCode != null" >
+                back_express_code = #{record.backExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.backState != null" >
+                back_state = #{record.backState,jdbcType=TINYINT},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isOnline != null" >
+                is_online = #{record.isOnline,jdbcType=TINYINT},
+            </if>
+            <if test="record.rate != null" >
+                rate = #{record.rate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.moneyRate != null" >
+                money_rate = #{record.moneyRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.platUserName != null" >
+                plat_user_name = #{record.platUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platUserPhone != null" >
+                plat_user_phone = #{record.platUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platUserAddress != null" >
+                plat_user_address = #{record.platUserAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orgUserName != null" >
+                org_user_name = #{record.orgUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orgUserAddress != null" >
+                org_user_address = #{record.orgUserAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orgUserPhone != null" >
+                org_user_phone = #{record.orgUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platOrgState != null" >
+                plat_org_state = #{record.platOrgState,jdbcType=TINYINT},
+            </if>
+            <if test="record.platOrgVideo != null" >
+                plat_org_video = #{record.platOrgVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platOrgVerify != null" >
+                plat_org_verify = #{record.platOrgVerify,jdbcType=TINYINT},
+            </if>
+            <if test="record.platOrgExpressCode != null" >
+                plat_org_express_code = #{record.platOrgExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platOrgTime != null" >
+                plat_org_time = #{record.platOrgTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isVerify != null" >
+                is_verify = #{record.isVerify,jdbcType=TINYINT},
+            </if>
+            <if test="record.experterInfoId != null" >
+                experter_info_id = #{record.experterInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="record.sfProtectPrice != null" >
+                sf_protect_price = #{record.sfProtectPrice,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_user_goods
+        set id = #{id,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        belong_id = #{belongId,jdbcType=INTEGER},
+        belong_type = #{belongType,jdbcType=TINYINT},
+        name = #{name,jdbcType=VARCHAR},
+        images = #{images,jdbcType=VARCHAR},
+        goods_imgs = #{goodsImgs,jdbcType=VARCHAR},
+        video = #{video,jdbcType=VARCHAR},
+        buy_time = #{buyTime,jdbcType=DATE},
+        buy_price = #{buyPrice,jdbcType=DECIMAL},
+        info = #{info,jdbcType=VARCHAR},
+        content = #{content,jdbcType=VARCHAR},
+        city = #{city,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        authenticate_require = #{authenticateRequire,jdbcType=VARCHAR},
+        cate_id = #{cateId,jdbcType=INTEGER},
+        cate_code = #{cateCode,jdbcType=VARCHAR},
+        auth_result = #{authResult,jdbcType=TINYINT},
+        auth_price_test = #{authPriceTest,jdbcType=DECIMAL},
+        auth_price = #{authPrice,jdbcType=DECIMAL},
+        back_images = #{backImages,jdbcType=VARCHAR},
+        back_video = #{backVideo,jdbcType=VARCHAR},
+        open_goods_video = #{openGoodsVideo,jdbcType=VARCHAR},
+        plat_goods_receive_video = #{platGoodsReceiveVideo,jdbcType=VARCHAR},
+        plat_goods_auth_video = #{platGoodsAuthVideo,jdbcType=VARCHAR},
+        not_verify_reason = #{notVerifyReason,jdbcType=VARCHAR},
+        go_video = #{goVideo,jdbcType=VARCHAR},
+        goto_pawn = #{gotoPawn,jdbcType=TINYINT},
+        go_sell = #{goSell,jdbcType=TINYINT},
+        location = #{location,jdbcType=TINYINT},
+        post_state = #{postState,jdbcType=TINYINT},
+        post_user_name = #{postUserName,jdbcType=VARCHAR},
+        post_user_phone = #{postUserPhone,jdbcType=VARCHAR},
+        post_express = #{postExpress,jdbcType=VARCHAR},
+        post_express_code = #{postExpressCode,jdbcType=VARCHAR},
+        back_user_name = #{backUserName,jdbcType=VARCHAR},
+        back_user_phone = #{backUserPhone,jdbcType=VARCHAR},
+        back_user_express = #{backUserExpress,jdbcType=VARCHAR},
+        back_express = #{backExpress,jdbcType=VARCHAR},
+        back_express_code = #{backExpressCode,jdbcType=VARCHAR},
+        back_state = #{backState,jdbcType=TINYINT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        is_online = #{isOnline,jdbcType=TINYINT},
+        rate = #{rate,jdbcType=DECIMAL},
+        money_rate = #{moneyRate,jdbcType=DECIMAL},
+        plat_user_name = #{platUserName,jdbcType=VARCHAR},
+        plat_user_phone = #{platUserPhone,jdbcType=VARCHAR},
+        plat_user_address = #{platUserAddress,jdbcType=VARCHAR},
+        org_user_name = #{orgUserName,jdbcType=VARCHAR},
+        org_user_address = #{orgUserAddress,jdbcType=VARCHAR},
+        org_user_phone = #{orgUserPhone,jdbcType=VARCHAR},
+        plat_org_state = #{platOrgState,jdbcType=TINYINT},
+        plat_org_video = #{platOrgVideo,jdbcType=VARCHAR},
+        plat_org_verify = #{platOrgVerify,jdbcType=TINYINT},
+        plat_org_express_code = #{platOrgExpressCode,jdbcType=VARCHAR},
+        plat_org_time = #{platOrgTime,jdbcType=TIMESTAMP},
+        is_verify = #{isVerify,jdbcType=TINYINT},
+        experter_info_id = #{experterInfoId,jdbcType=INTEGER},
+        sf_protect_price = #{sfProtectPrice,jdbcType=DECIMAL}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_user_goods
+        <set >
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="belongId != null" >
+                belong_id = #{belongId,jdbcType=INTEGER},
+            </if>
+            <if test="belongType != null" >
+                belong_type = #{belongType,jdbcType=TINYINT},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="images != null" >
+                images = #{images,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsImgs != null" >
+                goods_imgs = #{goodsImgs,jdbcType=VARCHAR},
+            </if>
+            <if test="video != null" >
+                video = #{video,jdbcType=VARCHAR},
+            </if>
+            <if test="buyTime != null" >
+                buy_time = #{buyTime,jdbcType=DATE},
+            </if>
+            <if test="buyPrice != null" >
+                buy_price = #{buyPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="info != null" >
+                info = #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null" >
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null" >
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null" >
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null" >
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="authenticateRequire != null" >
+                authenticate_require = #{authenticateRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="cateId != null" >
+                cate_id = #{cateId,jdbcType=INTEGER},
+            </if>
+            <if test="cateCode != null" >
+                cate_code = #{cateCode,jdbcType=VARCHAR},
+            </if>
+            <if test="authResult != null" >
+                auth_result = #{authResult,jdbcType=TINYINT},
+            </if>
+            <if test="authPriceTest != null" >
+                auth_price_test = #{authPriceTest,jdbcType=DECIMAL},
+            </if>
+            <if test="authPrice != null" >
+                auth_price = #{authPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="backImages != null" >
+                back_images = #{backImages,jdbcType=VARCHAR},
+            </if>
+            <if test="backVideo != null" >
+                back_video = #{backVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="openGoodsVideo != null" >
+                open_goods_video = #{openGoodsVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="platGoodsReceiveVideo != null" >
+                plat_goods_receive_video = #{platGoodsReceiveVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="platGoodsAuthVideo != null" >
+                plat_goods_auth_video = #{platGoodsAuthVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="notVerifyReason != null" >
+                not_verify_reason = #{notVerifyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="goVideo != null" >
+                go_video = #{goVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="gotoPawn != null" >
+                goto_pawn = #{gotoPawn,jdbcType=TINYINT},
+            </if>
+            <if test="goSell != null" >
+                go_sell = #{goSell,jdbcType=TINYINT},
+            </if>
+            <if test="location != null" >
+                location = #{location,jdbcType=TINYINT},
+            </if>
+            <if test="postState != null" >
+                post_state = #{postState,jdbcType=TINYINT},
+            </if>
+            <if test="postUserName != null" >
+                post_user_name = #{postUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="postUserPhone != null" >
+                post_user_phone = #{postUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="postExpress != null" >
+                post_express = #{postExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="postExpressCode != null" >
+                post_express_code = #{postExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="backUserName != null" >
+                back_user_name = #{backUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="backUserPhone != null" >
+                back_user_phone = #{backUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="backUserExpress != null" >
+                back_user_express = #{backUserExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="backExpress != null" >
+                back_express = #{backExpress,jdbcType=VARCHAR},
+            </if>
+            <if test="backExpressCode != null" >
+                back_express_code = #{backExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="backState != null" >
+                back_state = #{backState,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isOnline != null" >
+                is_online = #{isOnline,jdbcType=TINYINT},
+            </if>
+            <if test="rate != null" >
+                rate = #{rate,jdbcType=DECIMAL},
+            </if>
+            <if test="moneyRate != null" >
+                money_rate = #{moneyRate,jdbcType=DECIMAL},
+            </if>
+            <if test="platUserName != null" >
+                plat_user_name = #{platUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="platUserPhone != null" >
+                plat_user_phone = #{platUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="platUserAddress != null" >
+                plat_user_address = #{platUserAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="orgUserName != null" >
+                org_user_name = #{orgUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgUserAddress != null" >
+                org_user_address = #{orgUserAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="orgUserPhone != null" >
+                org_user_phone = #{orgUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="platOrgState != null" >
+                plat_org_state = #{platOrgState,jdbcType=TINYINT},
+            </if>
+            <if test="platOrgVideo != null" >
+                plat_org_video = #{platOrgVideo,jdbcType=VARCHAR},
+            </if>
+            <if test="platOrgVerify != null" >
+                plat_org_verify = #{platOrgVerify,jdbcType=TINYINT},
+            </if>
+            <if test="platOrgExpressCode != null" >
+                plat_org_express_code = #{platOrgExpressCode,jdbcType=VARCHAR},
+            </if>
+            <if test="platOrgTime != null" >
+                plat_org_time = #{platOrgTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isVerify != null" >
+                is_verify = #{isVerify,jdbcType=TINYINT},
+            </if>
+            <if test="experterInfoId != null" >
+                experter_info_id = #{experterInfoId,jdbcType=INTEGER},
+            </if>
+            <if test="sfProtectPrice != null" >
+                sf_protect_price = #{sfProtectPrice,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_user_goods
+        set user_id = #{userId,jdbcType=INTEGER},
+        belong_id = #{belongId,jdbcType=INTEGER},
+        belong_type = #{belongType,jdbcType=TINYINT},
+        name = #{name,jdbcType=VARCHAR},
+        images = #{images,jdbcType=VARCHAR},
+        goods_imgs = #{goodsImgs,jdbcType=VARCHAR},
+        video = #{video,jdbcType=VARCHAR},
+        buy_time = #{buyTime,jdbcType=DATE},
+        buy_price = #{buyPrice,jdbcType=DECIMAL},
+        info = #{info,jdbcType=VARCHAR},
+        content = #{content,jdbcType=VARCHAR},
+        city = #{city,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        authenticate_require = #{authenticateRequire,jdbcType=VARCHAR},
+        cate_id = #{cateId,jdbcType=INTEGER},
+        cate_code = #{cateCode,jdbcType=VARCHAR},
+        auth_result = #{authResult,jdbcType=TINYINT},
+        auth_price_test = #{authPriceTest,jdbcType=DECIMAL},
+        auth_price = #{authPrice,jdbcType=DECIMAL},
+        back_images = #{backImages,jdbcType=VARCHAR},
+        back_video = #{backVideo,jdbcType=VARCHAR},
+        open_goods_video = #{openGoodsVideo,jdbcType=VARCHAR},
+        plat_goods_receive_video = #{platGoodsReceiveVideo,jdbcType=VARCHAR},
+        plat_goods_auth_video = #{platGoodsAuthVideo,jdbcType=VARCHAR},
+        not_verify_reason = #{notVerifyReason,jdbcType=VARCHAR},
+        go_video = #{goVideo,jdbcType=VARCHAR},
+        goto_pawn = #{gotoPawn,jdbcType=TINYINT},
+        go_sell = #{goSell,jdbcType=TINYINT},
+        location = #{location,jdbcType=TINYINT},
+        post_state = #{postState,jdbcType=TINYINT},
+        post_user_name = #{postUserName,jdbcType=VARCHAR},
+        post_user_phone = #{postUserPhone,jdbcType=VARCHAR},
+        post_express = #{postExpress,jdbcType=VARCHAR},
+        post_express_code = #{postExpressCode,jdbcType=VARCHAR},
+        back_user_name = #{backUserName,jdbcType=VARCHAR},
+        back_user_phone = #{backUserPhone,jdbcType=VARCHAR},
+        back_user_express = #{backUserExpress,jdbcType=VARCHAR},
+        back_express = #{backExpress,jdbcType=VARCHAR},
+        back_express_code = #{backExpressCode,jdbcType=VARCHAR},
+        back_state = #{backState,jdbcType=TINYINT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        is_online = #{isOnline,jdbcType=TINYINT},
+        rate = #{rate,jdbcType=DECIMAL},
+        money_rate = #{moneyRate,jdbcType=DECIMAL},
+        plat_user_name = #{platUserName,jdbcType=VARCHAR},
+        plat_user_phone = #{platUserPhone,jdbcType=VARCHAR},
+        plat_user_address = #{platUserAddress,jdbcType=VARCHAR},
+        org_user_name = #{orgUserName,jdbcType=VARCHAR},
+        org_user_address = #{orgUserAddress,jdbcType=VARCHAR},
+        org_user_phone = #{orgUserPhone,jdbcType=VARCHAR},
+        plat_org_state = #{platOrgState,jdbcType=TINYINT},
+        plat_org_video = #{platOrgVideo,jdbcType=VARCHAR},
+        plat_org_verify = #{platOrgVerify,jdbcType=TINYINT},
+        plat_org_express_code = #{platOrgExpressCode,jdbcType=VARCHAR},
+        plat_org_time = #{platOrgTime,jdbcType=TIMESTAMP},
+        is_verify = #{isVerify,jdbcType=TINYINT},
+        experter_info_id = #{experterInfoId,jdbcType=INTEGER},
+        sf_protect_price = #{sfProtectPrice,jdbcType=DECIMAL}
+        where id = #{id}
+    </update>
+
+</mapper>

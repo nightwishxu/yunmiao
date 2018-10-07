@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.UserFollowMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.UserFollowEx" extends="com.item.dao.UserFollowMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="getUserFollowCount" resultType="java.lang.Integer">
+    SELECT count(*) from t_user_follow where (user_id=#{userId} and status in (1,3)) or (operate_object=#{userId} and status in (2,3))
+  </select>
+
+  <select id="getUserFollow" resultType="com.item.daoEx.model.UserFollowEx">
+    SELECT uf.* ,
+    u1.head_img as userHeadImg,
+    u1.nick_name as userNickName,
+    u2.head_img as operateHeadImg,
+    u2.nick_name as operateNickName,
+    wxu1.article_count as userArticleCount,
+    wxu2.article_count as operateArticleCount,
+    wxu1.fans_count as userFansCount,
+    wxu2.fans_count as operateFansCount
+    from t_user_follow uf
+    LEFT JOIN t_user u1 on uf.user_id=u1.id
+    LEFT JOIN t_user u2 on uf.operate_object=u2.id
+    LEFT JOIN t_wx_user_info wxu1 on uf.user_id=wxu1.id
+    LEFT JOIN t_wx_user_info wxu2 on uf.operate_object=wxu2.id
+     where (uf.user_id=#{userId} and uf.status in (1,3)) or (uf.operate_object=#{userId} and uf.status in (2,3))
+   order by
+</select>
+
+  <select id="getUserFansCount" resultType="java.lang.Integer">
+    SELECT count(*) from t_user_follow where (operate_object=#{userId} and status in (1,3)) or (user_id=#{userId} and status in (2,3))
+  </select>
+
+  <select id="getIsFollow" resultType="ava.lang.Integer">
+    SELECT count(*) from t_user_follow
+    where (user_id=#{userId} and operate_object=#{followUserId} and status in (1,3))
+    or   (user_id=#{followUserId} and operate_object=#{userId} and status in (2,3))
+</select>
+
+</mapper>

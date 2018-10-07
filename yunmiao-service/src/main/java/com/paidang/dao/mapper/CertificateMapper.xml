@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.CertificateMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.Certificate" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="length" property="length" jdbcType="VARCHAR" />
+        <result column="width" property="width" jdbcType="VARCHAR" />
+        <result column="height" property="height" jdbcType="VARCHAR" />
+        <result column="weight" property="weight" jdbcType="VARCHAR" />
+        <result column="material" property="material" jdbcType="VARCHAR" />
+        <result column="main_material" property="mainMaterial" jdbcType="VARCHAR" />
+        <result column="other_material" property="otherMaterial" jdbcType="VARCHAR" />
+        <result column="create_year" property="createYear" jdbcType="VARCHAR" />
+        <result column="other" property="other" jdbcType="VARCHAR" />
+        <result column="imgs" property="imgs" jdbcType="VARCHAR" />
+        <result column="market_liquidity" property="marketLiquidity" jdbcType="TINYINT" />
+        <result column="value_stability" property="valueStability" jdbcType="TINYINT" />
+        <result column="material_vulnerability" property="materialVulnerability" jdbcType="TINYINT" />
+        <result column="storage_condition" property="storageCondition" jdbcType="VARCHAR" />
+        <result column="naked_eye_defect" property="nakedEyeDefect" jdbcType="VARCHAR" />
+        <result column="finance_log" property="financeLog" jdbcType="VARCHAR" />
+        <result column="other_business" property="otherBusiness" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,name,code,length,width,height,weight,material,main_material,other_material,create_year,other,imgs,market_liquidity,value_stability,material_vulnerability,storage_condition,naked_eye_defect,finance_log,other_business,create_time,modify_time
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_certificate
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from p_certificate
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_certificate
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_certificate
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_certificate (name,code,
+        length,width,height,
+        weight,material,main_material,
+        other_material,create_year,other,
+        imgs,market_liquidity,value_stability,
+        material_vulnerability,storage_condition,naked_eye_defect,
+        finance_log,other_business,create_time,
+        modify_time
+        )
+        values (#{name,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},
+        #{length,jdbcType=VARCHAR},#{width,jdbcType=VARCHAR},#{height,jdbcType=VARCHAR},
+        #{weight,jdbcType=VARCHAR},#{material,jdbcType=VARCHAR},#{mainMaterial,jdbcType=VARCHAR},
+        #{otherMaterial,jdbcType=VARCHAR},#{createYear,jdbcType=VARCHAR},#{other,jdbcType=VARCHAR},
+        #{imgs,jdbcType=VARCHAR},#{marketLiquidity,jdbcType=TINYINT},#{valueStability,jdbcType=TINYINT},
+        #{materialVulnerability,jdbcType=TINYINT},#{storageCondition,jdbcType=VARCHAR},#{nakedEyeDefect,jdbcType=VARCHAR},
+        #{financeLog,jdbcType=VARCHAR},#{otherBusiness,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+        #{modifyTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_certificate
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="code != null" >
+                code,
+            </if>
+            <if test="length != null" >
+                length,
+            </if>
+            <if test="width != null" >
+                width,
+            </if>
+            <if test="height != null" >
+                height,
+            </if>
+            <if test="weight != null" >
+                weight,
+            </if>
+            <if test="material != null" >
+                material,
+            </if>
+            <if test="mainMaterial != null" >
+                main_material,
+            </if>
+            <if test="otherMaterial != null" >
+                other_material,
+            </if>
+            <if test="createYear != null" >
+                create_year,
+            </if>
+            <if test="other != null" >
+                other,
+            </if>
+            <if test="imgs != null" >
+                imgs,
+            </if>
+            <if test="marketLiquidity != null" >
+                market_liquidity,
+            </if>
+            <if test="valueStability != null" >
+                value_stability,
+            </if>
+            <if test="materialVulnerability != null" >
+                material_vulnerability,
+            </if>
+            <if test="storageCondition != null" >
+                storage_condition,
+            </if>
+            <if test="nakedEyeDefect != null" >
+                naked_eye_defect,
+            </if>
+            <if test="financeLog != null" >
+                finance_log,
+            </if>
+            <if test="otherBusiness != null" >
+                other_business,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="modifyTime != null" >
+                modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null" >
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="length != null" >
+                #{length,jdbcType=VARCHAR},
+            </if>
+            <if test="width != null" >
+                #{width,jdbcType=VARCHAR},
+            </if>
+            <if test="height != null" >
+                #{height,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null" >
+                #{weight,jdbcType=VARCHAR},
+            </if>
+            <if test="material != null" >
+                #{material,jdbcType=VARCHAR},
+            </if>
+            <if test="mainMaterial != null" >
+                #{mainMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="otherMaterial != null" >
+                #{otherMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="createYear != null" >
+                #{createYear,jdbcType=VARCHAR},
+            </if>
+            <if test="other != null" >
+                #{other,jdbcType=VARCHAR},
+            </if>
+            <if test="imgs != null" >
+                #{imgs,jdbcType=VARCHAR},
+            </if>
+            <if test="marketLiquidity != null" >
+                #{marketLiquidity,jdbcType=TINYINT},
+            </if>
+            <if test="valueStability != null" >
+                #{valueStability,jdbcType=TINYINT},
+            </if>
+            <if test="materialVulnerability != null" >
+                #{materialVulnerability,jdbcType=TINYINT},
+            </if>
+            <if test="storageCondition != null" >
+                #{storageCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="nakedEyeDefect != null" >
+                #{nakedEyeDefect,jdbcType=VARCHAR},
+            </if>
+            <if test="financeLog != null" >
+                #{financeLog,jdbcType=VARCHAR},
+            </if>
+            <if test="otherBusiness != null" >
+                #{otherBusiness,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_certificate
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_certificate
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.code != null" >
+                code = #{record.code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.length != null" >
+                length = #{record.length,jdbcType=VARCHAR},
+            </if>
+            <if test="record.width != null" >
+                width = #{record.width,jdbcType=VARCHAR},
+            </if>
+            <if test="record.height != null" >
+                height = #{record.height,jdbcType=VARCHAR},
+            </if>
+            <if test="record.weight != null" >
+                weight = #{record.weight,jdbcType=VARCHAR},
+            </if>
+            <if test="record.material != null" >
+                material = #{record.material,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mainMaterial != null" >
+                main_material = #{record.mainMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="record.otherMaterial != null" >
+                other_material = #{record.otherMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createYear != null" >
+                create_year = #{record.createYear,jdbcType=VARCHAR},
+            </if>
+            <if test="record.other != null" >
+                other = #{record.other,jdbcType=VARCHAR},
+            </if>
+            <if test="record.imgs != null" >
+                imgs = #{record.imgs,jdbcType=VARCHAR},
+            </if>
+            <if test="record.marketLiquidity != null" >
+                market_liquidity = #{record.marketLiquidity,jdbcType=TINYINT},
+            </if>
+            <if test="record.valueStability != null" >
+                value_stability = #{record.valueStability,jdbcType=TINYINT},
+            </if>
+            <if test="record.materialVulnerability != null" >
+                material_vulnerability = #{record.materialVulnerability,jdbcType=TINYINT},
+            </if>
+            <if test="record.storageCondition != null" >
+                storage_condition = #{record.storageCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="record.nakedEyeDefect != null" >
+                naked_eye_defect = #{record.nakedEyeDefect,jdbcType=VARCHAR},
+            </if>
+            <if test="record.financeLog != null" >
+                finance_log = #{record.financeLog,jdbcType=VARCHAR},
+            </if>
+            <if test="record.otherBusiness != null" >
+                other_business = #{record.otherBusiness,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_certificate
+        set id = #{id,jdbcType=INTEGER},
+        name = #{name,jdbcType=VARCHAR},
+        code = #{code,jdbcType=VARCHAR},
+        length = #{length,jdbcType=VARCHAR},
+        width = #{width,jdbcType=VARCHAR},
+        height = #{height,jdbcType=VARCHAR},
+        weight = #{weight,jdbcType=VARCHAR},
+        material = #{material,jdbcType=VARCHAR},
+        main_material = #{mainMaterial,jdbcType=VARCHAR},
+        other_material = #{otherMaterial,jdbcType=VARCHAR},
+        create_year = #{createYear,jdbcType=VARCHAR},
+        other = #{other,jdbcType=VARCHAR},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        market_liquidity = #{marketLiquidity,jdbcType=TINYINT},
+        value_stability = #{valueStability,jdbcType=TINYINT},
+        material_vulnerability = #{materialVulnerability,jdbcType=TINYINT},
+        storage_condition = #{storageCondition,jdbcType=VARCHAR},
+        naked_eye_defect = #{nakedEyeDefect,jdbcType=VARCHAR},
+        finance_log = #{financeLog,jdbcType=VARCHAR},
+        other_business = #{otherBusiness,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_certificate
+        <set >
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="length != null" >
+                length = #{length,jdbcType=VARCHAR},
+            </if>
+            <if test="width != null" >
+                width = #{width,jdbcType=VARCHAR},
+            </if>
+            <if test="height != null" >
+                height = #{height,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null" >
+                weight = #{weight,jdbcType=VARCHAR},
+            </if>
+            <if test="material != null" >
+                material = #{material,jdbcType=VARCHAR},
+            </if>
+            <if test="mainMaterial != null" >
+                main_material = #{mainMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="otherMaterial != null" >
+                other_material = #{otherMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="createYear != null" >
+                create_year = #{createYear,jdbcType=VARCHAR},
+            </if>
+            <if test="other != null" >
+                other = #{other,jdbcType=VARCHAR},
+            </if>
+            <if test="imgs != null" >
+                imgs = #{imgs,jdbcType=VARCHAR},
+            </if>
+            <if test="marketLiquidity != null" >
+                market_liquidity = #{marketLiquidity,jdbcType=TINYINT},
+            </if>
+            <if test="valueStability != null" >
+                value_stability = #{valueStability,jdbcType=TINYINT},
+            </if>
+            <if test="materialVulnerability != null" >
+                material_vulnerability = #{materialVulnerability,jdbcType=TINYINT},
+            </if>
+            <if test="storageCondition != null" >
+                storage_condition = #{storageCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="nakedEyeDefect != null" >
+                naked_eye_defect = #{nakedEyeDefect,jdbcType=VARCHAR},
+            </if>
+            <if test="financeLog != null" >
+                finance_log = #{financeLog,jdbcType=VARCHAR},
+            </if>
+            <if test="otherBusiness != null" >
+                other_business = #{otherBusiness,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_certificate
+        set name = #{name,jdbcType=VARCHAR},
+        code = #{code,jdbcType=VARCHAR},
+        length = #{length,jdbcType=VARCHAR},
+        width = #{width,jdbcType=VARCHAR},
+        height = #{height,jdbcType=VARCHAR},
+        weight = #{weight,jdbcType=VARCHAR},
+        material = #{material,jdbcType=VARCHAR},
+        main_material = #{mainMaterial,jdbcType=VARCHAR},
+        other_material = #{otherMaterial,jdbcType=VARCHAR},
+        create_year = #{createYear,jdbcType=VARCHAR},
+        other = #{other,jdbcType=VARCHAR},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        market_liquidity = #{marketLiquidity,jdbcType=TINYINT},
+        value_stability = #{valueStability,jdbcType=TINYINT},
+        material_vulnerability = #{materialVulnerability,jdbcType=TINYINT},
+        storage_condition = #{storageCondition,jdbcType=VARCHAR},
+        naked_eye_defect = #{nakedEyeDefect,jdbcType=VARCHAR},
+        finance_log = #{financeLog,jdbcType=VARCHAR},
+        other_business = #{otherBusiness,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+</mapper>

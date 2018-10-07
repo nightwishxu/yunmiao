@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.UserPawnMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.UserPawnEx" extends="com.paidang.dao.UserPawnMapper.BaseResultMap">
+    <result column="goods_name1" property="goodsName1"></result>
+    <result column="images" property="images"></result>
+    <result column="auth_price" property="authPrice"></result>
+    <result column="auth_price_test" property="authPriceTest"></result>
+    <result column="bidTimes" property="bidTimes"></result>
+    <result column="totalAmountForPawner" property="totalAmountForPawner"></result>
+<!-- <result column="user_name" property="userName"></result>
+    <result column="user_phone" property="phone"></result>
+    <result column="user_id_card" property="idCard"></result>
+    <result column="user_address" property="userAddress"></result>-->
+    <result column="head_img" property="headImg"></result>
+    <!--<result column="org_name" property="orgName"></result>
+    <result column="org_phone" property="orgPhone"></result>
+    <result column="org_Address" property="orgAddress"></result>
+    <result column="business_license" property="businessLicense"></result>
+    <result column="seal" property="orgSeal"></result>-->
+    <!--机构竞拍次数-->
+    <result  column="count" property="cnt"></result>
+  </resultMap>
+
+
+    <!--  原符号   < 	    <= 	      > 	  >= 	  & 	  ' 	  "
+     替换符号 	&lt; 		&gt; 	&gt;= 	&amp; 	&apos; 	&quot; -->
+
+
+    <!-- 最新当品 -->
+  <select id="LatestPawnList" resultMap="BaseResultMap">
+      SELECT p.* , g.name AS goods_name1, g.images , g.auth_price , g.auth_price_test , F_GET_TotalBidTimes(p.id) as bidTimes FROM
+      p_user_pawn p
+      LEFT JOIN p_user_goods g ON p.goods_id = g.id
+      <!-- 鉴定结果为 真品 -->
+      WHERE g.auth_result = '4'
+      <!-- 状态为 竞拍中 -->
+      AND p.state = '1'
+      AND p.org_id IS  NULL
+      <!-- 去掉用户主动放弃竞拍的 -->
+      AND p.user_state != '1'
+      <!-- 去掉倒计时过期的 竞拍时间 auctionTimem 秒后过期-->
+      AND  SYSDATE() &lt;=  DATE_ADD(p.create_time,INTERVAL #{auctionTime} SECOND)
+      ORDER BY p.create_time desc;
+  </select>
+    
+    <!--热门竞拍-->
+    <select id="hotAuctionsList" resultMap="BaseResultMap">
+        SELECT p.* ,g.name AS goods_name1, g.images , g.auth_price , g.auth_price_test , F_GET_TotalBidTimes(p.id) as bidTimes FROM
+        p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        <!-- 鉴定结果为 真品 -->
+        WHERE g.auth_result = '4'
+        <!-- 状态为 竞拍中 -->
+        AND p.state = '1'
+        AND p.org_id IS  NULL
+        <!-- 去掉用户主动放弃竞拍的 -->
+        AND p.user_state != '1'
+        <!-- 去掉倒计时过期的 竞拍时间 auctionTimem 秒后过期-->
+        AND  SYSDATE() &lt;=  DATE_ADD(p.create_time,INTERVAL #{auctionTime} SECOND)
+        ORDER BY bidTimes desc;
+    </select>
+
+    <!--获取指定id的UserPawnEx扩展类-->
+    <select id="getUserPawnExById"  resultMap="BaseResultMap">
+        SELECT p.* , g.id AS goods_id, g.name AS goods_name1, g.images , g.auth_price , g.auth_price_test , F_GET_TotalBidTimes(p.id) as bidTimes FROM
+        p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        <where>
+            <if test="pawnId !=null">
+                p.id = ${pawnId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取当票信息 -->
+    <select id="getPawnTicketInfo"  resultMap="BaseResultMap">
+        SELECT p.* , g.id AS goods_id, g.name AS goods_name1, g.auth_price , g.auth_price_test ,
+        o.name as org_name , o.phone as org_phone ,o.adress as org_address , o.business_license ,o.seal as org_seal
+        FROM
+        p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        LEFT JOIN b_user u ON p.user_id = u.id
+        LEFT JOIN p_pawn_org o ON p.org_id = o.id
+        <where>
+            <if test="pawnId !=null">
+                p.id = ${pawnId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取已中标典当记录List -->
+    <select id="getMyBidWonList" resultMap="BaseResultMap">
+        SELECT p.* , g.name AS goods_name1, g.images , g.auth_price , g.auth_price_test , F_GET_TotalBidTimes(p.id) as bidTimes FROM
+        p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        <where>
+            (<if test="orgId != null">
+                p.org_id = ${orgId}
+            </if>
+            AND p.state = '1')
+            OR
+            (<if test="orgId != null">
+                p.org_id = ${orgId}
+            </if>
+             AND p.state = '2')
+        </where>
+        ORDER BY p.create_time DESC
+    </select>
+
+    <!-- 宝祥机构兜底 -->
+    <select id="getBaoXiangList" resultMap="BaseResultMap">
+        SELECT p.* , g.name AS goods_name1, g.images , g.auth_price , g.auth_price_test , F_GET_TotalBidTimes(p.id) as bidTimes FROM
+        p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        <where>
+            <if test="orgId != null">
+                p.org_id = ${orgId}
+            </if>
+            AND p.state = '5'
+        </where>
+        ORDER BY p.create_time DESC
+    </select>
+
+    <!-- 获取点击我的当户后的列表(本机构所属当户) -->
+    <select id="getMyPawnersList" resultMap="BaseResultMap">
+        SELECT p.user_id, p.totalAmountForPawner , u.name AS user_name, u.account  as user_phone ,u.head_img ,u.id_card as user_id_card, a.address AS user_address FROM
+        	(
+                SELECT user_id,SUM(begin_money) AS totalAmountForPawner
+                FROM  p_user_pawn p
+                WHERE state IN (2,3) AND  org_id = #{orgId}
+                GROUP BY
+                    user_id
+	        ) p
+	        LEFT JOIN b_user u   ON u.id = p.user_id
+            LEFT JOIN p_user_address a ON a.user_id = p.user_id AND a.is_default = 1
+    </select>
+
+    <!-- 获取 我的 当户和当品信息 页面下部当品列表 -->
+    <select id="getPawnerzPawnList" resultMap="BaseResultMap">
+        SELECT p.id , g.id AS goods_id, g.name as goods_name1, g.images, p.pawn_ticket_code, g.auth_price, p.begin_money, p.pawn_end_time FROM  p_user_pawn p
+        LEFT JOIN p_user_goods g ON  p.goods_id = g.id
+        <where>
+            p.state = '2' <!-- 取状态为【典当中】的记录-->
+            <if test="orgId != null">
+               AND p.org_id=#{orgId}
+            </if>
+            <if test="pawnerId != null">
+               AND p.user_id = #{pawnerId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取登陆机构 赎当 列表 -->
+    <select id="getOrgRedeemList" resultMap="BaseResultMap">
+        SELECT p.id , g.id AS goods_id , g.name AS goods_name1, p.pawn_ticket_code , g.auth_price , g.images ,p.user_money, p.begin_money, p.pawn_money FROM p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        <where>
+            <if test="orgId != null">
+                AND p.org_id=#{orgId}
+            </if>
+            AND state IN (2,3)
+            AND redeem_state IN (1,2,3)
+            AND SYSDATE() &lt;= DATE_ADD(pawn_end_time,INTERVAL 5 DAY)
+        </where>
+        ORDER BY p.create_time DESC
+    </select>
+
+    <!-- 获取登陆机构 绝当 列表 -->
+    <select id="getOrgDeadPawnList" resultMap="BaseResultMap">
+        SELECT p.id , g.id AS goods_id , g.name AS goods_name1, p.pawn_ticket_code , g.auth_price , g.images ,p.user_money, p.begin_money, p.pawn_money FROM p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+        <where>
+            <if test="orgId != null">
+                AND p.org_id=#{orgId}
+            </if>
+            AND state = '4'
+            AND SYSDATE() &gt; DATE_ADD(pawn_end_time,INTERVAL 5 DAY)
+        </where>
+        ORDER BY p.create_time DESC
+    </select>
+
+    <!-- 我的 合同记录 -->
+    <select id="getContractPawnList" resultMap="BaseResultMap">
+        SELECT p.* , g.name AS goods_name1 , g.images AS images FROM p_user_pawn p
+        LEFT JOIN p_user_goods g ON p.goods_id = g.id
+         WHERE p.org_id = #{orgId}
+         AND p.state = 2
+    </select>
+
+    <select id="selectAppList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        SELECT
+            A.*,
+            B.images,
+            B.auth_price,
+            C.state as pawnContinueState,
+            D.id as pawnLogId,
+        (
+        select count(*) from p_pawn_auction D where A.id = D.pawn_id
+        ) as cnt
+
+        FROM
+            p_user_pawn A
+        LEFT JOIN p_user_goods B ON A.goods_id = B.id
+        LEFT JOIN p_pawn_continue C on A.last_pawn_continue_id = C.id
+        left join p_pawn_log D on A.goods_id = D.goods_id
+        WHERE
+            A.user_id = #{userId}
+        ORDER BY
+          A.create_time DESC
+    </select>
+
+    <select id="selectByPawnConinueDetail" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.auth_price,
+        B.images as images
+        from p_user_pawn A
+        left join p_user_goods B
+        on A.goods_id = B.id
+        where A.id = #{id}
+        and A.user_id = #{userId}
+        and A.state = 2
+
+    </select>
+
+    <select id="selectUserName" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.name as userName,
+        F.cate_code as cateCode,
+        F.cate_id as cateId
+        from p_user_pawn A
+        left join b_user B
+        on A.user_id = B.id
+        left join p_user_goods F
+        on A.goods_id = F.id
+        where A.id = #{id}
+        and A.user_id = #{user_id}
+    </select>
+
+    <update id="updatebyPawnContinue" parameterType="java.util.HashMap">
+      update p_user_pawn set pawn_end_time = #{pawn_end_time}, pawn_time = #{pawnTime},last_pawn_continue_id = #{last_pawn_continue_id} where id = #{id} and user_id = #{user_id}
+
+    </update>
+
+    <select id="UserPawnEx" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        *
+        from p_use_pawn
+        where user_id = #{user_id} and id = #{id}
+    </select>
+
+    <select id="selectPawningDetail" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.name as goods_name,
+        B.auth_price,
+        B.images
+        from
+        p_user_pawn A
+        left join p_user_goods B
+        on A.goods_id = B.id
+        where A.id = #{id} and A.user_id = #{user_id}
+
+    </select>
+
+    <select id="selectCancelPawnList"  resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.name as goods_name,
+        B.images,
+        B.auth_price,
+        B.go_sell as goSellType
+        from p_user_pawn A
+        left join p_user_goods B
+        on A.goods_id = B.id
+        where A.user_id = #{user_id}
+        and A.user_state = 1 and B.auth_result = 4 and B.goto_pawn = 1 and B.post_state = 3 and A.state != 5 and A.state = -1 and B.back_state = 0
+        order by A.create_time desc;
+
+    </select>
+    <select id="selectByGoodsId"  resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*
+        from p_user_pawn A
+        WHERE A.goods_id = #{goods_id}
+        order by A.create_time desc;
+
+    </select>
+
+    <!-- 典当竞拍时间结束定时任务，查询所有竞拍时间结束的记录 -->
+    <select id="selectTask" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        (select count(id) from p_pawn_auction where pawn_id = A.id) count
+        from p_user_pawn A
+        where A.state = 1 AND A.org_id IS NULL and A.create_time &lt; #{time}
+    </select>
+
+    <!--我的典当列表竞拍中-->
+    <select id="selectPawningList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.images,
+        B.auth_price
+        from p_user_pawn A
+        left join p_user_goods B
+        on A.goods_id = B.id
+        where A.user_id = #{user_id}
+        and (A.state = 1 or A.state = -1)
+        and A.org_id IS NULL and A.user_state !=1
+        order by A.create_time desc;
+    </select>
+    <!--我的典当列表已典当中-->
+    <select id="selectMyPawnedList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        SELECT
+            A.*,
+            B.images,
+            B.auth_price,
+            C.state as pawnContinueState,
+        (
+        select count(*) from p_pawn_auction D where A.id = D.pawn_id
+        ) as cnt
+
+        FROM
+            p_user_pawn A
+        LEFT JOIN p_user_goods B ON A.goods_id = B.id
+        LEFT JOIN p_pawn_continue C on A.last_pawn_continue_id = C.id
+        WHERE
+            A.user_id = #{user_id} and A.org_id is not null and (A.user_state =2 or A.user_state =3 or A.user_state = 4) and (A.state = 1 or A.state = 2 or A.state = 5)
+        order by A.create_time desc
+    </select>
+
+    <!--平台查看所有典当详情-->
+    <select id="selectPawnRecord" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.name as goods_name1,
+        B.auth_price,
+        B.images,
+        B.auth_result as authResult
+        from p_user_pawn A
+        left join p_user_goods B
+        on A.goods_id = B.id where 1 = 1
+        <if test="goodsName != null and goodsName != ''">
+            and B.name like '%${goodsName}%'
+        </if>
+        <if test="orgId != null and orgId != ''">
+            and A.org_id = #{orgId}
+        </if>
+        order by A.create_time desc
+
+    </select>
+
+    <update id="updateUserPawn" parameterType="com.paidang.daoEx.model.UserPawnEx">
+        update p_user_pawn
+        SET
+        loans_price = #{loansPrice},pawn_time = #{pawnTime},
+        pawn_begin_time=#{pawnBeginTime},pawn_end_time=#{pawnEndTime},
+        begin_pawn_end_time=#{beginPawnEndTime},payee_state=#{payeeState},
+        pawn_time=#{pawnTime},begin_pawn_month = #{beginPawnMonth},
+        state = #{state},user_state = #{userState},
+        create_time = #{createTime},org_id = null
+        where id=#{id}
+    </update>
+
+    <select id="selectConList" resultMap="BaseResultMap">
+          SELECT
+          A.*,
+          B.images
+          FROM
+          p_user_pawn A
+          left join p_user_goods B
+          on A.goods_id = B.id
+          where A.org_id is not null and A.user_id = #{user_id}
+          order by A.create_time desc
+    </select>
+
+    <select id="selectBxGet" resultMap="BaseResultMap">
+        select
+        A.*,
+        B.name as goods_name1
+        from p_user_pawn A
+        left join p_user_goods B
+        on A.goods_id = B.id
+        where A.state = 5
+        <if test="pawnTicketCode != null and pawnTicketCode != ''">
+            and A.pawnTicketCode like '%${pawnTicketCode}%'
+        </if>
+        order by A.create_time desc
+    </select>
+
+
+</mapper>

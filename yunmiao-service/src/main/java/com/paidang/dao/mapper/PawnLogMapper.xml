@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.PawnLogMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.PawnLog" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="org_id" property="orgId" jdbcType="INTEGER" />
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+        <result column="auth_price" property="authPrice" jdbcType="DECIMAL" />
+        <result column="goods_cate" property="goodsCate" jdbcType="VARCHAR" />
+        <result column="goods_cate_id" property="goodsCateId" jdbcType="INTEGER" />
+        <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+        <result column="money" property="money" jdbcType="DECIMAL" />
+        <result column="pawn_month" property="pawnMonth" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="trade_card_bank" property="tradeCardBank" jdbcType="VARCHAR" />
+        <result column="trade_card_code" property="tradeCardCode" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,goods_id,user_id,org_id,goods_name,auth_price,goods_cate,goods_cate_id,org_name,money,pawn_month,type,user_name,trade_card_bank,trade_card_code,create_time,modify_time
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_pawn_log
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from p_pawn_log
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_pawn_log
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_pawn_log
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_pawn_log (goods_id,user_id,
+        org_id,goods_name,auth_price,
+        goods_cate,goods_cate_id,org_name,
+        money,pawn_month,type,
+        user_name,trade_card_bank,trade_card_code,
+        create_time,modify_time
+        )
+        values (#{goodsId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},
+        #{orgId,jdbcType=INTEGER},#{goodsName,jdbcType=VARCHAR},#{authPrice,jdbcType=DECIMAL},
+        #{goodsCate,jdbcType=VARCHAR},#{goodsCateId,jdbcType=INTEGER},#{orgName,jdbcType=VARCHAR},
+        #{money,jdbcType=DECIMAL},#{pawnMonth,jdbcType=INTEGER},#{type,jdbcType=TINYINT},
+        #{userName,jdbcType=VARCHAR},#{tradeCardBank,jdbcType=VARCHAR},#{tradeCardCode,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{modifyTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_pawn_log
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="goodsId != null" >
+                goods_id,
+            </if>
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="orgId != null" >
+                org_id,
+            </if>
+            <if test="goodsName != null" >
+                goods_name,
+            </if>
+            <if test="authPrice != null" >
+                auth_price,
+            </if>
+            <if test="goodsCate != null" >
+                goods_cate,
+            </if>
+            <if test="goodsCateId != null" >
+                goods_cate_id,
+            </if>
+            <if test="orgName != null" >
+                org_name,
+            </if>
+            <if test="money != null" >
+                money,
+            </if>
+            <if test="pawnMonth != null" >
+                pawn_month,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="userName != null" >
+                user_name,
+            </if>
+            <if test="tradeCardBank != null" >
+                trade_card_bank,
+            </if>
+            <if test="tradeCardCode != null" >
+                trade_card_code,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="modifyTime != null" >
+                modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="goodsId != null" >
+                #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="orgId != null" >
+                #{orgId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsName != null" >
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="authPrice != null" >
+                #{authPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="goodsCate != null" >
+                #{goodsCate,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCateId != null" >
+                #{goodsCateId,jdbcType=INTEGER},
+            </if>
+            <if test="orgName != null" >
+                #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="pawnMonth != null" >
+                #{pawnMonth,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="userName != null" >
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeCardBank != null" >
+                #{tradeCardBank,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeCardCode != null" >
+                #{tradeCardCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_pawn_log
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_pawn_log
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsId != null" >
+                goods_id = #{record.goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null" >
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.orgId != null" >
+                org_id = #{record.orgId,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsName != null" >
+                goods_name = #{record.goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authPrice != null" >
+                auth_price = #{record.authPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.goodsCate != null" >
+                goods_cate = #{record.goodsCate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsCateId != null" >
+                goods_cate_id = #{record.goodsCateId,jdbcType=INTEGER},
+            </if>
+            <if test="record.orgName != null" >
+                org_name = #{record.orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.money != null" >
+                money = #{record.money,jdbcType=DECIMAL},
+            </if>
+            <if test="record.pawnMonth != null" >
+                pawn_month = #{record.pawnMonth,jdbcType=INTEGER},
+            </if>
+            <if test="record.type != null" >
+                type = #{record.type,jdbcType=TINYINT},
+            </if>
+            <if test="record.userName != null" >
+                user_name = #{record.userName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeCardBank != null" >
+                trade_card_bank = #{record.tradeCardBank,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeCardCode != null" >
+                trade_card_code = #{record.tradeCardCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_pawn_log
+        set id = #{id,jdbcType=INTEGER},
+        goods_id = #{goodsId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        org_id = #{orgId,jdbcType=INTEGER},
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+        auth_price = #{authPrice,jdbcType=DECIMAL},
+        goods_cate = #{goodsCate,jdbcType=VARCHAR},
+        goods_cate_id = #{goodsCateId,jdbcType=INTEGER},
+        org_name = #{orgName,jdbcType=VARCHAR},
+        money = #{money,jdbcType=DECIMAL},
+        pawn_month = #{pawnMonth,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        user_name = #{userName,jdbcType=VARCHAR},
+        trade_card_bank = #{tradeCardBank,jdbcType=VARCHAR},
+        trade_card_code = #{tradeCardCode,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_pawn_log
+        <set >
+            <if test="goodsId != null" >
+                goods_id = #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="orgId != null" >
+                org_id = #{orgId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsName != null" >
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="authPrice != null" >
+                auth_price = #{authPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="goodsCate != null" >
+                goods_cate = #{goodsCate,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCateId != null" >
+                goods_cate_id = #{goodsCateId,jdbcType=INTEGER},
+            </if>
+            <if test="orgName != null" >
+                org_name = #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                money = #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="pawnMonth != null" >
+                pawn_month = #{pawnMonth,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="userName != null" >
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeCardBank != null" >
+                trade_card_bank = #{tradeCardBank,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeCardCode != null" >
+                trade_card_code = #{tradeCardCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_pawn_log
+        set goods_id = #{goodsId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        org_id = #{orgId,jdbcType=INTEGER},
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+        auth_price = #{authPrice,jdbcType=DECIMAL},
+        goods_cate = #{goodsCate,jdbcType=VARCHAR},
+        goods_cate_id = #{goodsCateId,jdbcType=INTEGER},
+        org_name = #{orgName,jdbcType=VARCHAR},
+        money = #{money,jdbcType=DECIMAL},
+        pawn_month = #{pawnMonth,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        user_name = #{userName,jdbcType=VARCHAR},
+        trade_card_bank = #{tradeCardBank,jdbcType=VARCHAR},
+        trade_card_code = #{tradeCardCode,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+</mapper>

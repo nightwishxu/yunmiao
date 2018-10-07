@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.FeedbackMapperEx" >
+	<resultMap id="BaseResultMap" type="com.item.daoEx.model.FeedbackEx" extends="com.item.dao.FeedbackMapper.BaseResultMap">
+  	<result column="account" property="account"/>
+  </resultMap>
+ <select id="selectList" resultMap="BaseResultMap">
+ 	select f.*,u.account
+ 	from b_feedback f
+ 	left join b_user u on u.id = f.user_id
+ 	order by f.create_time desc
+ </select>
+</mapper>

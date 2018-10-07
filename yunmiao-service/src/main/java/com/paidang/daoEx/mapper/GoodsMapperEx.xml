@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.GoodsMapperEx" >
+    <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.GoodsEx" extends="com.paidang.dao.GoodsMapper.BaseResultMap">
+    <result column="cate_name" property="cateName"/>
+    <result column="good_estate" property="estate"/>
+    <result column="good_shelfDown" property="shelfDown"/>
+    <result column="good_soldPrice" property="soldPrice"/>
+    <result column="name" property="name"/>
+
+  </resultMap>
+
+  <select id="selectGoodsList" resultMap="BaseResultMap">
+    SELECT g.*,
+      (CASE g.is_verfiy
+      WHEN 1 then '审核中'
+      WHEN 2 then '审核通过'
+      WHEN 3 then '审核未通过'
+      ELSE '状态未知'
+      END ) good_estate,
+      g.cost AS good_soldPrice , cate.name AS cate_name
+    FROM p_goods g
+      LEFT JOIN p_pawn_cate cate
+      ON g.cate_code = cate.code
+    <where>
+      <if test="source != null">
+        g.source = #{source}
+      </if>
+      <if test="orgId != null">
+        and g.org_id = #{orgId}
+      </if>
+        <if test="type != null">
+            and g.TYPE =#{type}
+        </if>
+      <if test="name != null and name !=''">
+        and g.name like '%${name}%'
+      </if>
+    </where>
+    ORDER BY g.sort_order desc,g.create_time desc
+  </select>
+
+  <select id="selectMyGoodsList" resultMap="BaseResultMap">
+      SELECT
+      A.*,
+      B.code AS orderCode,
+      B.ship_firm AS shipFirm,
+      B.ship_code AS shipCode,
+      B.state
+      FROM p_goods A
+      LEFT JOIN p_order B
+      ON A.id = B.goods_id
+      WHERE A.user_id = #{user_id} and B.is_del == 0
+      ORDER BY B.banance_time
+
+  </select>
+
+    <update id="changeStateByPrimaryKey" >
+        update p_goods
+        set is_verfiy = #{isVerfiy,jdbcType=TINYINT} + 1,refuse_info=#{refuseInfo}
+        where id = #{id}
+    </update>
+
+    <update id="updateCreatTime" >
+        update p_goods
+        set create_time = now(),
+        state = #{state}
+        where id = #{id}
+    </update>
+
+    <select id="selectMyAucList" resultMap="BaseResultMap">
+        select
+        A.*,
+        max(B.price) as myPrice
+        from p_goods A
+        left join p_goods_auction B
+        on A.id = B.goods_id
+        where B.user_id = #{user_id}
+        and A.type = 2
+
+        order by B.create_time desc
+    </select>
+
+
+    <select id="selectByPrimaryId" resultMap="BaseResultMap" >
+        select g.*,
+        (CASE g.is_online
+          WHEN 1 then '上架'
+          WHEN 0 then '下架'
+          ELSE '状态未知'
+          END ) good_shelfDown,
+          c.name cate_name
+        from p_goods g
+         LEFT JOIN p_pawn_cate c on g.cate_code = c.code
+        where g.id = #{id}
+    </select>
+
+
+    <select id="getMostThreeGoods" resultMap="BaseResultMap">
+        SELECT * from p_goods where org_id=#{orgId} and is_online=1 and is_verfiy=2 order by sold_out desc limit 3
+    </select>
+
+
+    <select id="findList" parameterType="com.paidang.daoEx.model.GoodsEx" resultMap="BaseResultMap">
+      SELECT  g.*,po.name as orgName,po.introduction as orgIntroduction,po.org_logo as orgLogo from p_goods g LEFT join p_pawn_org po on g.org_id=po.id where 1=1
+      <if test="name!=null and name!=''">
+          and g.name LIKE CONCAT('%','${name}','%')
+      </if>
+        <if test="id!=null ">
+            and g.id=#{id}
+        </if>
+      and g.is_online = 1 and g.is_verfiy = 2
+       order by g.create_time desc
+    </select>
+
+</mapper>

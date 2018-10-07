@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.PawnLogMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.PawnLogEx" extends="com.paidang.dao.PawnLogMapper.BaseResultMap">
+  </resultMap>
+  <update id="updatePawnByid" >
+    update p_pawn_log
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="authPrice != null" >
+        auth_price = #{authPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsCate != null" >
+        goods_cate = #{goodsCate,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCateId != null" >
+        goods_cate_id = #{goodsCateId,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="pawnMonth != null" >
+        pawn_month = #{pawnMonth,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeCardBank != null" >
+        trade_card_bank = #{tradeCardBank,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeCardCode != null" >
+        trade_card_code = #{tradeCardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="selectTradeRecordList" resultMap="BaseResultMap">
+      select
+      A.*,
+      B.images as goodsImages
+      FROM
+      p_pawn_log A
+      left join
+      p_user_goods B
+      on A.goods_id = B.id
+      where A.user_id = #{user_id} and B.goto_pawn = 1
+      order by A.create_time desc
+  </select>
+  
+</mapper>

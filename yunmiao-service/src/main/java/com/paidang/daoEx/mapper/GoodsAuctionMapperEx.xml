@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.GoodsAuctionMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.GoodsAuctionEx" extends="com.paidang.dao.GoodsAuctionMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="selectMaxPrice" resultType="java.math.BigDecimal">
+      select max(price) as maxPrice from p_goods_auction where goods_id = #{goods_id}
+  </select>
+
+    <select id="selectByAuctionUser" resultMap="BaseResultMap">
+        select
+        A.*,
+        B.name as userName
+        from p_goods_auction A
+        left join b_user B
+        on A.user_id = B.id
+        where A.goods_id = #{goods_id}
+        order by A.create_time desc
+    </select>
+</mapper>

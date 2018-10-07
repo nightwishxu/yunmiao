@@ -1,0 +1,5 @@
+@charset "UTF-8";
+hmtl,p,h1,ul,li,dl,dt,dd{
+	margin: 0;
+	padding:0;
+}

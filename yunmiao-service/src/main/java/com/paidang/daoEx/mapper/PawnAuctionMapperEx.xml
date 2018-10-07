@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.PawnAuctionMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.PawnAuctionEx" extends="com.paidang.dao.PawnAuctionMapper.BaseResultMap">
+      <result column="auctionOrgname" property="auctionOrgname"></result>
+      <result column="times" property="times"></result>
+      <result column="pawnCount" property="pawnCount"></result>
+  </resultMap>
+
+  <!-- 获得指定pawnId典当申请对应的竞拍记录(最终结果以竞拍时间降序排列) -->
+  <select id="getAuctionDetailsByPawnId" resultMap="BaseResultMap">
+    SELECT t2.*,o.`name` as auctionOrgname FROM
+    (
+      SELECT t1.* FROM
+        (select * , F_GET_ORG_PAWNS(org_id) pawnCount FROM p_pawn_auction
+          <where>
+            <if test="pawnId != null">
+              pawn_id = #{pawnId}
+            </if>
+          </where>
+        ORDER BY create_time DESC) t1
+      GROUP BY t1.org_id
+    )t2
+    LEFT JOIN p_pawn_org o ON t2.org_id = o.id
+    ORDER BY create_time DESC
+  </select>
+
+  <!--获取在对指定典当pawnId竞拍过程中指定机构orgId的机构的出价信息（包括上次出价价格，费率，利率，出价人和我（登陆机构）之前出价次数）-->
+  <select id="getPreviousBidInfo" resultMap="BaseResultMap">
+      SELECT t.*, COUNT(id) as times  FROM
+      (
+          SELECT * FROM p_pawn_auction
+          <where>
+              <if test="pawnId != null">
+                  pawn_id = #{pawnId}
+              </if>
+              <if test="orgId != null">
+                  AND org_Id = #{orgId}
+              </if>
+          </where>
+          ORDER BY create_time DESC
+      )t
+  </select>
+
+    <!-- 获得给定id的机构所竞拍的所有当品id(过滤重复) 用于我的-竞拍中 -->
+    <select id="getMyBidPawnIdByOrgId" resultType="String">
+        SELECT DISTINCT(pawn_id) FROM p_pawn_auction
+        <where>
+            <if test="orgId != null">
+                AND org_Id = #{orgId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 参与对pawId竞拍的所有机构总数 -->
+    <select id="getAllBidOrgCount" resultType="Integer">
+        SELECT F_GET_TotalBidTimes(#{pawnId})
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from p_pawn_auction where pawn_id = #{id}
+    </select>
+
+</mapper>

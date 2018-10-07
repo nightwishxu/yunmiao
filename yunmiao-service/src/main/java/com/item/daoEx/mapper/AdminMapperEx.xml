@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.AdminMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.AdminEx" extends="com.item.dao.AdminMapper.BaseResultMap">
+  	<result column="groupName" property="groupName"/>
+  	<result column="roleName" property="roleName"/>
+  </resultMap>
+ <select id="selectAdmins" resultMap="BaseResultMap">
+ 	select a.*,ug.name groupName,r.name roleName from 
+ 	r_admin a,r_user_group ug, r_role r
+ 	where r.group_id=ug.id and a.role_code = r.code
+ 	and ((ug.id = #{group} and r.parent_id = #{role})
+ 	or (ug.parent_id = #{group}))
+ </select>
+</mapper>

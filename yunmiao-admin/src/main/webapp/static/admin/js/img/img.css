@@ -1,0 +1,70 @@
+@charset "utf-8";
+
+#temp_contain{
+	width:100%;
+	height:100%;
+	position:absolute;
+	z-index:9990;
+	top:0px;
+	left:0px;
+	filter:alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;
+	background-color: #000;
+	display:none;
+}
+
+#big_div_img div{
+	margin:0px;
+	font-size:15px;
+	padding:0px;
+}
+
+#big_div_img{
+	position:absolute;
+	z-index:9999;
+	top:50px;
+	left:500px;
+	display:none;
+}
+
+#big_img{
+	margin-top:0px;
+	z-index:9990;
+	position:relative;
+}
+#big_size{
+	margin-top:5px;
+	height:5px;
+	color:red;
+}
+#big_div_close div{
+	width:15px;
+	float:right;
+	text-align: right;
+	cursor:pointer;
+	position:relative;
+	z-index:9991;
+	height:0px;
+}
+
+#big_div_close div:hover{
+	color:red;
+}
+
+.shadow {
+    -moz-box-shadow: 3px 3px 4px #000;
+    -webkit-box-shadow: 3px 3px 4px #000;
+    box-shadow: 3px 3px 4px #000;
+    /* For IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000)";
+    /* For IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
+.cropbtn{
+	font-family: "宋体";
+	font-size: 12px;
+	color: #fff;
+	padding: 8px 25px;
+}
+.simple-img{
+	cursor: pointer;
+}

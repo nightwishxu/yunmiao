@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.PawnOrgMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.PawnOrgEx" extends="com.paidang.dao.PawnOrgMapper.BaseResultMap">
+        <result column="org_user_phone" property="orgUserPhone"></result>
+        <result column="org_user_id" property="orgUserId"></result>
+        <result column="deal_amount" property="dealAmount"></result>
+  </resultMap>
+
+
+  <select id="getOrgIntroduction" resultMap="BaseResultMap">
+      SELECT * , F_GET_ORG_PAWNS (#{orgId}) AS deal_amount FROM p_pawn_org
+      WHERE id = #{orgId}
+  </select>
+
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+      select
+      *,
+      (CASE state
+      WHEN 0 then '禁用'
+      WHEN 1 then '启用'
+      WHEN 2 then '审核中'
+      WHEN null then '审核中'
+      ELSE '状态未知'
+      END ) stateInfo
+      from p_pawn_org
+      where 1=1
+      <if test="name != null and name !=''">
+        and name like '%${name}%'
+      </if>
+      <if test="type != null">
+          and type = #{type}
+      </if>
+      order by create_time desc;
+
+  </select>
+
+    <!-- 我的->机构信息  -->
+    <select id="selectById" resultMap="BaseResultMap" >
+        SELECT
+          org.* , u.phone AS org_user_phone , u.id AS org_user_id
+        FROM p_pawn_org org
+        LEFT JOIN b_user u
+        ON org.id = u.org_id
+        <where>
+            <if test="orgUserId != null and orgUserId != '' ">
+                AND u.id = ${orgUserId}
+            </if>
+        </where>
+        ORDER BY org.create_time DESC ;
+    </select>
+
+
+    <update id="changeState">
+        update p_pawn_org set state =#{state} where id=#{id}
+    </update>
+
+  
+</mapper>

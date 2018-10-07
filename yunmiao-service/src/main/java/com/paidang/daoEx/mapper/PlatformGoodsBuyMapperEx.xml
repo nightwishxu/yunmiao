@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.PlatformGoodsBuyMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.PlatformGoodsBuyEx" extends="com.paidang.dao.PlatformGoodsBuyMapper.BaseResultMap">
+    <result column="ticket" property="ticket"/>
+  </resultMap>
+
+  <select id="selectPlatformGoods" resultMap="BaseResultMap">
+    SELECT p.*
+    FROM p_platform_goods_buy p
+    <where>
+      <if test="userName != null and userName !=''">
+        and p.user_name like '%${userName}%'
+      </if>
+    </where>
+    order by p.create_time desc
+  </select>
+
+  <update id="changeStateByPrimaryKey" >
+    UPDATE p_platform_goods_buy
+    SET state = #{state,jdbcType=TINYINT} + 1
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateByTickect" >
+    UPDATE p_platform_goods_buy p ,p_user_goods g
+    <set >
+      <if test="ticket != null" >
+        p.ticket = #{ticket,jdbcType=VARCHAR},
+      </if>
+      g.go_sell = 2,
+      p.state = 2,
+    </set>
+    WHERE p.id = #{id}
+    AND  p.goods_id = g.id
+  </update>
+
+</mapper>

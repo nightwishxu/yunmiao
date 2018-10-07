@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.UserMapperEx" >
+	<resultMap id="BaseResultMap" type="com.item.daoEx.model.UserEx" extends="com.item.dao.UserMapper.BaseResultMap">
+	
+	</resultMap>
+
+	<!-- 机构后台，用户列表 -->
+	<select id="selectOrgUsersList" resultMap="BaseResultMap">
+		SELECT * FROM b_user
+		WHERE
+			type = '1'
+			<if test="orgId != null and oegId !=''">
+				AND   org_id = #{orgId}
+			</if>
+			<!--<if test="key != null and key !='' ">
+				AND (nick_name like #{key} or phone like #{key})
+			</if>-->
+			<if test="key != null and key !=''">
+				and (nick_name like '%${key}%' or phone like '%${key}%')
+			</if>
+	</select>
+
+
+
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    	u.*
+    from b_user u 
+    where u.type = 0
+    <if test="key != null and key !=''">
+    	 and (u.nick_name like '%${key}%' or u.account like '%${key}%')
+    </if>
+    order by u.create_time desc
+  </select>
+  
+   	<update id="updateBalance" parameterType="java.util.HashMap">
+  		update b_user set balance=balance+#{num} where id = #{id}
+  	</update>
+  	
+  	<select id="selectIdByAccount" resultType="Integer">
+  		select id
+  			from b_user
+  		where account = #{account}
+  	</select>
+  	<select id="selectIdByAccounts" resultType="Integer">
+  		select id
+  			from b_user
+  		where account in 
+  					<foreach collection="accounts" item="item" separator="," open="(" close=")">
+  						#{item}
+  					</foreach>
+  	</select>
+  	<select id="selectAccountById" resultType="java.lang.String">
+  		select account
+  			from b_user
+  		where id = #{id}
+ 
+  	</select>
+	<select id="selectByAccount" resultMap="BaseResultMap">
+		SELECT 	u.*
+    from b_user u
+    where account = #{account}
+	</select>
+  	
+</mapper>

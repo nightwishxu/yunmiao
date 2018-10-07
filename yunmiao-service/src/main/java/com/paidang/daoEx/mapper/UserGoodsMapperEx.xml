@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.UserGoodsMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.UserGoodsEx" extends="com.paidang.dao.UserGoodsMapper.BaseResultMap">
+  </resultMap>
+
+  <update id="updateResAuthPrice"  parameterType="java.util.HashMap">
+    update p_user_goods set auth_result = #{authResult}, auth_price = null
+     <if test="notVerifyReason != null and notVerifyReason != ''">
+         ,not_verify_reason = #{notVerifyReason}
+     </if>
+      <if test="notVerifyReason == null">
+         ,not_verify_reason = null
+      </if>
+      ,location  = 1
+     where id = #{id}
+
+  </update>
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+      select
+      A.*,
+      B.name as cateName,
+      C.account as account,
+      C.nick_name as nickName
+      from p_user_goods A
+      left join p_pawn_cate B
+      on A.cate_id = B.id
+      left join b_user C
+      on A.user_id = C.id
+      where 1 = 1
+      <if test="name != null and name !=''">
+         and A.name like '%${name}%'
+      </if>
+      <if test="type == 'onLine'.toString()">
+         and A.post_state = 1
+      </if>
+      <if test="type == 'mail'.toString()">
+         and (A.post_state = 2 or A.post_state = 3 or A.post_state = 4)
+      </if>
+      order by A.create_time desc;
+  </select>
+
+    <select id="checkDetail" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+       select
+        A.*,
+        B.account as oldAccount,
+        C.account,
+        C.nick_name as nickName,
+        D.info as experterInfo,
+        E.expert_name experterName,
+        F.express_data as expressData,
+        F.type as expressType
+        from
+        p_user_goods A
+        left join b_user B
+        on A.user_id = B.id
+        left join b_user C
+        on A.belong_id = C.id
+        left join p_experter_info D
+        on A.experter_info_id = D.id
+        left join p_experter E
+        on E.id = D.experter_id
+        left join p_express F
+        on A.id  = F.fid
+
+        where A.id = #{id}
+    </select>
+
+    <select id="selectGotoPawn" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select A.*,
+        B.name as userName,
+        B.account as userPhone,
+        B.id_card as idCard
+        from  p_user_goods A
+        left join b_user B
+        on A.belong_id = B.id
+        where A.id = #{id}
+
+    </select>
+
+    <select id="selectByAppList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.state as platformState,
+        B.ticket as platformTicket
+        from p_user_goods A
+        left join p_platform_goods_buy B
+        on A.id = B.goods_id
+        where A.goto_pawn = 0 and A.back_state = 0 and A.belong_id = #{belong_id}
+
+    </select>
+
+    <!--我的鉴定列表-->
+    <!--<select id="selectMyGoods" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.express_state as expressState,
+        C.ticket as platformTicket
+        from p_user_goods A
+        left join p_express B
+        on A.id = B.fid
+        left join p_platform_goods_buy C
+        on A.id = C.goods_id
+        where A.belong_id = #{belong_id} and A.goto_pawn = 0 and A.back_state = 0
+        order by A.create_time desc;
+    </select>-->
+    <select id="selectMyGoods" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.express_state as expressState,
+        C.ticket as platformTicket
+        from p_user_goods A
+        left join p_express B
+        on A.id = B.fid
+        left join p_platform_goods_buy C
+        on A.id = C.goods_id
+        where A.belong_id = #{belong_id} and A.back_state = 0 and A.goto_pawn = 0
+        order by A.create_time desc;
+    </select>
+
+    <!-- 查看视频监控-->
+    <select id="selectMyVideo" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.pawn_ticket_code as pawnTicketCode,
+        C.name as orgName
+        from p_user_goods A
+        left join p_user_pawn B
+        on A.id = B.goods_id
+        left join p_pawn_org C
+        on B.org_id = C.id
+        where A.user_id = #{user_id}
+        order by A.create_time desc
+    </select>
+
+    <!--//机构取回宝贝-->
+    <select id="selectGoodsByOrgList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,B.org_name as orgName
+        from p_user_goods A
+        left join p_user_pawn B
+        on A.id = B.goods_id where 1 = 1
+        <if test="name != '' and name != null ">
+            and A.name like '%${name}%'
+        </if>
+        <if test="belongType != '' and belongType != null ">
+            and A.belongType =  #{belongType}
+        </if>
+        <if test="code != '' and code != null ">
+            and A.plat_org_express_code like '%${plat_org_express_code}%'
+        </if>
+        order by A.plat_org_time desc
+    </select>
+
+    <!--未典当-->
+    <!--<select id="selectNoPawnList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select A.*
+        from p_user_goods A where
+        A.auth_result = 4 and A.belong_id = #{user_id} and A.goto_pawn = 0 and A.post_state = 3 and A.back_state = 0 and A.is_verify = 1
+        order by A.create_time desc;
+    </select>-->
+
+    <!--未典当新方法-->
+    <select id="selectNoPawnList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        A.*,
+        B.id pawnId,
+       (select count(*) from p_pawn_auction C where B.id = C.pawn_id) as cnt
+
+        from p_user_goods A
+        left join p_user_pawn B
+        on A.id = B.goods_id and B.is_verify = 1
+        where A.auth_result = 4 and A.belong_id = #{user_id}
+         and A.goto_pawn = 0 and A.post_state = 3
+         and A.back_state = 0 and A.is_verify = 1
+        order by A.create_time desc
+    </select>
+
+    <!--未典当新新方法-->
+    <!--<select id="selectNoPawnList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    B.is_verify,
+    (select count(*) from p_pawn_auction C where B.id = C.pawn_id) as cnt,
+    (select id from p_user_pawn D where D.goods_id = A.id and D.is_verify = 1)as pawnId,
+    A.*
+    from p_user_goods A
+    left join p_user_pawn B
+    on A.id = B.goods_id
+    where A.auth_result = 4 and A.belong_id = 198
+    and A.goto_pawn = 0 and A.post_state = 3
+    and A.back_state = 0 and A.is_verify = 1
+    order by A.create_time desc;
+    </select>-->
+
+    <select id="selectCancelPawnList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    SELECT
+	T.*
+FROM
+	(
+		SELECT
+			B.id AS userPawnId,
+			B.state AS userPawnState,
+			B.user_state AS userPawnUserState,
+			B.create_time AS userPawnCreateTime,
+			A.go_sell,
+			(
+				SELECT
+					count(*)
+				FROM
+					p_user_pawn B
+				WHERE
+					A.id = B.goods_id
+			) AS userPawnCount,
+			A.id,
+			A. NAME,
+			A.images,
+			A.post_state,
+			A.auth_price
+		FROM
+			p_user_goods A
+		LEFT JOIN p_user_pawn B ON A.id = B.goods_id
+		WHERE
+			B.user_id = #{user_id}
+		AND (
+			B.user_state = 1 OR B.user_state = 0 or B.user_state = 4
+		)
+		AND A.auth_result = 4
+		AND A.goto_pawn = 0
+		AND A.post_state = 3
+		AND B.state != 5
+        AND A.go_sell != 2
+		AND A.back_state = 0
+		ORDER BY
+			B.create_time DESC
+	) T
+GROUP BY
+	T.id
+ORDER BY
+	T.userPawnCreateTime DESC
+    </select>
+
+    <select id="selectTradeRecordList" resultMap="BaseResultMap">
+        select
+        A.*,
+        B.state as userPawnState,
+        B.id as userPawnId
+        from
+        p_user_goods A
+        left join
+        p_user_pawn B
+        on A.id = B.goods_id
+        where A.goto_pawn = 1 and B.user_id = #{user_id} and A.is_verify = 1 and B.state != -1 and B.state != 1
+        order by B.create_time desc
+    </select>
+</mapper>

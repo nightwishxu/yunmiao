@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.UserAddressMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.UserAddressEx" extends="com.paidang.dao.UserAddressMapper.BaseResultMap">
+  </resultMap>
+
+    <!--认证商城中获取用户名字，手机号，优惠券-->
+  <select id="selectByUser"  resultMap="BaseResultMap">
+      select
+      A.*,
+      B.name,
+      B.account,
+      C.full,
+      C.value,
+      C.id as couponId
+      from p_user_address A
+      left join b_user B
+      on A.user_id = B.id
+      left join p_user_coupon C
+      on B.id = C.user_id
+      where A.user_id = #{user_id}
+      <if test="couponId != null and couponId != ''">
+          and C.id = #{couponId} and C.end_time &gt;= now()
+      </if>
+      and A.id = #{addressId}
+  </select>
+</mapper>

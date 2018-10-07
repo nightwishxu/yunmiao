@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.CommentMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.CommentEx" extends="com.item.dao.CommentMapper.BaseResultMap">
+  </resultMap>
+
+
+  <resultMap id="commentExMap" type="com.item.daoEx.model.CommentEx">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="head_img" property="headImg" jdbcType="VARCHAR" />
+    <result column="is_top" property="isTop" jdbcType="TINYINT" />
+    <result column="is_hot" property="isHot" jdbcType="TINYINT" />
+    <result column="like_num" property="likeNum" jdbcType="INTEGER" />
+    <result column="reply_num" property="replyNum" jdbcType="INTEGER" />
+    <result column="is_reply" property="isReply" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="is_author" property="isAuthor" jdbcType="TINYINT" />
+    <collection property="commentReplyExList" ofType="com.item.daoEx.model.CommentReplyEx" select="getCommentReplyEx" column="id">
+
+    </collection>
+  </resultMap>
+
+  <select id="findList" resultMap="commentExMap">
+    SELECT * from t_comment where status=1 and  article_id=#{articleId}
+  </select>
+
+  <select id="getCommentReplyEx" resultType="com.item.daoEx.model.CommentReplyEx">
+    SELECT * from t_comment_reply where comment_id=#{id}
+  </select>
+
+  <update id="updateReplyNum" >
+    UPDATE t_comment set reply_num=reply_num+1,is_reply=1 where id=#{id}
+  </update>
+
+</mapper>

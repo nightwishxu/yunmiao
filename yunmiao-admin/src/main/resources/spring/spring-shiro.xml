@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+						    http://www.springframework.org/schema/context 
+						    http://www.springframework.org/schema/context/spring-context-4.1.xsd
+						    http://www.springframework.org/schema/mvc
+						    http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+						    http://www.springframework.org/schema/tx 
+						    http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+						    http://www.springframework.org/schema/aop 
+						    http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+					        http://www.springframework.org/schema/util
+    						http://www.springframework.org/schema/util/spring-util-4.1.xsd ">
+    						
+    <!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的ShiroDbRealm.java -->						
+    						
+    <!-- 初始化认证策略 FirstSuccessfulStrategy：只要有一个Realm验证成功即可，只返回第一个Realm身份验证成功的认证信息，其他的忽略 -->
+	<bean id="firstSuccess" class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"/>
+	
+	<!-- 设置认证策略 -->
+	<bean id="modelAuthricator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="authenticationStrategy" ref="firstSuccess"/>
+	</bean>						
+    						
+    <!--自定义的filter-->						
+	<bean id="sysFilter" class="com.base.security.shiro.filter.SysFilter"/>
+	
+	<bean id='securityManager' class="com.base.security.shiro.CustomDefaultWEbSecurityManager">
+        <!-- 开启shiro session -->
+		<!-- <property name="sessionMode" value="native"/> -->
+		<!-- 配置启用认证策略 -->
+		<property name="authenticator" ref="modelAuthricator"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="cacheManager" ref="shiroCacheManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>  
+        <property name="factory" ref="realmFactory"/>
+        <!-- <property name="realm" ref="adminRealm"/> -->
+    </bean>
+	
+	<bean id="filterChainManager"   
+	    class="com.base.security.shiro.CustomDefaultFilterChainManager">  
+	    <property name="successUrl" value="manager"/>
+	    <property name="unauthorizedUrl" value="manager"/>
+	    <property name="loginUrl" value="manager"/>
+	    <property name="customFilters">
+	    	<util:map>
+	    		<entry key="sys" value-ref="sysFilter"/>
+	    	</util:map>
+	    </property>
+	    <property name="defaultFilterChainDefinitions">  
+	        <value>  
+	        	/m/** = anon
+	        	/web/** = anon
+	        	/api/** = anon
+	        	/static/** = anon
+	        	/*/login = authc
+                /logout = anon
+	            /go = sys 
+	        </value>  
+	    </property>  
+	</bean> 
+	
+	<bean id="filterChainResolver"   
+	    class="com.base.security.shiro.CustomPathMatchingFilterChainResolver">  
+	    <property name="customDefaultFilterChainManager" ref="filterChainManager"/>  
+	</bean>  
+	
+	<!-- 缓存管理器 -->
+    <bean id="shiroCacheManager" class="com.base.security.shiro.cache.SpringCacheManagerWrapper">
+        <property name="cacheManager" ref="springCacheManager"/>
+    </bean>
+	
+     <!-- 会话管理器 -->  
+    <bean id="sessionManager" class="com.base.security.shiro.session.SessionManager">  
+        <property name="globalSessionTimeout" value="3600000"/>  
+        <property name="deleteInvalidSessions" value="true"/>  
+        <property name="sessionValidationSchedulerEnabled" value="true"/>  
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>  
+        <property name="sessionDAO" ref="sessionDAO"/>  
+        <property name="sessionIdCookieEnabled" value="true"/>  
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>  
+    </bean>
+    
+    <!-- 安全管理器 -->
+	<!-- <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"> -->
+    
+    <!-- 会话ID生成器 -->
+    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
+    
+    <!-- 会话Cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <constructor-arg value="sid"/>  
+        <property name="httpOnly" value="true"/>  
+        <property name="maxAge" value="3600000"/>  
+    </bean> 
+    
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <constructor-arg value="rememberMe"/>  
+        <property name="httpOnly" value="true"/>  
+        <property name="maxAge" value="3600000"/>  
+        <!-- 30天 -->  
+    </bean>
+    
+    <!-- rememberMe管理器 -->  
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">  
+        <property name="cipherKey"  
+                  value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>  
+        <property name="cookie" ref="rememberMeCookie"/>  
+    </bean> 
+    
+    <!-- 会话DAO -->  
+    <bean id="sessionDAO" class="com.base.security.shiro.session.SessionDao">  
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>  
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>  
+    </bean> 
+    
+    <!-- 会话验证调度器 -->  
+    <bean id="sessionValidationScheduler" class="com.base.security.quartz.QuartzSessionValidationScheduler" >  
+        <property name="sessionValidationInterval" value="3600000"/>  
+        <property name="sessionManager" ref="sessionManager"/>  
+    </bean>
+    
+    <!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- Shiro的核心安全接口,这个属性是必须的 -->
+	    <property name="securityManager" ref="securityManager"/>  
+	    <!-- 要求登录时的链接(可根据项目的URL进行替换),非必须的属性,默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
+		<!-- ps:检测到未登录(也就是未认证状态时),会被拦截到property中的配置页面 -->
+		<!-- <property name="loginUrl" value="/" /> -->
+		<!-- 登录成功后要跳转的连接 -->
+		<!-- <property name="successUrl" value="/"/> -->
+		<!-- 用户访问未对其授权的资源时,所显示的连接 -->
+		<!-- ps:检测到角色,权限 不符时,会被拦截到property中配置的页面 -->
+		<!-- <property name="unauthorizedUrl" value="/error.do" /> -->
+		<!-- <property name="unauthorizedUrl" value="/error.jsp" /> -->
+		<!-- Shiro连接约束配置,即过滤链的定义 -->
+		<!-- 下面value值的第一个'/'代表的路径是相对于HttpServletRequest.getContextPath()的值来的 -->
+		<!-- anon：不指定过滤器,不错是这个过滤器是空的，什么都没做，跟没有一样 -->
+		<!-- authc：该过滤器下的页面必须验证后才能访问,它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter -->
+	</bean>  
+	
+	 <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="shiroFilter"/>
+        <property name="targetMethod" value="setFilterChainResolver"/>
+        <property name="arguments" ref="filterChainResolver"/>
+    </bean>
+	
+	<aop:config proxy-target-class="true"></aop:config>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    
+    <!-- Shiro生命周期处理器-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>

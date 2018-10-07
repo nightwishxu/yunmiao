@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.dao.SysDictMapper" >
+    <resultMap id="BaseResultMap" type="com.item.dao.model.SysDict" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="value" property="value" jdbcType="VARCHAR" />
+        <result column="label_name" property="labelName" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="DECIMAL" />
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,value,label_name,type,description,sort,parent_id,create_by,create_date,update_by,update_date,remarks,del_flag,status
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from t_sys_dict
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from t_sys_dict
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from t_sys_dict
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from t_sys_dict
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_sys_dict (value,label_name,
+        type,description,sort,
+        parent_id,create_by,create_date,
+        update_by,update_date,remarks,
+        del_flag,status
+        )
+        values (#{value,jdbcType=VARCHAR},#{labelName,jdbcType=VARCHAR},
+        #{type,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{sort,jdbcType=DECIMAL},
+        #{parentId,jdbcType=VARCHAR},#{createBy,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},
+        #{updateBy,jdbcType=VARCHAR},#{updateDate,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},
+        #{delFlag,jdbcType=CHAR},#{status,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_sys_dict
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="value != null" >
+                value,
+            </if>
+            <if test="labelName != null" >
+                label_name,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="description != null" >
+                description,
+            </if>
+            <if test="sort != null" >
+                sort,
+            </if>
+            <if test="parentId != null" >
+                parent_id,
+            </if>
+            <if test="createBy != null" >
+                create_by,
+            </if>
+            <if test="createDate != null" >
+                create_date,
+            </if>
+            <if test="updateBy != null" >
+                update_by,
+            </if>
+            <if test="updateDate != null" >
+                update_date,
+            </if>
+            <if test="remarks != null" >
+                remarks,
+            </if>
+            <if test="delFlag != null" >
+                del_flag,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="value != null" >
+                #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="labelName != null" >
+                #{labelName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null" >
+                #{sort,jdbcType=DECIMAL},
+            </if>
+            <if test="parentId != null" >
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null" >
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null" >
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null" >
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remarks != null" >
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null" >
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from t_sys_dict
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update t_sys_dict
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.value != null" >
+                value = #{record.value,jdbcType=VARCHAR},
+            </if>
+            <if test="record.labelName != null" >
+                label_name = #{record.labelName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null" >
+                type = #{record.type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.description != null" >
+                description = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sort != null" >
+                sort = #{record.sort,jdbcType=DECIMAL},
+            </if>
+            <if test="record.parentId != null" >
+                parent_id = #{record.parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createBy != null" >
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createDate != null" >
+                create_date = #{record.createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null" >
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateDate != null" >
+                update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.remarks != null" >
+                remarks = #{record.remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="record.delFlag != null" >
+                del_flag = #{record.delFlag,jdbcType=CHAR},
+            </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update t_sys_dict
+        set id = #{id,jdbcType=INTEGER},
+        value = #{value,jdbcType=VARCHAR},
+        label_name = #{labelName,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        sort = #{sort,jdbcType=DECIMAL},
+        parent_id = #{parentId,jdbcType=VARCHAR},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+        remarks = #{remarks,jdbcType=VARCHAR},
+        del_flag = #{delFlag,jdbcType=CHAR},
+        status = #{status,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update t_sys_dict
+        <set >
+            <if test="value != null" >
+                value = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="labelName != null" >
+                label_name = #{labelName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null" >
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null" >
+                sort = #{sort,jdbcType=DECIMAL},
+            </if>
+            <if test="parentId != null" >
+                parent_id = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null" >
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null" >
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null" >
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remarks != null" >
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null" >
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update t_sys_dict
+        set value = #{value,jdbcType=VARCHAR},
+        label_name = #{labelName,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        sort = #{sort,jdbcType=DECIMAL},
+        parent_id = #{parentId,jdbcType=VARCHAR},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+        remarks = #{remarks,jdbcType=VARCHAR},
+        del_flag = #{delFlag,jdbcType=CHAR},
+        status = #{status,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+
+</mapper>

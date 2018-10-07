@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.dao.ArticleMapper" >
+    <resultMap id="BaseResultMap" type="com.item.dao.model.Article" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="imgs" property="imgs" jdbcType="VARCHAR" />
+        <result column="video" property="video" jdbcType="VARCHAR" />
+        <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+        <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
+        <result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+        <result column="labels" property="labels" jdbcType="VARCHAR" />
+        <result column="create_name" property="createName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_name" property="updateName" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="com.item.dao.model.Article" extends="BaseResultMap" >
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,user_id,type,status,imgs,video,comment_count,collect_count,praise_count,labels,create_name,create_time,update_name,update_time
+    </sql>
+
+    <sql id="Blob_Column_List" >
+        content
+    </sql>
+
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_article
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from t_article
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" >
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_article
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from t_article
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from t_article
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_article (user_id,type,
+        status,content,imgs,
+        video,comment_count,collect_count,
+        praise_count,labels,create_name,
+        create_time,update_name,update_time
+        )
+        values (#{userId,jdbcType=INTEGER},#{type,jdbcType=INTEGER},
+        #{status,jdbcType=INTEGER},#{content,jdbcType=LONGVARCHAR},#{imgs,jdbcType=VARCHAR},
+        #{video,jdbcType=VARCHAR},#{commentCount,jdbcType=INTEGER},#{collectCount,jdbcType=INTEGER},
+        #{praiseCount,jdbcType=INTEGER},#{labels,jdbcType=VARCHAR},#{createName,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{updateName,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_article
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="imgs != null" >
+                imgs,
+            </if>
+            <if test="video != null" >
+                video,
+            </if>
+            <if test="commentCount != null" >
+                comment_count,
+            </if>
+            <if test="collectCount != null" >
+                collect_count,
+            </if>
+            <if test="praiseCount != null" >
+                praise_count,
+            </if>
+            <if test="labels != null" >
+                labels,
+            </if>
+            <if test="createName != null" >
+                create_name,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateName != null" >
+                update_name,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="imgs != null" >
+                #{imgs,jdbcType=VARCHAR},
+            </if>
+            <if test="video != null" >
+                #{video,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCount != null" >
+                #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="collectCount != null" >
+                #{collectCount,jdbcType=INTEGER},
+            </if>
+            <if test="praiseCount != null" >
+                #{praiseCount,jdbcType=INTEGER},
+            </if>
+            <if test="labels != null" >
+                #{labels,jdbcType=VARCHAR},
+            </if>
+            <if test="createName != null" >
+                #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateName != null" >
+                #{updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from t_article
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update t_article
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null" >
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.type != null" >
+                type = #{record.type,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.content != null" >
+                content = #{record.content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.imgs != null" >
+                imgs = #{record.imgs,jdbcType=VARCHAR},
+            </if>
+            <if test="record.video != null" >
+                video = #{record.video,jdbcType=VARCHAR},
+            </if>
+            <if test="record.commentCount != null" >
+                comment_count = #{record.commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.collectCount != null" >
+                collect_count = #{record.collectCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.praiseCount != null" >
+                praise_count = #{record.praiseCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.labels != null" >
+                labels = #{record.labels,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createName != null" >
+                create_name = #{record.createName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateName != null" >
+                update_name = #{record.updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null" >
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExampleWithBLOBs" >
+        update t_article
+        set id = #{id,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        type = #{type,jdbcType=INTEGER},
+        status = #{status,jdbcType=INTEGER},
+        content = #{content,jdbcType=LONGVARCHAR},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        video = #{video,jdbcType=VARCHAR},
+        comment_count = #{commentCount,jdbcType=INTEGER},
+        collect_count = #{collectCount,jdbcType=INTEGER},
+        praise_count = #{praiseCount,jdbcType=INTEGER},
+        labels = #{labels,jdbcType=VARCHAR},
+        create_name = #{createName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_name = #{updateName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update t_article
+        set id = #{id,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        type = #{type,jdbcType=INTEGER},
+        status = #{status,jdbcType=INTEGER},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        video = #{video,jdbcType=VARCHAR},
+        comment_count = #{commentCount,jdbcType=INTEGER},
+        collect_count = #{collectCount,jdbcType=INTEGER},
+        praise_count = #{praiseCount,jdbcType=INTEGER},
+        labels = #{labels,jdbcType=VARCHAR},
+        create_name = #{createName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_name = #{updateName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update t_article
+        <set >
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="content != null" >
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="imgs != null" >
+                imgs = #{imgs,jdbcType=VARCHAR},
+            </if>
+            <if test="video != null" >
+                video = #{video,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCount != null" >
+                comment_count = #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="collectCount != null" >
+                collect_count = #{collectCount,jdbcType=INTEGER},
+            </if>
+            <if test="praiseCount != null" >
+                praise_count = #{praiseCount,jdbcType=INTEGER},
+            </if>
+            <if test="labels != null" >
+                labels = #{labels,jdbcType=VARCHAR},
+            </if>
+            <if test="createName != null" >
+                create_name = #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateName != null" >
+                update_name = #{updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" >
+        update t_article
+        set user_id = #{userId,jdbcType=INTEGER},
+        type = #{type,jdbcType=INTEGER},
+        status = #{status,jdbcType=INTEGER},
+        content = #{content,jdbcType=LONGVARCHAR},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        video = #{video,jdbcType=VARCHAR},
+        comment_count = #{commentCount,jdbcType=INTEGER},
+        collect_count = #{collectCount,jdbcType=INTEGER},
+        praise_count = #{praiseCount,jdbcType=INTEGER},
+        labels = #{labels,jdbcType=VARCHAR},
+        create_name = #{createName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_name = #{updateName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update t_article
+        set user_id = #{userId,jdbcType=INTEGER},
+        type = #{type,jdbcType=INTEGER},
+        status = #{status,jdbcType=INTEGER},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        video = #{video,jdbcType=VARCHAR},
+        comment_count = #{commentCount,jdbcType=INTEGER},
+        collect_count = #{collectCount,jdbcType=INTEGER},
+        praise_count = #{praiseCount,jdbcType=INTEGER},
+        labels = #{labels,jdbcType=VARCHAR},
+        create_name = #{createName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_name = #{updateName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,39 @@
+@charset "UTF-8";
+.wrap {
+	
+	font-size:60px;
+	padding:8px 0px ;
+	box-sizing:border-box;
+}
+
+h1{
+	font-size:18px;
+	color:#000000;
+	margin: 0 auto;
+	padding:12px 5px ;
+	text-align:center;
+}	
+h2{
+	font-size: 16px;
+	color:#000000;
+	line-height:20px;
+	text-align:left;
+	padding:0px 30px ;
+}
+
+p{
+	font-size:14px;
+	color:#000000;
+	line-height:30px;
+	text-align:left;
+	padding:0px 3px ;
+	text-indent:2em;		
+}
+
+.ex{
+	color: #000000;
+	font-weight:bold;
+}
+a,span{
+	color:red;
+}

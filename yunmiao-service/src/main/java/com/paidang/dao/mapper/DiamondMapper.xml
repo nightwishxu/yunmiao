@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.DiamondMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.Diamond" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="color" property="color" jdbcType="VARCHAR" />
+        <result column="light" property="light" jdbcType="VARCHAR" />
+        <result column="weight_begin" property="weightBegin" jdbcType="REAL" />
+        <result column="weigth_end" property="weigthEnd" jdbcType="REAL" />
+        <result column="value" property="value" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,color,light,weight_begin,weigth_end,value
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_diamond
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from p_diamond
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_diamond
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_diamond
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_diamond (color,light,
+        weight_begin,weigth_end,value
+        )
+        values (#{color,jdbcType=VARCHAR},#{light,jdbcType=VARCHAR},
+        #{weightBegin,jdbcType=REAL},#{weigthEnd,jdbcType=REAL},#{value,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_diamond
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="color != null" >
+                color,
+            </if>
+            <if test="light != null" >
+                light,
+            </if>
+            <if test="weightBegin != null" >
+                weight_begin,
+            </if>
+            <if test="weigthEnd != null" >
+                weigth_end,
+            </if>
+            <if test="value != null" >
+                value,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="color != null" >
+                #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="light != null" >
+                #{light,jdbcType=VARCHAR},
+            </if>
+            <if test="weightBegin != null" >
+                #{weightBegin,jdbcType=REAL},
+            </if>
+            <if test="weigthEnd != null" >
+                #{weigthEnd,jdbcType=REAL},
+            </if>
+            <if test="value != null" >
+                #{value,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_diamond
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_diamond
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.color != null" >
+                color = #{record.color,jdbcType=VARCHAR},
+            </if>
+            <if test="record.light != null" >
+                light = #{record.light,jdbcType=VARCHAR},
+            </if>
+            <if test="record.weightBegin != null" >
+                weight_begin = #{record.weightBegin,jdbcType=REAL},
+            </if>
+            <if test="record.weigthEnd != null" >
+                weigth_end = #{record.weigthEnd,jdbcType=REAL},
+            </if>
+            <if test="record.value != null" >
+                value = #{record.value,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_diamond
+        set id = #{id,jdbcType=INTEGER},
+        color = #{color,jdbcType=VARCHAR},
+        light = #{light,jdbcType=VARCHAR},
+        weight_begin = #{weightBegin,jdbcType=REAL},
+        weigth_end = #{weigthEnd,jdbcType=REAL},
+        value = #{value,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_diamond
+        <set >
+            <if test="color != null" >
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="light != null" >
+                light = #{light,jdbcType=VARCHAR},
+            </if>
+            <if test="weightBegin != null" >
+                weight_begin = #{weightBegin,jdbcType=REAL},
+            </if>
+            <if test="weigthEnd != null" >
+                weigth_end = #{weigthEnd,jdbcType=REAL},
+            </if>
+            <if test="value != null" >
+                value = #{value,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_diamond
+        set color = #{color,jdbcType=VARCHAR},
+        light = #{light,jdbcType=VARCHAR},
+        weight_begin = #{weightBegin,jdbcType=REAL},
+        weigth_end = #{weigthEnd,jdbcType=REAL},
+        value = #{value,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+
+</mapper>

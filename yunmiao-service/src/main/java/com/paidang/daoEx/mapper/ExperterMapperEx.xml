@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.daoEx.ExperterMapperEx" >
+  <resultMap id="BaseResultMap" type="com.paidang.daoEx.model.ExperterEx" extends="com.paidang.dao.ExperterMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    A.*,
+    B.domain_name as domainName
+    from p_experter A
+    left join p_domain B
+    on A.domain_id = B.id
+    <if test="domainId != '' and domainId != null">
+      where A.domain_id = #{domainId}
+    </if>
+    order by A.create_time desc;
+
+  </select>
+  
+</mapper>

@@ -1,0 +1,34 @@
+p.progress {
+    width: 100%;
+    top:40px;
+    bottom: 0;
+    left: 0;
+    height: 8px;
+    overflow: hidden;
+    z-index: 50;
+    background-color: #E5E5E5;
+}
+.progressBar{
+	display: none;
+}
+p.progress span {
+    display: block;
+    overflow: hidden;
+    background-color: #0099FF;
+    width: 0;
+    height: 8px;
+
+    -webit-transition: width 200ms linear;
+    -moz-transition: width 200ms linear;
+    -o-transition: width 200ms linear;
+    -ms-transition: width 200ms linear;
+    transition: width 200ms linear;
+
+    -webkit-animation: progressmove 2s linear infinite;
+    -moz-animation: progressmove 2s linear infinite;
+    -o-animation: progressmove 2s linear infinite;
+    -ms-animation: progressmove 2s linear infinite;
+    animation: progressmove 2s linear infinite;
+
+    -webkit-transform: translateZ(0);
+}

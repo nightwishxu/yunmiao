@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.NotifyMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.NotifyEx" extends="com.item.dao.NotifyMapper.BaseResultMap">
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    	n.*,u.nick_name,u.account
+    from b_notify n
+    left join b_user u on u.id = n.user_id
+    order by n.state,n.create_time desc
+  </select>
+</mapper>

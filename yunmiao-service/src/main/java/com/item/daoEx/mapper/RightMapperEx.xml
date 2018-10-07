@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.RightMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.dao.model.Right" extends="com.item.dao.RightMapper.BaseResultMap">
+  </resultMap>
+  
+   <select id="selectByRole" resultMap="BaseResultMap" parameterType="Integer" >
+    select r.*
+    from r_role rr join r_right r on rr.rights like CONCAT('%[',r.id,']%')
+    where rr.id = #{roleId}
+    order by r.sort_order desc
+  </select>
+</mapper>

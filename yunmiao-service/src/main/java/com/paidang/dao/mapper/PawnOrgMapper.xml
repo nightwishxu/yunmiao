@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paidang.dao.PawnOrgMapper" >
+    <resultMap id="BaseResultMap" type="com.paidang.dao.model.PawnOrg" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="legal_person" property="legalPerson" jdbcType="VARCHAR" />
+        <result column="registered_capital" property="registeredCapital" jdbcType="VARCHAR" />
+        <result column="adress" property="adress" jdbcType="VARCHAR" />
+        <result column="business_license_code" property="businessLicenseCode" jdbcType="VARCHAR" />
+        <result column="business_license" property="businessLicense" jdbcType="VARCHAR" />
+        <result column="expiration_remind_type" property="expirationRemindType" jdbcType="TINYINT" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="balance" property="balance" jdbcType="DECIMAL" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="state" property="state" jdbcType="TINYINT" />
+        <result column="pawn_state" property="pawnState" jdbcType="TINYINT" />
+        <result column="overdue_rate" property="overdueRate" jdbcType="DECIMAL" />
+        <result column="seal" property="seal" jdbcType="VARCHAR" />
+        <result column="org_images" property="orgImages" jdbcType="VARCHAR" />
+        <result column="org_logo" property="orgLogo" jdbcType="VARCHAR" />
+        <result column="redeem_overrate" property="redeemOverrate" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="com.paidang.dao.model.PawnOrg" extends="BaseResultMap" >
+        <result column="introduction" property="introduction" jdbcType="LONGVARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id,role_code,type,account,password,name,legal_person,registered_capital,adress,business_license_code,business_license,expiration_remind_type,phone,balance,create_time,modify_time,state,pawn_state,overdue_rate,seal,org_images,org_logo,redeem_overrate
+    </sql>
+
+    <sql id="Blob_Column_List" >
+        introduction
+    </sql>
+
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from p_pawn_org
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from p_pawn_org
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" >
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from p_pawn_org
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete from p_pawn_org
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByExample" >
+        delete from p_pawn_org
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_pawn_org (role_code,type,
+        account,password,name,
+        legal_person,registered_capital,adress,
+        business_license_code,business_license,expiration_remind_type,
+        phone,balance,create_time,
+        modify_time,state,pawn_state,
+        overdue_rate,seal,introduction,
+        org_images,org_logo,redeem_overrate
+        )
+        values (#{roleCode,jdbcType=VARCHAR},#{type,jdbcType=TINYINT},
+        #{account,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
+        #{legalPerson,jdbcType=VARCHAR},#{registeredCapital,jdbcType=VARCHAR},#{adress,jdbcType=VARCHAR},
+        #{businessLicenseCode,jdbcType=VARCHAR},#{businessLicense,jdbcType=VARCHAR},#{expirationRemindType,jdbcType=TINYINT},
+        #{phone,jdbcType=VARCHAR},#{balance,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP},
+        #{modifyTime,jdbcType=TIMESTAMP},#{state,jdbcType=TINYINT},#{pawnState,jdbcType=TINYINT},
+        #{overdueRate,jdbcType=DECIMAL},#{seal,jdbcType=VARCHAR},#{introduction,jdbcType=LONGVARCHAR},
+        #{orgImages,jdbcType=VARCHAR},#{orgLogo,jdbcType=VARCHAR},#{redeemOverrate,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_pawn_org
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="roleCode != null" >
+                role_code,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="account != null" >
+                account,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="legalPerson != null" >
+                legal_person,
+            </if>
+            <if test="registeredCapital != null" >
+                registered_capital,
+            </if>
+            <if test="adress != null" >
+                adress,
+            </if>
+            <if test="businessLicenseCode != null" >
+                business_license_code,
+            </if>
+            <if test="businessLicense != null" >
+                business_license,
+            </if>
+            <if test="expirationRemindType != null" >
+                expiration_remind_type,
+            </if>
+            <if test="phone != null" >
+                phone,
+            </if>
+            <if test="balance != null" >
+                balance,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="modifyTime != null" >
+                modify_time,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="pawnState != null" >
+                pawn_state,
+            </if>
+            <if test="overdueRate != null" >
+                overdue_rate,
+            </if>
+            <if test="seal != null" >
+                seal,
+            </if>
+            <if test="introduction != null" >
+                introduction,
+            </if>
+            <if test="orgImages != null" >
+                org_images,
+            </if>
+            <if test="orgLogo != null" >
+                org_logo,
+            </if>
+            <if test="redeemOverrate != null" >
+                redeem_overrate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="roleCode != null" >
+                #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="account != null" >
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="legalPerson != null" >
+                #{legalPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="registeredCapital != null" >
+                #{registeredCapital,jdbcType=VARCHAR},
+            </if>
+            <if test="adress != null" >
+                #{adress,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseCode != null" >
+                #{businessLicenseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null" >
+                #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="expirationRemindType != null" >
+                #{expirationRemindType,jdbcType=TINYINT},
+            </if>
+            <if test="phone != null" >
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="balance != null" >
+                #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null" >
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="pawnState != null" >
+                #{pawnState,jdbcType=TINYINT},
+            </if>
+            <if test="overdueRate != null" >
+                #{overdueRate,jdbcType=DECIMAL},
+            </if>
+            <if test="seal != null" >
+                #{seal,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null" >
+                #{introduction,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="orgImages != null" >
+                #{orgImages,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLogo != null" >
+                #{orgLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="redeemOverrate != null" >
+                #{redeemOverrate,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" resultType="java.lang.Integer" >
+        select count(*) from p_pawn_org
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" >
+        update p_pawn_org
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.roleCode != null" >
+                role_code = #{record.roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null" >
+                type = #{record.type,jdbcType=TINYINT},
+            </if>
+            <if test="record.account != null" >
+                account = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null" >
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.legalPerson != null" >
+                legal_person = #{record.legalPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="record.registeredCapital != null" >
+                registered_capital = #{record.registeredCapital,jdbcType=VARCHAR},
+            </if>
+            <if test="record.adress != null" >
+                adress = #{record.adress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.businessLicenseCode != null" >
+                business_license_code = #{record.businessLicenseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.businessLicense != null" >
+                business_license = #{record.businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="record.expirationRemindType != null" >
+                expiration_remind_type = #{record.expirationRemindType,jdbcType=TINYINT},
+            </if>
+            <if test="record.phone != null" >
+                phone = #{record.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.balance != null" >
+                balance = #{record.balance,jdbcType=DECIMAL},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.state != null" >
+                state = #{record.state,jdbcType=TINYINT},
+            </if>
+            <if test="record.pawnState != null" >
+                pawn_state = #{record.pawnState,jdbcType=TINYINT},
+            </if>
+            <if test="record.overdueRate != null" >
+                overdue_rate = #{record.overdueRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.seal != null" >
+                seal = #{record.seal,jdbcType=VARCHAR},
+            </if>
+            <if test="record.introduction != null" >
+                introduction = #{record.introduction,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.orgImages != null" >
+                org_images = #{record.orgImages,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orgLogo != null" >
+                org_logo = #{record.orgLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.redeemOverrate != null" >
+                redeem_overrate = #{record.redeemOverrate,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExampleWithBLOBs" >
+        update p_pawn_org
+        set id = #{id,jdbcType=INTEGER},
+        role_code = #{roleCode,jdbcType=VARCHAR},
+        type = #{type,jdbcType=TINYINT},
+        account = #{account,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+        registered_capital = #{registeredCapital,jdbcType=VARCHAR},
+        adress = #{adress,jdbcType=VARCHAR},
+        business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+        business_license = #{businessLicense,jdbcType=VARCHAR},
+        expiration_remind_type = #{expirationRemindType,jdbcType=TINYINT},
+        phone = #{phone,jdbcType=VARCHAR},
+        balance = #{balance,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        state = #{state,jdbcType=TINYINT},
+        pawn_state = #{pawnState,jdbcType=TINYINT},
+        overdue_rate = #{overdueRate,jdbcType=DECIMAL},
+        seal = #{seal,jdbcType=VARCHAR},
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+        org_images = #{orgImages,jdbcType=VARCHAR},
+        org_logo = #{orgLogo,jdbcType=VARCHAR},
+        redeem_overrate = #{redeemOverrate,jdbcType=DECIMAL}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" >
+        update p_pawn_org
+        set id = #{id,jdbcType=INTEGER},
+        role_code = #{roleCode,jdbcType=VARCHAR},
+        type = #{type,jdbcType=TINYINT},
+        account = #{account,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+        registered_capital = #{registeredCapital,jdbcType=VARCHAR},
+        adress = #{adress,jdbcType=VARCHAR},
+        business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+        business_license = #{businessLicense,jdbcType=VARCHAR},
+        expiration_remind_type = #{expirationRemindType,jdbcType=TINYINT},
+        phone = #{phone,jdbcType=VARCHAR},
+        balance = #{balance,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        state = #{state,jdbcType=TINYINT},
+        pawn_state = #{pawnState,jdbcType=TINYINT},
+        overdue_rate = #{overdueRate,jdbcType=DECIMAL},
+        seal = #{seal,jdbcType=VARCHAR},
+        org_images = #{orgImages,jdbcType=VARCHAR},
+        org_logo = #{orgLogo,jdbcType=VARCHAR},
+        redeem_overrate = #{redeemOverrate,jdbcType=DECIMAL}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" >
+        update p_pawn_org
+        <set >
+            <if test="roleCode != null" >
+                role_code = #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="account != null" >
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="legalPerson != null" >
+                legal_person = #{legalPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="registeredCapital != null" >
+                registered_capital = #{registeredCapital,jdbcType=VARCHAR},
+            </if>
+            <if test="adress != null" >
+                adress = #{adress,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicenseCode != null" >
+                business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null" >
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="expirationRemindType != null" >
+                expiration_remind_type = #{expirationRemindType,jdbcType=TINYINT},
+            </if>
+            <if test="phone != null" >
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="balance != null" >
+                balance = #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null" >
+                state = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="pawnState != null" >
+                pawn_state = #{pawnState,jdbcType=TINYINT},
+            </if>
+            <if test="overdueRate != null" >
+                overdue_rate = #{overdueRate,jdbcType=DECIMAL},
+            </if>
+            <if test="seal != null" >
+                seal = #{seal,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null" >
+                introduction = #{introduction,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="orgImages != null" >
+                org_images = #{orgImages,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLogo != null" >
+                org_logo = #{orgLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="redeemOverrate != null" >
+                redeem_overrate = #{redeemOverrate,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" >
+        update p_pawn_org
+        set role_code = #{roleCode,jdbcType=VARCHAR},
+        type = #{type,jdbcType=TINYINT},
+        account = #{account,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+        registered_capital = #{registeredCapital,jdbcType=VARCHAR},
+        adress = #{adress,jdbcType=VARCHAR},
+        business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+        business_license = #{businessLicense,jdbcType=VARCHAR},
+        expiration_remind_type = #{expirationRemindType,jdbcType=TINYINT},
+        phone = #{phone,jdbcType=VARCHAR},
+        balance = #{balance,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        state = #{state,jdbcType=TINYINT},
+        pawn_state = #{pawnState,jdbcType=TINYINT},
+        overdue_rate = #{overdueRate,jdbcType=DECIMAL},
+        seal = #{seal,jdbcType=VARCHAR},
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+        org_images = #{orgImages,jdbcType=VARCHAR},
+        org_logo = #{orgLogo,jdbcType=VARCHAR},
+        redeem_overrate = #{redeemOverrate,jdbcType=DECIMAL}
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" >
+        update p_pawn_org
+        set role_code = #{roleCode,jdbcType=VARCHAR},
+        type = #{type,jdbcType=TINYINT},
+        account = #{account,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+        registered_capital = #{registeredCapital,jdbcType=VARCHAR},
+        adress = #{adress,jdbcType=VARCHAR},
+        business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+        business_license = #{businessLicense,jdbcType=VARCHAR},
+        expiration_remind_type = #{expirationRemindType,jdbcType=TINYINT},
+        phone = #{phone,jdbcType=VARCHAR},
+        balance = #{balance,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        state = #{state,jdbcType=TINYINT},
+        pawn_state = #{pawnState,jdbcType=TINYINT},
+        overdue_rate = #{overdueRate,jdbcType=DECIMAL},
+        seal = #{seal,jdbcType=VARCHAR},
+        org_images = #{orgImages,jdbcType=VARCHAR},
+        org_logo = #{orgLogo,jdbcType=VARCHAR},
+        redeem_overrate = #{redeemOverrate,jdbcType=DECIMAL}
+        where id = #{id}
+    </update>
+
+</mapper>

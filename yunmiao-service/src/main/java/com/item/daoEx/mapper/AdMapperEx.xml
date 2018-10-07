@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.item.daoEx.AdMapperEx" >
+  <resultMap id="BaseResultMap" type="com.item.daoEx.model.AdEx" extends="com.item.dao.AdMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="selectRzList" resultMap="BaseResultMap">
+      select
+      A.*,
+      B.cost,
+      B.goods_id as goodsId
+      from b_ad A left join p_goods B
+      on A.content = B.id
+      <if test="location != null and location != ''">
+
+          where A.location = #{location}
+      </if>
+
+      order by A.sort_order desc, A.create_time desc
+  </select>
+  
+</mapper>
