@@ -2,6 +2,8 @@ package com.item.service;
 
 import java.util.List;
 
+import com.item.dao.model.UserFollow;
+import com.item.dao.model.UserFollowExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,4 +60,21 @@ public class UserBlackService {
 		return this.userBlackMapper.insertSelective(record);
 	}
 
+
+	/**
+	 * 判断自己是否被拉黑
+	 * @param userId
+	 * @param operateUserId
+	 * @return
+	 */
+	public Integer isBlackUser(Integer userId,Integer operateUserId){
+		UserBlackExample example=new UserBlackExample();
+		example.createCriteria().andUserIdEqualTo(operateUserId).andBackUserIdEqualTo(userId);
+		List<UserBlack> list=userBlackMapper.selectByExample(example);
+		if (list!=null && list.size()>0){
+			return list.size();
+		}else {
+			return 0;
+		}
+	}
 }

@@ -48,6 +48,9 @@ public class ApiUserCommentController extends ApiBaseController {
     @Autowired
     private SensitivWordsService sensitivWordsService;
 
+    @Autowired
+    private UserBlackService userBlackService;
+
 
 
     @ApiOperation(value = "新增评价", notes = "登陆")
@@ -64,6 +67,9 @@ public class ApiUserCommentController extends ApiBaseController {
         Article article=articleService.selectByPrimaryKey(articleId);
         if (article==null){
             throw new ApiException("动态不存在！");
+        }
+        if (userBlackService.isBlackUser(mobileInfo.getUserid(),article.getUserId())>0){
+            throw new ApiException("已被拉黑无法评论动态");
         }
 
         //敏感词汇过滤
@@ -109,6 +115,9 @@ public class ApiUserCommentController extends ApiBaseController {
         Article article=articleService.selectByPrimaryKey(articleId);
         if (article==null){
             throw new ApiException("动态不存在！");
+        }
+        if (userBlackService.isBlackUser(mobileInfo.getUserid(),article.getUserId())>0){
+            throw new ApiException("已被拉黑无法评论动态");
         }
         CommentReply entity=new CommentReply();
         entity.setReplyType(replyType);

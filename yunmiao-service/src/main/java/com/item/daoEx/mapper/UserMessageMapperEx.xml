@@ -3,5 +3,44 @@
 <mapper namespace="com.item.daoEx.UserMessageMapperEx" >
   <resultMap id="BaseResultMap" type="com.item.daoEx.model.UserMessageEx" extends="com.item.dao.UserMessageMapper.BaseResultMap">
   </resultMap>
-  
+
+
+  <select id="findList" parameterType="com.item.dao.model.UserMessage" resultType="com.item.daoEx.model.UserMessageEx">
+    SELECT
+    um.*,u1.head_img as fromUserHeadImg,
+    u1.nick_name as fromUserNickName,
+    u2.head_img as tomUserHeadImg,
+    u2.nick_name as toUserNickName
+    from t_user_message um
+    LEFT join t_user u1 on um.from_user_id=u1.id
+    LEFT join t_user u2 on um.to_user_id=u2.id
+    where 1=1
+    <if test="fromUserId!=null">
+      AND um.from_user_id=#{fromUserId}
+    </if>
+    <if test="toUserId!=null">
+      AND um.to_user_id=#{toUserId}
+    </if>
+    <if test="type!=null">
+      AND um.type=#{type}
+    </if>
+    ORDER BY create_time desc
+</select>
+
+  <select id="findListEx" parameterType="com.item.dao.model.UserMessage" resultType="com.item.daoEx.model.UserMessageEx">
+    SELECT
+    um.*,u1.head_img as fromUserHeadImg,
+    u1.nick_name as fromUserNickName,
+    u2.head_img as tomUserHeadImg,
+    u2.nick_name as toUserNickName
+    from t_user_message um
+    LEFT join t_user u1 on um.from_user_id=u1.id
+    LEFT join t_user u2 on um.to_user_id=u2.id
+    where
+    (um.from_user_id=#{fromUserId} and  um.to_user_id=#{toUserId})
+    or
+    (um.from_user_id=#{toUserId} and  um.to_user_id=#{fromUserId})
+    ORDER BY create_time desc
+  </select>
+
 </mapper>

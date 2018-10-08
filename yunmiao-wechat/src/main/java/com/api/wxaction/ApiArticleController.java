@@ -51,6 +51,9 @@ public class ApiArticleController extends ApiBaseController {
     @Autowired
     private WxUserInfoService wxUserInfoService;
 
+    @Autowired
+    private UserBlackService userBlackService;
+
     @ApiOperation(value = "新增动态", notes = "")
     @RequestMapping(value = "/add",method = {RequestMethod.POST})
     @ApiMethod(isLogin = true)
@@ -112,6 +115,9 @@ public class ApiArticleController extends ApiBaseController {
             example.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andArticleIdEqualTo(id).andTypeEqualTo(1);
             collectPraiseService.deleteByExample(example);
         }else if (type==1){
+            if (userBlackService.isBlackUser(mobileInfo.getUserid(),authorId)>0){
+                throw new ApiException("已被拉黑无法收藏动态");
+            }
             num=1;
             CollectPraise entity=new CollectPraise();
             entity.setArticleId(id);

@@ -26,7 +26,7 @@ public class ApiUserReportController extends ApiBaseController {
     private SysDictService sysDictService;
 
 
-    @ApiOperation(value = "举报信息", notes = "")
+    @ApiOperation(value = "举报信息列表", notes = "")
     @RequestMapping(value = "/list",method = {RequestMethod.POST})
     @ApiMethod(isLogin = false)
     public Object list(){

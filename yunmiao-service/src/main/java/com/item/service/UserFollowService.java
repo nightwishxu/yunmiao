@@ -1,6 +1,8 @@
 package com.item.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.item.daoEx.UserFollowMapperEx;
 import com.item.daoEx.model.UserFollowEx;
@@ -85,4 +87,45 @@ public class UserFollowService {
 	public Integer getIsFollow(Integer userId,Integer followUserId){
 		return userFollowMapperEx.getIsFollow(userId,followUserId);
 	}
+
+
+    /**
+     * 查看关注状态
+     * @param userId 用户id
+     * @param followUserId 被关注用户
+     * @return  0没有关注关系1关注2被关注3互相关注且user_id=userId 4互相关注且user_id=followUserId
+     */
+    public Map<String,Object> getFollowStatus(Integer userId,Integer followUserId){
+    	Map<String,Object> map=new HashMap<>();
+        UserFollowExample example1=new UserFollowExample();
+        example1.createCriteria().andUserIdEqualTo(userId).andOperateObjectEqualTo(followUserId);
+        example1.or().andUserIdEqualTo(followUserId).andUserIdEqualTo(userId);
+        List<UserFollow> list=userFollowMapper.selectByExample(example1);
+        Integer status=0;
+        if (list!=null && list.size()>0){
+        	UserFollow follow=list.get(0);
+            map.put("userFollow",follow);
+            if (follow.getUserId()==userId){
+                if (follow.getStatus()==3){
+                    status= 3;
+                }else if (follow.getStatus()==1){
+					status= 1;
+                }else if (follow.getStatus()==2){
+					status= 2;
+                }
+            }else if (follow.getUserId()==followUserId){
+                if (follow.getStatus()==3){
+					status= 4;
+                }else if (follow.getStatus()==1){
+					status= 2;
+                }else if (follow.getStatus()==2){
+					status= 1;
+                }
+            }
+        }else {
+			status= 0;
+        }
+        map.put("status",status);
+        return map;
+    }
 }
