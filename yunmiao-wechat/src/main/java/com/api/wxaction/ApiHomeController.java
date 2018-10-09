@@ -10,6 +10,7 @@ import com.api.view.store.AppMyStoreGoods;
 import com.api.view.user.AppUserCapital;
 import com.base.util.BeanUtils;
 import com.item.dao.model.*;
+import com.item.daoEx.model.UserEx;
 import com.item.service.*;
 import com.paidang.dao.model.*;
 import com.paidang.daoEx.model.*;
@@ -67,6 +68,9 @@ public class ApiHomeController extends ApiBaseController {
 
     @Autowired
     private WxUserInfoService wxUserInfoService;
+
+    @Autowired
+    private WxUserNotifyService wxUserNotifyService;
 
     /**
      * 个人资料
@@ -237,12 +241,46 @@ public class ApiHomeController extends ApiBaseController {
     @RequestMapping(value = "/userFollow/list", method = RequestMethod.POST)
     @ApiMethod(isLogin = true)
     public Object userFollow(MobileInfo mobileInfo) {
-        return userFollowService.getUserFollow(mobileInfo.getUserid());
+        return userService.getUserFollow(mobileInfo.getUserid());
+    }
+
+
+
+    @ApiOperation(value = "我的关注-可能感兴趣的人", notes = "登陆,分页")
+    @RequestMapping(value = "/userFollow/list", method = RequestMethod.POST)
+    @ApiMethod(isLogin = true)
+    public Object userFollowInterest(MobileInfo mobileInfo) {
+        List<UserEx> list=userService.getUserFollowInterest(mobileInfo.getUserid());
+        if (list!=null && list.size()>0){
+            return list;
+        }else {
+            return userService.getUserFollowInterestByFans(mobileInfo.getUserid());
+        }
     }
 
 
 
 
+
+    @ApiOperation(value = "通知", notes = "登陆,分页")
+    @RequestMapping(value = "/userNotify/list", method = RequestMethod.POST)
+    @ApiMethod(isLogin = true)
+    public Object userNotify(MobileInfo mobileInfo,@ApiParam(value = "1未读2已读", required = false) Integer status) {
+        WxUserNotifyExample example=new WxUserNotifyExample();
+        example.setOrderByClause("create_time desc");
+        example.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andStatusEqualTo(status);
+        return wxUserNotifyService.selectByExample(example);
+    }
+
+    @ApiOperation(value = "阅读通知", notes = "登陆")
+    @RequestMapping(value = "/userNotify/update", method = RequestMethod.POST)
+    @ApiMethod(isLogin = true)
+    public Object userNotifyRead(MobileInfo mobileInfo,@ApiParam(value = "通知id", required = true) Integer id) {
+        WxUserNotify entity=new WxUserNotify();
+        entity.setId(id);
+        entity.setStatus(2);
+        return wxUserNotifyService.updateByPrimaryKeySelective(entity);
+    }
 
 
 //

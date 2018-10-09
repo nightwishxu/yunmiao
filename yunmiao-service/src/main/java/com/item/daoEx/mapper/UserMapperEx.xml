@@ -63,5 +63,48 @@
     from b_user u
     where account = #{account}
 	</select>
-  	
+
+
+	<select id="getUserFollow" resultType="com.item.daoEx.model.UserEx">
+		SELECT u.* ,
+		wxu.article_count as articleCount,
+        wxu.fans_count as fansCount,
+        1 as FollowStatus
+		from t_user u
+		LEFT JOIN t_wx_user_info wxu on u.id=wxu.user_id
+		where  u.status=1 and u.id in (SELECT follow_id from t_user_follow where user_id=#{userId} and follow_id in (SELECT user_id from t_user_follow where follow_id=#{userId}))
+		UNION
+		SELECT u.* ,
+		wxu.article_count as articleCount,
+        wxu.fans_count as fansCount,
+        0 as FollowStatus
+		from t_user u
+		LEFT JOIN t_wx_user_info wxu on u.id=wxu.user_id
+		where  u.status=1 and
+		u.id in 	(SELECT follow_id from t_user_follow where user_id=#{userId} and follow_id not in (SELECT user_id from t_user_follow where follow_id=#{userId}))
+	</select>
+
+	<select id="getUserFollowInterest" resultType="com.item.daoEx.model.UserEx">
+		SELECT u.*,
+		wxu.article_count as articleCount,
+        wxu.fans_count as fansCount
+		from t_user u
+		LEFT JOIN t_wx_user_info wxu on u.id=wxu.user_id
+		where
+		u.id!=#{userId} and u.status=1
+		and u.id not in  (SELECT follow_id from t_user_follow where user_id=#{userId})
+		and u.id in (SELECT follow_id from t_user_follow where user_id in (SELECT follow_id from t_user_follow where user_id=#{userId}))
+   </select>
+
+	<select id="getUserFollowInterestByFans" resultType="com.item.daoEx.model.UserEx">
+		SELECT u.*,
+		wxu.article_count as articleCount,
+        wxu.fans_count as fansCount
+		from t_user u
+		LEFT JOIN t_wx_user_info wxu on u.id=wxu.user_id
+		where  u.status=1
+		ORDER BY fansCount desc
+	</select>
+
+
 </mapper>

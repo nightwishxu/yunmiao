@@ -25,4 +25,26 @@ public interface UserMapperEx{
 
 	UserEx selectByAccount(String record);
 
-} 
+
+	/**
+	 * 获取用户粉丝信息
+	 * @param userId
+	 * @return
+	 */
+	List<UserEx> getUserFollow(Integer userId);
+
+	/**
+	 * 返回自己关注人也关注的人
+	 * @param userId
+	 * @return
+	 */
+	List<UserEx> getUserFollowInterest(Integer userId);
+
+
+	/**
+	 * 根据粉丝数量排序
+	 * @param userId
+	 * @return
+	 */
+	List<UserEx> getUserFollowInterestByFans(Integer userId);
+}

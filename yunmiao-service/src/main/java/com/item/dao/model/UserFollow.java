@@ -20,12 +20,10 @@ public class UserFollow {
 	/**
 	 *目标对象
 	 */
-	private Integer operateObject;
+	private Integer followId;
 
 	/**
-	 *当目标对象为被关注者，标示为1；
-当目标对象为关注者，标示为2；
-当双方互相关注，标示为3；
+	 *0未关注1关注
 	 */
 	private Integer status;
 
@@ -50,12 +48,12 @@ public class UserFollow {
 		return userId;
 	}
 
-	public void setOperateObject(Integer operateObject) {
-		this.operateObject=operateObject;
+	public void setFollowId(Integer followId) {
+		this.followId=followId;
 	}
 
-	public Integer getOperateObject() {
-		return operateObject;
+	public Integer getFollowId() {
+		return followId;
 	}
 
 	public void setStatus(Integer status) {

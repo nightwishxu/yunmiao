@@ -2,7 +2,6 @@ package com.item.service;
 
 import java.util.List;
 
-import com.item.dao.model.UserInfo;
 import com.item.daoEx.ArticleMapperEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

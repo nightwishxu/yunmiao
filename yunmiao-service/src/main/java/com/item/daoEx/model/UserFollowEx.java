@@ -11,17 +11,17 @@ public class UserFollowEx extends UserFollow {
 
     private String userNickName;
 
-    private String operateHeadImg;
+    private String followHeadImg;
 
-    private String operateNickName;
+    private String followNickName;
 
     private Integer userArticleCount;
     
-    private Integer operateArticleCount;
+    private Integer followArticleCount;
 
     private Integer userFansCount;
 
-    private Integer operateFansCount;
+    private Integer followFansCount;
 
     public String getUserHeadImg() {
         return userHeadImg;
@@ -39,20 +39,20 @@ public class UserFollowEx extends UserFollow {
         this.userNickName = userNickName;
     }
 
-    public String getOperateHeadImg() {
-        return operateHeadImg;
+    public String getFollowHeadImg() {
+        return followHeadImg;
     }
 
-    public void setOperateHeadImg(String operateHeadImg) {
-        this.operateHeadImg = operateHeadImg;
+    public void setFollowHeadImg(String followHeadImg) {
+        this.followHeadImg = followHeadImg;
     }
 
-    public String getOperateNickName() {
-        return operateNickName;
+    public String getFollowNickName() {
+        return followNickName;
     }
 
-    public void setOperateNickName(String operateNickName) {
-        this.operateNickName = operateNickName;
+    public void setFollowNickName(String followNickName) {
+        this.followNickName = followNickName;
     }
 
     public Integer getUserArticleCount() {
@@ -63,12 +63,12 @@ public class UserFollowEx extends UserFollow {
         this.userArticleCount = userArticleCount;
     }
 
-    public Integer getOperateArticleCount() {
-        return operateArticleCount;
+    public Integer getFollowArticleCount() {
+        return followArticleCount;
     }
 
-    public void setOperateArticleCount(Integer operateArticleCount) {
-        this.operateArticleCount = operateArticleCount;
+    public void setFollowArticleCount(Integer followArticleCount) {
+        this.followArticleCount = followArticleCount;
     }
 
     public Integer getUserFansCount() {
@@ -79,11 +79,11 @@ public class UserFollowEx extends UserFollow {
         this.userFansCount = userFansCount;
     }
 
-    public Integer getOperateFansCount() {
-        return operateFansCount;
+    public Integer getFollowFansCount() {
+        return followFansCount;
     }
 
-    public void setOperateFansCount(Integer operateFansCount) {
-        this.operateFansCount = operateFansCount;
+    public void setFollowFansCount(Integer followFansCount) {
+        this.followFansCount = followFansCount;
     }
 }

@@ -224,63 +224,63 @@ public class UserFollowExample {
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectIsNull() {
-			addCriterion("operate_object is null");
+		public Criteria andFollowIdIsNull() {
+			addCriterion("follow_id is null");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectIsNotNull() {
-			addCriterion("operate_object is not null");
+		public Criteria andFollowIdIsNotNull() {
+			addCriterion("follow_id is not null");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectEqualTo(Integer value) {
-			addCriterion("operate_object =", value, "operateObject");
+		public Criteria andFollowIdEqualTo(Integer value) {
+			addCriterion("follow_id =", value, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectNotEqualTo(Integer value) {
-			addCriterion("operate_object <>", value, "operateObject");
+		public Criteria andFollowIdNotEqualTo(Integer value) {
+			addCriterion("follow_id <>", value, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectGreaterThan(Integer value) {
-			addCriterion("operate_object >", value, "operateObject");
+		public Criteria andFollowIdGreaterThan(Integer value) {
+			addCriterion("follow_id >", value, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectGreaterThanOrEqualTo(Integer value) {
-			addCriterion("operate_object >=", value, "operateObject");
+		public Criteria andFollowIdGreaterThanOrEqualTo(Integer value) {
+			addCriterion("follow_id >=", value, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectLessThan(Integer value) {
-			addCriterion("operate_object <", value, "operateObject");
+		public Criteria andFollowIdLessThan(Integer value) {
+			addCriterion("follow_id <", value, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectLessThanOrEqualTo(Integer value) {
-			addCriterion("operate_object <=", value, "operateObject");
+		public Criteria andFollowIdLessThanOrEqualTo(Integer value) {
+			addCriterion("follow_id <=", value, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectIn(List<Integer> values) {
-			addCriterion("operate_object in", values, "operateObject");
+		public Criteria andFollowIdIn(List<Integer> values) {
+			addCriterion("follow_id in", values, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectNotIn(List<Integer> values) {
-			addCriterion("operate_object not in", values, "operateObject");
+		public Criteria andFollowIdNotIn(List<Integer> values) {
+			addCriterion("follow_id not in", values, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectBetween(Integer value1, Integer value2) {
-			addCriterion("operate_object between", value1, value2, "operateObject");
+		public Criteria andFollowIdBetween(Integer value1, Integer value2) {
+			addCriterion("follow_id between", value1, value2, "followId");
 			return (Criteria) this;
 		}
 
-		public Criteria andOperateObjectNotBetween(Integer value1, Integer value2) {
-			addCriterion("operate_object not between", value1, value2, "operateObject");
+		public Criteria andFollowIdNotBetween(Integer value1, Integer value2) {
+			addCriterion("follow_id not between", value1, value2, "followId");
 			return (Criteria) this;
 		}
 

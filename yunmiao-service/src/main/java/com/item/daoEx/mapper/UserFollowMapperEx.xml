@@ -5,36 +5,41 @@
   </resultMap>
 
   <select id="getUserFollowCount" resultType="java.lang.Integer">
-    SELECT count(*) from t_user_follow where (user_id=#{userId} and status in (1,3)) or (operate_object=#{userId} and status in (2,3))
+    SELECT count(*) from t_user_follow where follow_id=#{userId}
   </select>
 
   <select id="getUserFollow" resultType="com.item.daoEx.model.UserFollowEx">
     SELECT uf.* ,
     u1.head_img as userHeadImg,
     u1.nick_name as userNickName,
-    u2.head_img as operateHeadImg,
-    u2.nick_name as operateNickName,
+    u2.head_img as followHeadImg,
+    u2.nick_name as followNickName,
     wxu1.article_count as userArticleCount,
-    wxu2.article_count as operateArticleCount,
+    wxu2.article_count as followArticleCount,
     wxu1.fans_count as userFansCount,
-    wxu2.fans_count as operateFansCount
+    wxu2.fans_count as followFansCount
     from t_user_follow uf
     LEFT JOIN t_user u1 on uf.user_id=u1.id
-    LEFT JOIN t_user u2 on uf.operate_object=u2.id
+    LEFT JOIN t_user u2 on uf.follow_id=u2.id
     LEFT JOIN t_wx_user_info wxu1 on uf.user_id=wxu1.id
-    LEFT JOIN t_wx_user_info wxu2 on uf.operate_object=wxu2.id
+    LEFT JOIN t_wx_user_info wxu2 on uf.follow_id=wxu2.id
      where (uf.user_id=#{userId} and uf.status in (1,3)) or (uf.operate_object=#{userId} and uf.status in (2,3))
    order by
 </select>
 
+
+
+
+
+
   <select id="getUserFansCount" resultType="java.lang.Integer">
-    SELECT count(*) from t_user_follow where (operate_object=#{userId} and status in (1,3)) or (user_id=#{userId} and status in (2,3))
+    SELECT count(*) from t_user_follow where follow_id=#{userId}
   </select>
 
   <select id="getIsFollow" resultType="ava.lang.Integer">
     SELECT count(*) from t_user_follow
-    where (user_id=#{userId} and operate_object=#{followUserId} and status in (1,3))
-    or   (user_id=#{followUserId} and operate_object=#{userId} and status in (2,3))
+    where user_id=#{userId} and follow_id=#{followId}
 </select>
+
 
 </mapper>

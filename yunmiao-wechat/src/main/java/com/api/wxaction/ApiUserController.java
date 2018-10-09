@@ -8,6 +8,7 @@ import com.item.dao.model.*;
 import com.item.service.UserBlackService;
 import com.item.service.UserFollowService;
 import com.item.service.UserMessageService;
+import com.item.service.UserOptionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,6 +34,9 @@ public class ApiUserController extends ApiBaseController {
     @Autowired
     private UserMessageService userMessageService;
 
+    @Autowired
+    private UserOptionService userOptionService;
+
 
 
 
@@ -43,43 +47,26 @@ public class ApiUserController extends ApiBaseController {
                               @ApiParam(value = "目标用户id", required = true)Integer followUserId,
                               @ApiParam(value = "操作类型0取消关注1关注", required = true)Integer type){
         //获取关注状态
-        Map<String,Object> map = userFollowService.getFollowStatus(mobileInfo.getUserid(),followUserId);
-        Integer status=(Integer) map.get("status");
-        UserFollow entity=(UserFollow)map.get("userFollow");
+//        Integer status = userFollowService.getFollowStatus(mobileInfo.getUserid(),followUserId);
         UserFollowExample example=new UserFollowExample();
         UserFollow follow=new UserFollow();
         if (type==0){
             //取消关注
-            example.createCriteria().andUserIdEqualTo(entity.getUserId()).andOperateObjectEqualTo(entity.getOperateObject());
-            if (status==3){
-                follow.setStatus(2);
-                return userFollowService.updateByExampleSelective(follow,example);
-            }else if (status==4){
-                follow.setStatus(1);
-                return userFollowService.updateByExampleSelective(follow,example);
-            }else if (status==1){
-                return userFollowService.deleteByExample(example);
-            }
+            example.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andFollowIdEqualTo(followUserId);
+            return userFollowService.deleteByExample(example);
         }else if (type==1){
             if (userBlackService.isBlackUser(mobileInfo.getUserid(),followUserId)>0){
                 throw new ApiException("已被拉黑无法关注");
             }
-            //关注
-            if (status==0){
-                follow.setUserId(mobileInfo.getUserid());
-                follow.setOperateObject(followUserId);
-                follow.setStatus(1);
-                follow.setCreateTime(new Date());
-                return userFollowService.insert(follow);
-            }else if (status==2){
-                example.createCriteria().andUserIdEqualTo(entity.getUserId()).andOperateObjectEqualTo(entity.getOperateObject());
-                follow.setStatus(3);
-                return userFollowService.updateByExampleSelective(follow,example);
-            }
+
+            follow.setUserId(mobileInfo.getUserid());
+            follow.setFollowId(followUserId);
+            follow.setCreateTime(new Date());
+            return userFollowService.insert(follow);
+
         }else {
             throw new ApiException("参数非法");
         }
-        return null;
     }
 
 
@@ -98,8 +85,8 @@ public class ApiUserController extends ApiBaseController {
             int num=userBlackService.insert(black);
             //删除关注状态
             UserFollowExample example1=new UserFollowExample();
-            example1.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andOperateObjectEqualTo(blackUserId);
-            example1.or().andUserIdEqualTo(blackUserId).andUserIdEqualTo(mobileInfo.getUserid());
+            example1.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andFollowIdEqualTo(blackUserId);
+            example1.or().andUserIdEqualTo(blackUserId).andFollowIdEqualTo(mobileInfo.getUserid());
             userFollowService.deleteByExample(example1);
             return num;
         }else if (type==0){
@@ -162,4 +149,21 @@ public class ApiUserController extends ApiBaseController {
         return userMessageService.findListEx(entity);
     }
 
+
+    @ApiOperation(value = "意见反馈", notes = "登陆")
+    @RequestMapping(value = "/option/add", method = RequestMethod.POST)
+    @ApiMethod(isLogin = true)
+    public Object addUserOption(MobileInfo mobileInfo,
+                                  @ApiParam(value = "图片", required = false)String img,
+                                  @ApiParam(value = "意见内容", required = true)String info
+    ){
+        UserOption option=new UserOption();
+        option.setCreateTime(new Date());
+        option.setStatus(1);
+        option.setUserId(mobileInfo.getUserid());
+        option.setProcessState(0);
+        option.setImg(img);
+        option.setInfo(info);
+        return userOptionService.insert(option);
+    }
 }

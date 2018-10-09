@@ -109,23 +109,20 @@
         </if>
     </delete>
 
-    <insert id="insert" >
-        insert into t_label (id,name,status,
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_label (name,status,
         type,user_id,sort,
         create_time
         )
-        values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
+        values (#{name,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
         #{type,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{sort,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
-    <insert id="insertSelective" >
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
         insert into t_label
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                id,
-            </if>
             <if test="name != null" >
                 name,
             </if>
@@ -146,9 +143,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="name != null" >
                 #{name,jdbcType=VARCHAR},
             </if>

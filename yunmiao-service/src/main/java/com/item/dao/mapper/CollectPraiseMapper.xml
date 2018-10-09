@@ -112,25 +112,22 @@
         </if>
     </delete>
 
-    <insert id="insert" >
-        insert into t_collect_praise (id,user_id,article_id,
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_collect_praise (user_id,article_id,
         author_id,head_img,nick_name,
         img,status,type,
         create_time
         )
-        values (#{id,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{articleId,jdbcType=INTEGER},
+        values (#{userId,jdbcType=INTEGER},#{articleId,jdbcType=INTEGER},
         #{authorId,jdbcType=INTEGER},#{headImg,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR},
         #{img,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{type,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
-    <insert id="insertSelective" >
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
         insert into t_collect_praise
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                id,
-            </if>
             <if test="userId != null" >
                 user_id,
             </if>
@@ -160,9 +157,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="userId != null" >
                 #{userId,jdbcType=INTEGER},
             </if>

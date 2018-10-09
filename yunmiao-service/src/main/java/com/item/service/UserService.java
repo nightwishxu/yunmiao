@@ -147,5 +147,34 @@ public class UserService {
 		return null;
 	}
 
+	/**
+	 * 查看用户粉丝
+	 * @param userId
+	 * @return
+	 */
+	public List<UserEx> getUserFollow(Integer userId){
+		return userMapperEx.getUserFollow(userId);
+	}
+
+
+
+	/**
+	 * 返回自己关注人也关注的人
+	 * @param userId
+	 * @return
+	 */
+	public List<UserEx> getUserFollowInterest(Integer userId){
+		return userMapperEx.getUserFollowInterest(userId);
+	}
+
+
+	/**
+	 * 根据粉丝数量排序
+	 * @param userId
+	 * @return
+	 */
+	public List<UserEx> getUserFollowInterestByFans(Integer userId){
+		return userMapperEx.getUserFollowInterestByFans(userId);
+	}
 
 }

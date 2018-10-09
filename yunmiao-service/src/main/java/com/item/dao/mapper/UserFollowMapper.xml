@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.item.dao.model.UserFollow" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
-        <result column="operate_object" property="operateObject" jdbcType="INTEGER" />
+        <result column="follow_id" property="followId" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
@@ -70,7 +70,7 @@
     </sql>
 
     <sql id="Base_Column_List" >
-        id,user_id,operate_object,status,create_time
+        id,user_id,follow_id,status,create_time
     </sql>
 
     <select id="selectByExample" resultMap="BaseResultMap" >
@@ -107,26 +107,23 @@
         </if>
     </delete>
 
-    <insert id="insert" >
-        insert into t_user_follow (id,user_id,operate_object,
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_user_follow (user_id,follow_id,
         status,create_time
         )
-        values (#{id,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{operateObject,jdbcType=INTEGER},
+        values (#{userId,jdbcType=INTEGER},#{followId,jdbcType=INTEGER},
         #{status,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
-    <insert id="insertSelective" >
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
         insert into t_user_follow
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                id,
-            </if>
             <if test="userId != null" >
                 user_id,
             </if>
-            <if test="operateObject != null" >
-                operate_object,
+            <if test="followId != null" >
+                follow_id,
             </if>
             <if test="status != null" >
                 status,
@@ -136,14 +133,11 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="userId != null" >
                 #{userId,jdbcType=INTEGER},
             </if>
-            <if test="operateObject != null" >
-                #{operateObject,jdbcType=INTEGER},
+            <if test="followId != null" >
+                #{followId,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 #{status,jdbcType=INTEGER},
@@ -170,8 +164,8 @@
             <if test="record.userId != null" >
                 user_id = #{record.userId,jdbcType=INTEGER},
             </if>
-            <if test="record.operateObject != null" >
-                operate_object = #{record.operateObject,jdbcType=INTEGER},
+            <if test="record.followId != null" >
+                follow_id = #{record.followId,jdbcType=INTEGER},
             </if>
             <if test="record.status != null" >
                 status = #{record.status,jdbcType=INTEGER},
@@ -189,7 +183,7 @@
         update t_user_follow
         set id = #{id,jdbcType=INTEGER},
         user_id = #{userId,jdbcType=INTEGER},
-        operate_object = #{operateObject,jdbcType=INTEGER},
+        follow_id = #{followId,jdbcType=INTEGER},
         status = #{status,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP}
         <if test="_parameter != null" >
@@ -203,8 +197,8 @@
             <if test="userId != null" >
                 user_id = #{userId,jdbcType=INTEGER},
             </if>
-            <if test="operateObject != null" >
-                operate_object = #{operateObject,jdbcType=INTEGER},
+            <if test="followId != null" >
+                follow_id = #{followId,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 status = #{status,jdbcType=INTEGER},
@@ -219,7 +213,7 @@
     <update id="updateByPrimaryKey" >
         update t_user_follow
         set user_id = #{userId,jdbcType=INTEGER},
-        operate_object = #{operateObject,jdbcType=INTEGER},
+        follow_id = #{followId,jdbcType=INTEGER},
         status = #{status,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP}
         where id = #{id}

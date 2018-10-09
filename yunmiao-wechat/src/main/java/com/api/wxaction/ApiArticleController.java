@@ -211,7 +211,7 @@ public class ApiArticleController extends ApiBaseController {
 
 
 
-    @ApiOperation(value = "动态关注列表", notes = "登陆，分页")
+    @ApiOperation(value = "关注用户的动态列表", notes = "登陆，分页")
     @RequestMapping(value = "/follow/list",method = {RequestMethod.POST})
     @ApiMethod(isLogin = true)
     public Object followArticle(MobileInfo mobileInfo){
@@ -219,8 +219,11 @@ public class ApiArticleController extends ApiBaseController {
        List<Integer> status=new ArrayList<>();
        status.add(1);
        status.add(3);
+        List<Integer> status1=new ArrayList<>();
+        status1.add(2);
+        status1.add(3);
        example.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andStatusIn(status);
-       example.or().andOperateObjectEqualTo(mobileInfo.getUserid()).andStatusEqualTo(3);
+       example.or().andOperateObjectEqualTo(mobileInfo.getUserid()).andStatusIn(status1);
        //关注或互相关注的用户
        List<UserFollow> follows=userFollowService.selectByExample(example);
        if (follows!=null && follows.size()>0){
@@ -266,6 +269,19 @@ public class ApiArticleController extends ApiBaseController {
         List<Article> articles=articleService.selectByExample(example);
         return articles;
     }
+
+
+    @ApiOperation(value = "我的动态", notes = "分页")
+    @RequestMapping(value = "/search/list",method = {RequestMethod.POST})
+    @ApiMethod(isLogin = true)
+    public Object myArticle( MobileInfo mobileInfo,@ApiParam(value = "1草稿2发布", required = true)Integer status){
+        ArticleExample example=new ArticleExample();
+        example.createCriteria().andStatusEqualTo(status).andUserIdEqualTo(mobileInfo.getUserid());
+        example.setOrderByClause("create_time desc");
+        List<Article> articles=articleService.selectByExample(example);
+        return articles;
+    }
+
 
 
 

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.item.dao.WxUserNotifyMapper" >
-    <resultMap id="BaseResultMap" type="com.item.dao.model.WxUserNotify" >
+<mapper namespace="com.item.dao.UserWorksMapper" >
+    <resultMap id="BaseResultMap" type="com.item.dao.model.UserWorks" >
         <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="apply_id" property="applyId" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
-        <result column="title" property="title" jdbcType="VARCHAR" />
-        <result column="content" property="content" jdbcType="VARCHAR" />
-        <result column="status" property="status" jdbcType="INTEGER" />
-        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="img" property="img" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_name" property="createName" jdbcType="VARCHAR" />
+        <result column="update_name" property="updateName" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Example_Where_Clause" >
@@ -72,7 +75,7 @@
     </sql>
 
     <sql id="Base_Column_List" >
-        id,user_id,title,content,status,type,create_time
+        id,apply_id,user_id,img,name,price,create_time,create_name,update_name,update_time
     </sql>
 
     <select id="selectByExample" resultMap="BaseResultMap" >
@@ -81,7 +84,7 @@
             distinct
         </if>
         <include refid="Base_Column_List" />
-        from t_wx_user_notify
+        from t_user_works
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
         </if>
@@ -93,107 +96,136 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List" />
-        from t_wx_user_notify
+        from t_user_works
         where id = #{id}
     </select>
 
     <delete id="deleteByPrimaryKey" >
-        delete from t_wx_user_notify
+        delete from t_user_works
         where id = #{id}
     </delete>
 
     <delete id="deleteByExample" >
-        delete from t_wx_user_notify
+        delete from t_user_works
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
         </if>
     </delete>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
-        insert into t_wx_user_notify (user_id,title,
-        content,status,type,
-        create_time
+        insert into t_user_works (apply_id,user_id,
+        img,name,price,
+        create_time,create_name,update_name,
+        update_time
         )
-        values (#{userId,jdbcType=INTEGER},#{title,jdbcType=VARCHAR},
-        #{content,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{type,jdbcType=INTEGER},
-        #{createTime,jdbcType=TIMESTAMP}
+        values (#{applyId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},
+        #{img,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{price,jdbcType=DECIMAL},
+        #{createTime,jdbcType=TIMESTAMP},#{createName,jdbcType=VARCHAR},#{updateName,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=VARCHAR}
         )
     </insert>
 
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
-        insert into t_wx_user_notify
+        insert into t_user_works
         <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="applyId != null" >
+                apply_id,
+            </if>
             <if test="userId != null" >
                 user_id,
             </if>
-            <if test="title != null" >
-                title,
+            <if test="img != null" >
+                img,
             </if>
-            <if test="content != null" >
-                content,
+            <if test="name != null" >
+                name,
             </if>
-            <if test="status != null" >
-                status,
-            </if>
-            <if test="type != null" >
-                type,
+            <if test="price != null" >
+                price,
             </if>
             <if test="createTime != null" >
                 create_time,
             </if>
+            <if test="createName != null" >
+                create_name,
+            </if>
+            <if test="updateName != null" >
+                update_name,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="applyId != null" >
+                #{applyId,jdbcType=INTEGER},
+            </if>
             <if test="userId != null" >
                 #{userId,jdbcType=INTEGER},
             </if>
-            <if test="title != null" >
-                #{title,jdbcType=VARCHAR},
+            <if test="img != null" >
+                #{img,jdbcType=VARCHAR},
             </if>
-            <if test="content != null" >
-                #{content,jdbcType=VARCHAR},
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
             </if>
-            <if test="status != null" >
-                #{status,jdbcType=INTEGER},
-            </if>
-            <if test="type != null" >
-                #{type,jdbcType=INTEGER},
+            <if test="price != null" >
+                #{price,jdbcType=DECIMAL},
             </if>
             <if test="createTime != null" >
                 #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createName != null" >
+                #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateName != null" >
+                #{updateName,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
 
     <select id="countByExample" resultType="java.lang.Integer" >
-        select count(*) from t_wx_user_notify
+        select count(*) from t_user_works
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
         </if>
     </select>
 
     <update id="updateByExampleSelective" >
-        update t_wx_user_notify
+        update t_user_works
         <set >
             <if test="record.id != null" >
                 id = #{record.id,jdbcType=INTEGER},
             </if>
+            <if test="record.applyId != null" >
+                apply_id = #{record.applyId,jdbcType=INTEGER},
+            </if>
             <if test="record.userId != null" >
                 user_id = #{record.userId,jdbcType=INTEGER},
             </if>
-            <if test="record.title != null" >
-                title = #{record.title,jdbcType=VARCHAR},
+            <if test="record.img != null" >
+                img = #{record.img,jdbcType=VARCHAR},
             </if>
-            <if test="record.content != null" >
-                content = #{record.content,jdbcType=VARCHAR},
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
             </if>
-            <if test="record.status != null" >
-                status = #{record.status,jdbcType=INTEGER},
-            </if>
-            <if test="record.type != null" >
-                type = #{record.type,jdbcType=INTEGER},
+            <if test="record.price != null" >
+                price = #{record.price,jdbcType=DECIMAL},
             </if>
             <if test="record.createTime != null" >
                 create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createName != null" >
+                create_name = #{record.createName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateName != null" >
+                update_name = #{record.updateName,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null" >
+                update_time = #{record.updateTime,jdbcType=VARCHAR},
             </if>
         </set>
         <if test="_parameter != null" >
@@ -202,52 +234,67 @@
     </update>
 
     <update id="updateByExample" >
-        update t_wx_user_notify
+        update t_user_works
         set id = #{id,jdbcType=INTEGER},
+        apply_id = #{applyId,jdbcType=INTEGER},
         user_id = #{userId,jdbcType=INTEGER},
-        title = #{title,jdbcType=VARCHAR},
-        content = #{content,jdbcType=VARCHAR},
-        status = #{status,jdbcType=INTEGER},
-        type = #{type,jdbcType=INTEGER},
-        create_time = #{createTime,jdbcType=TIMESTAMP}
+        img = #{img,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        price = #{price,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_name = #{createName,jdbcType=VARCHAR},
+        update_name = #{updateName,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=VARCHAR}
         <if test="_parameter != null" >
             <include refid="Update_By_Example_Where_Clause" />
         </if>
     </update>
 
     <update id="updateByPrimaryKeySelective" >
-        update t_wx_user_notify
+        update t_user_works
         <set >
+            <if test="applyId != null" >
+                apply_id = #{applyId,jdbcType=INTEGER},
+            </if>
             <if test="userId != null" >
                 user_id = #{userId,jdbcType=INTEGER},
             </if>
-            <if test="title != null" >
-                title = #{title,jdbcType=VARCHAR},
+            <if test="img != null" >
+                img = #{img,jdbcType=VARCHAR},
             </if>
-            <if test="content != null" >
-                content = #{content,jdbcType=VARCHAR},
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="status != null" >
-                status = #{status,jdbcType=INTEGER},
-            </if>
-            <if test="type != null" >
-                type = #{type,jdbcType=INTEGER},
+            <if test="price != null" >
+                price = #{price,jdbcType=DECIMAL},
             </if>
             <if test="createTime != null" >
                 create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createName != null" >
+                create_name = #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateName != null" >
+                update_name = #{updateName,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id}
     </update>
 
     <update id="updateByPrimaryKey" >
-        update t_wx_user_notify
-        set user_id = #{userId,jdbcType=INTEGER},
-        title = #{title,jdbcType=VARCHAR},
-        content = #{content,jdbcType=VARCHAR},
-        status = #{status,jdbcType=INTEGER},
-        type = #{type,jdbcType=INTEGER},
-        create_time = #{createTime,jdbcType=TIMESTAMP}
+        update t_user_works
+        set apply_id = #{applyId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        img = #{img,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        price = #{price,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_name = #{createName,jdbcType=VARCHAR},
+        update_name = #{updateName,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=VARCHAR}
         where id = #{id}
     </update>
 
