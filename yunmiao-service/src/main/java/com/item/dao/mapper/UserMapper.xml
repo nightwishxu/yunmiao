@@ -14,6 +14,7 @@
         <result column="sex" property="sex" jdbcType="TINYINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="card_type" property="cardType" jdbcType="VARCHAR" />
         <result column="id_card" property="idCard" jdbcType="VARCHAR" />
         <result column="id_card_img" property="idCardImg" jdbcType="VARCHAR" />
         <result column="id_card_reverse" property="idCardReverse" jdbcType="VARCHAR" />
@@ -23,8 +24,8 @@
         <result column="address" property="address" jdbcType="VARCHAR" />
         <result column="true_name" property="trueName" jdbcType="VARCHAR" />
         <result column="create_name" property="createName" jdbcType="VARCHAR" />
-        <result column="update_name" property="updateName" jdbcType="TIMESTAMP" />
-        <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+        <result column="update_name" property="updateName" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="user_level" property="userLevel" jdbcType="INTEGER" />
         <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
         <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
@@ -93,7 +94,7 @@
     </sql>
 
     <sql id="Base_Column_List" >
-        id,xcx_id,user_id,account,password,status,head_img,create_time,nick_name,sex,name,phone,id_card,id_card_img,id_card_reverse,id_card_hand,real_name_authentication,platform_authentication,address,true_name,create_name,update_name,update_time,user_level,last_login_time,last_login_ip,signature,is_bind
+        id,xcx_id,user_id,account,password,status,head_img,create_time,nick_name,sex,name,phone,card_type,id_card,id_card_img,id_card_reverse,id_card_hand,real_name_authentication,platform_authentication,address,true_name,create_name,update_name,update_time,user_level,last_login_time,last_login_ip,signature,is_bind
     </sql>
 
     <select id="selectByExample" resultMap="BaseResultMap" >
@@ -135,23 +136,23 @@
         account,password,status,
         head_img,create_time,nick_name,
         sex,name,phone,
-        id_card,id_card_img,id_card_reverse,
-        id_card_hand,real_name_authentication,platform_authentication,
-        address,true_name,create_name,
-        update_name,update_time,user_level,
-        last_login_time,last_login_ip,signature,
-        is_bind
+        card_type,id_card,id_card_img,
+        id_card_reverse,id_card_hand,real_name_authentication,
+        platform_authentication,address,true_name,
+        create_name,update_name,update_time,
+        user_level,last_login_time,last_login_ip,
+        signature,is_bind
         )
         values (#{xcxId,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},
         #{account,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
         #{headImg,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{nickName,jdbcType=VARCHAR},
         #{sex,jdbcType=TINYINT},#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},
-        #{idCard,jdbcType=VARCHAR},#{idCardImg,jdbcType=VARCHAR},#{idCardReverse,jdbcType=VARCHAR},
-        #{idCardHand,jdbcType=VARCHAR},#{realNameAuthentication,jdbcType=INTEGER},#{platformAuthentication,jdbcType=INTEGER},
-        #{address,jdbcType=VARCHAR},#{trueName,jdbcType=VARCHAR},#{createName,jdbcType=VARCHAR},
-        #{updateName,jdbcType=TIMESTAMP},#{updateTime,jdbcType=VARCHAR},#{userLevel,jdbcType=INTEGER},
-        #{lastLoginTime,jdbcType=TIMESTAMP},#{lastLoginIp,jdbcType=VARCHAR},#{signature,jdbcType=VARCHAR},
-        #{isBind,jdbcType=INTEGER}
+        #{cardType,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{idCardImg,jdbcType=VARCHAR},
+        #{idCardReverse,jdbcType=VARCHAR},#{idCardHand,jdbcType=VARCHAR},#{realNameAuthentication,jdbcType=INTEGER},
+        #{platformAuthentication,jdbcType=INTEGER},#{address,jdbcType=VARCHAR},#{trueName,jdbcType=VARCHAR},
+        #{createName,jdbcType=VARCHAR},#{updateName,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},
+        #{userLevel,jdbcType=INTEGER},#{lastLoginTime,jdbcType=TIMESTAMP},#{lastLoginIp,jdbcType=VARCHAR},
+        #{signature,jdbcType=VARCHAR},#{isBind,jdbcType=INTEGER}
         )
     </insert>
 
@@ -190,6 +191,9 @@
             </if>
             <if test="phone != null" >
                 phone,
+            </if>
+            <if test="cardType != null" >
+                card_type,
             </if>
             <if test="idCard != null" >
                 id_card,
@@ -274,6 +278,9 @@
             <if test="phone != null" >
                 #{phone,jdbcType=VARCHAR},
             </if>
+            <if test="cardType != null" >
+                #{cardType,jdbcType=VARCHAR},
+            </if>
             <if test="idCard != null" >
                 #{idCard,jdbcType=VARCHAR},
             </if>
@@ -302,10 +309,10 @@
                 #{createName,jdbcType=VARCHAR},
             </if>
             <if test="updateName != null" >
-                #{updateName,jdbcType=TIMESTAMP},
+                #{updateName,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null" >
-                #{updateTime,jdbcType=VARCHAR},
+                #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="userLevel != null" >
                 #{userLevel,jdbcType=INTEGER},
@@ -371,6 +378,9 @@
             <if test="record.phone != null" >
                 phone = #{record.phone,jdbcType=VARCHAR},
             </if>
+            <if test="record.cardType != null" >
+                card_type = #{record.cardType,jdbcType=VARCHAR},
+            </if>
             <if test="record.idCard != null" >
                 id_card = #{record.idCard,jdbcType=VARCHAR},
             </if>
@@ -399,10 +409,10 @@
                 create_name = #{record.createName,jdbcType=VARCHAR},
             </if>
             <if test="record.updateName != null" >
-                update_name = #{record.updateName,jdbcType=TIMESTAMP},
+                update_name = #{record.updateName,jdbcType=VARCHAR},
             </if>
             <if test="record.updateTime != null" >
-                update_time = #{record.updateTime,jdbcType=VARCHAR},
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="record.userLevel != null" >
                 user_level = #{record.userLevel,jdbcType=INTEGER},
@@ -439,6 +449,7 @@
         sex = #{sex,jdbcType=TINYINT},
         name = #{name,jdbcType=VARCHAR},
         phone = #{phone,jdbcType=VARCHAR},
+        card_type = #{cardType,jdbcType=VARCHAR},
         id_card = #{idCard,jdbcType=VARCHAR},
         id_card_img = #{idCardImg,jdbcType=VARCHAR},
         id_card_reverse = #{idCardReverse,jdbcType=VARCHAR},
@@ -448,8 +459,8 @@
         address = #{address,jdbcType=VARCHAR},
         true_name = #{trueName,jdbcType=VARCHAR},
         create_name = #{createName,jdbcType=VARCHAR},
-        update_name = #{updateName,jdbcType=TIMESTAMP},
-        update_time = #{updateTime,jdbcType=VARCHAR},
+        update_name = #{updateName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
         user_level = #{userLevel,jdbcType=INTEGER},
         last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
         last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
@@ -496,6 +507,9 @@
             <if test="phone != null" >
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
+            <if test="cardType != null" >
+                card_type = #{cardType,jdbcType=VARCHAR},
+            </if>
             <if test="idCard != null" >
                 id_card = #{idCard,jdbcType=VARCHAR},
             </if>
@@ -524,10 +538,10 @@
                 create_name = #{createName,jdbcType=VARCHAR},
             </if>
             <if test="updateName != null" >
-                update_name = #{updateName,jdbcType=TIMESTAMP},
+                update_name = #{updateName,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null" >
-                update_time = #{updateTime,jdbcType=VARCHAR},
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="userLevel != null" >
                 user_level = #{userLevel,jdbcType=INTEGER},
@@ -561,6 +575,7 @@
         sex = #{sex,jdbcType=TINYINT},
         name = #{name,jdbcType=VARCHAR},
         phone = #{phone,jdbcType=VARCHAR},
+        card_type = #{cardType,jdbcType=VARCHAR},
         id_card = #{idCard,jdbcType=VARCHAR},
         id_card_img = #{idCardImg,jdbcType=VARCHAR},
         id_card_reverse = #{idCardReverse,jdbcType=VARCHAR},
@@ -570,8 +585,8 @@
         address = #{address,jdbcType=VARCHAR},
         true_name = #{trueName,jdbcType=VARCHAR},
         create_name = #{createName,jdbcType=VARCHAR},
-        update_name = #{updateName,jdbcType=TIMESTAMP},
-        update_time = #{updateTime,jdbcType=VARCHAR},
+        update_name = #{updateName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
         user_level = #{userLevel,jdbcType=INTEGER},
         last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
         last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},

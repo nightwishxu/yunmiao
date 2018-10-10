@@ -8,6 +8,7 @@
         <result column="img" property="img" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="status" property="status" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_name" property="createName" jdbcType="VARCHAR" />
         <result column="update_name" property="updateName" jdbcType="TIMESTAMP" />
@@ -75,7 +76,7 @@
     </sql>
 
     <sql id="Base_Column_List" >
-        id,apply_id,user_id,img,name,price,create_time,create_name,update_name,update_time
+        id,apply_id,user_id,img,name,price,status,create_time,create_name,update_name,update_time
     </sql>
 
     <select id="selectByExample" resultMap="BaseResultMap" >
@@ -115,13 +116,13 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
         insert into t_user_works (apply_id,user_id,
         img,name,price,
-        create_time,create_name,update_name,
-        update_time
+        status,create_time,create_name,
+        update_name,update_time
         )
         values (#{applyId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},
         #{img,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{price,jdbcType=DECIMAL},
-        #{createTime,jdbcType=TIMESTAMP},#{createName,jdbcType=VARCHAR},#{updateName,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=VARCHAR}
+        #{status,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{createName,jdbcType=VARCHAR},
+        #{updateName,jdbcType=TIMESTAMP},#{updateTime,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -142,6 +143,9 @@
             </if>
             <if test="price != null" >
                 price,
+            </if>
+            <if test="status != null" >
+                status,
             </if>
             <if test="createTime != null" >
                 create_time,
@@ -171,6 +175,9 @@
             </if>
             <if test="price != null" >
                 #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
             </if>
             <if test="createTime != null" >
                 #{createTime,jdbcType=TIMESTAMP},
@@ -215,6 +222,9 @@
             <if test="record.price != null" >
                 price = #{record.price,jdbcType=DECIMAL},
             </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
             <if test="record.createTime != null" >
                 create_time = #{record.createTime,jdbcType=TIMESTAMP},
             </if>
@@ -241,6 +251,7 @@
         img = #{img,jdbcType=VARCHAR},
         name = #{name,jdbcType=VARCHAR},
         price = #{price,jdbcType=DECIMAL},
+        status = #{status,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_name = #{createName,jdbcType=VARCHAR},
         update_name = #{updateName,jdbcType=TIMESTAMP},
@@ -268,6 +279,9 @@
             <if test="price != null" >
                 price = #{price,jdbcType=DECIMAL},
             </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
             <if test="createTime != null" >
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -291,6 +305,7 @@
         img = #{img,jdbcType=VARCHAR},
         name = #{name,jdbcType=VARCHAR},
         price = #{price,jdbcType=DECIMAL},
+        status = #{status,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         create_name = #{createName,jdbcType=VARCHAR},
         update_name = #{updateName,jdbcType=TIMESTAMP},

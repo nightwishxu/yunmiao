@@ -68,6 +68,11 @@ public class User {
 	private String phone;
 
 	/**
+	 *证件类型
+	 */
+	private String cardType;
+
+	/**
 	 *身份证
 	 */
 	private String idCard;
@@ -115,12 +120,12 @@ public class User {
 	/**
 	 *
 	 */
-	private java.util.Date updateName;
+	private String updateName;
 
 	/**
 	 *
 	 */
-	private String updateTime;
+	private java.util.Date updateTime;
 
 	/**
 	 *用户等级
@@ -243,6 +248,14 @@ public class User {
 		return phone;
 	}
 
+	public void setCardType(String cardType) {
+		this.cardType=cardType == null ? cardType : cardType.trim();
+	}
+
+	public String getCardType() {
+		return cardType;
+	}
+
 	public void setIdCard(String idCard) {
 		this.idCard=idCard == null ? idCard : idCard.trim();
 	}
@@ -315,19 +328,19 @@ public class User {
 		return createName;
 	}
 
-	public void setUpdateName(java.util.Date updateName) {
-		this.updateName=updateName;
+	public void setUpdateName(String updateName) {
+		this.updateName=updateName == null ? updateName : updateName.trim();
 	}
 
-	public java.util.Date getUpdateName() {
+	public String getUpdateName() {
 		return updateName;
 	}
 
-	public void setUpdateTime(String updateTime) {
-		this.updateTime=updateTime == null ? updateTime : updateTime.trim();
+	public void setUpdateTime(java.util.Date updateTime) {
+		this.updateTime=updateTime;
 	}
 
-	public String getUpdateTime() {
+	public java.util.Date getUpdateTime() {
 		return updateTime;
 	}
 

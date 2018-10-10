@@ -38,6 +38,11 @@ public class UserWorks {
 	private java.math.BigDecimal price;
 
 	/**
+	 *状态0删除1正常
+	 */
+	private Integer status;
+
+	/**
 	 *创建时间
 	 */
 	private java.util.Date createTime;
@@ -103,6 +108,14 @@ public class UserWorks {
 
 	public java.math.BigDecimal getPrice() {
 		return price;
+	}
+
+	public void setStatus(Integer status) {
+		this.status=status;
+	}
+
+	public Integer getStatus() {
+		return status;
 	}
 
 	public void setCreateTime(java.util.Date createTime) {

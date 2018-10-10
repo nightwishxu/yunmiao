@@ -9,6 +9,7 @@ import com.api.view.store.AppJdGoodsAuc;
 import com.api.view.store.AppMyStoreGoods;
 import com.api.view.user.AppUserCapital;
 import com.base.util.BeanUtils;
+import com.base.util.JSONUtils;
 import com.item.dao.model.*;
 import com.item.daoEx.model.UserEx;
 import com.item.service.*;
@@ -23,6 +24,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -72,6 +75,11 @@ public class ApiHomeController extends ApiBaseController {
     @Autowired
     private WxUserNotifyService wxUserNotifyService;
 
+    @Autowired
+    private PlatformAuthenticationApplyService platformAuthenticationApplyService;
+
+    @Autowired
+    private UserWorksService userWorksService;
     /**
      * 个人资料
      */
@@ -107,10 +115,10 @@ public class ApiHomeController extends ApiBaseController {
             update = true;
             temp.setHeadImg(userInfo.getHeadImg());
         }
-        if(StringUtil.isNotBlank(userInfo.getIdCardReverse())){
-            update = true;
-            temp.setIdCardReverse(userInfo.getIdCardReverse());
-        }
+//        if(StringUtil.isNotBlank(userInfo.getIdCardReverse())){
+//            update = true;
+//            temp.setIdCardReverse(userInfo.getIdCardReverse());
+//        }
         if (StringUtil.isNotBlank(userInfo.getNickName())) {
             update = true;
             // 校验登录
@@ -123,22 +131,31 @@ public class ApiHomeController extends ApiBaseController {
             temp.setNickName(userInfo.getNickName());
         }
         if (StringUtil.isNotBlank(userInfo.getAddress())) {
+            update = true;
+            temp.setAddress(userInfo.getAddress());
+        }
 
+        if (userInfo.getSex()!=null) {
+            update = true;
+            temp.setSex(userInfo.getSex());
+        }
+        if (StringUtil.isNotBlank(userInfo.getSignature())) {
+            update = true;
+            temp.setSignature(userInfo.getSignature());
         }
         if (update) {
             //更新
             userService.updateByPrimaryKeySelective(temp);
         }
         temp = userService.selectByPrimaryKey(mobileInfo.getUserid());
-        if (temp != null)
-            userInfo.setAccount(temp.getAccount());
-        userInfo.setNickName(temp.getNickName());
-        userInfo.setIsBind(temp.getIsBind());
-        userInfo.setHeadImg(temp.getHeadImg());
-        userInfo.setIdCardImg(temp.getIdCardImg());
-        userInfo.setIsBind(temp.getIsBind());
-        userInfo.setSex(temp.getSex());
-        userInfo.setIdCardReverse(temp.getIdCardReverse());
+        if (temp != null){
+            try {
+                BeanUtils.copyProperties(temp,userInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return userInfo;
     }
 
@@ -280,6 +297,100 @@ public class ApiHomeController extends ApiBaseController {
         entity.setId(id);
         entity.setStatus(2);
         return wxUserNotifyService.updateByPrimaryKeySelective(entity);
+    }
+
+
+    @ApiOperation(value = "非遗认证申请", notes = "登陆")
+    @RequestMapping(value = "/platformAuthentication/apply", method = RequestMethod.POST)
+    @ApiMethod(isLogin = true)
+    public Object platformAuthenticationApply(MobileInfo mobileInfo,
+                                              @ApiParam(value = "非遗类目", required = true) String heritageType,
+                                              @ApiParam(value = "真实姓名", required = true) String realName,
+                                              @ApiParam(value = "身份证号", required = true) String idCard,
+                                              @ApiParam(value = "身份证正面", required = true) String idCardImg,
+                                              @ApiParam(value = "身份证反面", required = true) String idCardReverse,
+                                              @ApiParam(value = "申请时间格式2018-10-20", required = true) String applyTime,
+                                              @ApiParam(value = "地域", required = true) String address,
+                                              @ApiParam(value = "作品json格式字符串例：{id1:price1,id2:price2}", required = true) String works
+    ) {
+        List<Integer> status=new ArrayList<>();
+        status.add(0);
+        status.add(1);
+        PlatformAuthenticationApplyExample example=new PlatformAuthenticationApplyExample();
+        example.createCriteria().andUserIdEqualTo(mobileInfo.getUserid()).andStatusIn(status);
+        List<PlatformAuthenticationApply> list=platformAuthenticationApplyService.selectByExample(example);
+        if (list!=null && list.size()>0){
+            if (list.get(0).getStatus()==0){
+                throw new ApiException("非遗认证正在认证过程中,请等待");
+            }else if(list.get(0).getStatus()==1){
+                throw new ApiException("非遗认证已通过");
+            }
+
+        }
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        User user=userService.selectByPrimaryKey(mobileInfo.getUserid());
+        PlatformAuthenticationApply apply=new PlatformAuthenticationApply();
+        apply.setAccount(user.getAccount());
+        apply.setAddress(address);
+        apply.setCreateTime(new Date());
+        apply.setIdCard(idCard);
+        apply.setNickName(user.getNickName());
+        apply.setUserId(user.getId());
+        apply.setHeritageType(heritageType);
+        apply.setIdCardImg(idCardImg);
+        apply.setRealName(realName);
+        apply.setIdCardReverse(idCardReverse);
+        apply.setStatus(0);
+        user.setPlatformAuthentication(1);
+        try {
+            apply.setApplyTime(sdf.parse(applyTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int num=platformAuthenticationApplyService.insert(apply);
+        Map<String,Object> map=JSONUtils.deserialize(works,Map.class);
+        for(Map.Entry<String,Object> entry:map.entrySet()){
+            UserWorks entity=new UserWorks();
+            entity.setApplyId(apply.getId());
+            entity.setCreateTime(new Date());
+            entity.setImg(entry.getKey());
+            entity.setPrice(new BigDecimal((String)entry.getValue()));
+            entity.setStatus(1);
+            entity.setUserId(user.getId());
+            userWorksService.insert(entity);
+        }
+        userService.updateByPrimaryKeySelective(user);
+        return num;
+    }
+
+
+    @ApiOperation(value = "实名认证申请", notes = "登陆")
+    @RequestMapping(value = "/realNameAuthentication/apply", method = RequestMethod.POST)
+    @ApiMethod(isLogin = true)
+    public Object realNameAuthenticationApply(MobileInfo mobileInfo,
+                                              @ApiParam(value = "真实姓名", required = true) String realName,
+                                              @ApiParam(value = "身份证号", required = true) String idCard,
+                                              @ApiParam(value = "身份证正面", required = true) String idCardImg,
+                                              @ApiParam(value = "身份证反面", required = true) String idCardReverse,
+                                              @ApiParam(value = "证件类型", required = true) String cardType
+
+    ) {
+        User user=userService.selectByPrimaryKey(mobileInfo.getUserid());
+        if (user.getRealNameAuthentication()==1){
+            throw new ApiException("实名认证正在认证中，请等待");
+        }
+        if (user.getRealNameAuthentication()==2){
+            throw new ApiException("实名认证已认证成功");
+        }
+        User entity=new User();
+        entity.setTrueName(realName);
+        entity.setId(mobileInfo.getUserid());
+        entity.setIdCard(idCard);
+        entity.setIdCardImg(idCardImg);
+        entity.setIdCardReverse(idCardReverse);
+        entity.setCardType(cardType);
+        entity.setUpdateTime(new Date());
+        return userService.updateByPrimaryKeySelective(entity);
     }
 
 

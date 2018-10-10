@@ -894,6 +894,76 @@ public class UserExample {
 			return (Criteria) this;
 		}
 
+		public Criteria andCardTypeIsNull() {
+			addCriterion("card_type is null");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeIsNotNull() {
+			addCriterion("card_type is not null");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeEqualTo(String value) {
+			addCriterion("card_type =", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeNotEqualTo(String value) {
+			addCriterion("card_type <>", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeGreaterThan(String value) {
+			addCriterion("card_type >", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeGreaterThanOrEqualTo(String value) {
+			addCriterion("card_type >=", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeLessThan(String value) {
+			addCriterion("card_type <", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeLessThanOrEqualTo(String value) {
+			addCriterion("card_type <=", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeLike(String value) {
+			addCriterion("card_type like", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeNotLike(String value) {
+			addCriterion("card_type not like", value, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeIn(List<String> values) {
+			addCriterion("card_type in", values, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeNotIn(List<String> values) {
+			addCriterion("card_type not in", values, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeBetween(String value1, String value2) {
+			addCriterion("card_type between", value1, value2, "cardType");
+			return (Criteria) this;
+		}
+
+		public Criteria andCardTypeNotBetween(String value1, String value2) {
+			addCriterion("card_type not between", value1, value2, "cardType");
+			return (Criteria) this;
+		}
+
 		public Criteria andIdCardIsNull() {
 			addCriterion("id_card is null");
 			return (Criteria) this;
@@ -1514,52 +1584,62 @@ public class UserExample {
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameEqualTo(java.util.Date value) {
+		public Criteria andUpdateNameEqualTo(String value) {
 			addCriterion("update_name =", value, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameNotEqualTo(java.util.Date value) {
+		public Criteria andUpdateNameNotEqualTo(String value) {
 			addCriterion("update_name <>", value, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameGreaterThan(java.util.Date value) {
+		public Criteria andUpdateNameGreaterThan(String value) {
 			addCriterion("update_name >", value, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameGreaterThanOrEqualTo(java.util.Date value) {
+		public Criteria andUpdateNameGreaterThanOrEqualTo(String value) {
 			addCriterion("update_name >=", value, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameLessThan(java.util.Date value) {
+		public Criteria andUpdateNameLessThan(String value) {
 			addCriterion("update_name <", value, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameLessThanOrEqualTo(java.util.Date value) {
+		public Criteria andUpdateNameLessThanOrEqualTo(String value) {
 			addCriterion("update_name <=", value, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameIn(List<java.util.Date> values) {
+		public Criteria andUpdateNameLike(String value) {
+			addCriterion("update_name like", value, "updateName");
+			return (Criteria) this;
+		}
+
+		public Criteria andUpdateNameNotLike(String value) {
+			addCriterion("update_name not like", value, "updateName");
+			return (Criteria) this;
+		}
+
+		public Criteria andUpdateNameIn(List<String> values) {
 			addCriterion("update_name in", values, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameNotIn(List<java.util.Date> values) {
+		public Criteria andUpdateNameNotIn(List<String> values) {
 			addCriterion("update_name not in", values, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameBetween(java.util.Date value1, java.util.Date value2) {
+		public Criteria andUpdateNameBetween(String value1, String value2) {
 			addCriterion("update_name between", value1, value2, "updateName");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateNameNotBetween(java.util.Date value1, java.util.Date value2) {
+		public Criteria andUpdateNameNotBetween(String value1, String value2) {
 			addCriterion("update_name not between", value1, value2, "updateName");
 			return (Criteria) this;
 		}
@@ -1574,62 +1654,52 @@ public class UserExample {
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeEqualTo(String value) {
+		public Criteria andUpdateTimeEqualTo(java.util.Date value) {
 			addCriterion("update_time =", value, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeNotEqualTo(String value) {
+		public Criteria andUpdateTimeNotEqualTo(java.util.Date value) {
 			addCriterion("update_time <>", value, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeGreaterThan(String value) {
+		public Criteria andUpdateTimeGreaterThan(java.util.Date value) {
 			addCriterion("update_time >", value, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeGreaterThanOrEqualTo(String value) {
+		public Criteria andUpdateTimeGreaterThanOrEqualTo(java.util.Date value) {
 			addCriterion("update_time >=", value, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeLessThan(String value) {
+		public Criteria andUpdateTimeLessThan(java.util.Date value) {
 			addCriterion("update_time <", value, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeLessThanOrEqualTo(String value) {
+		public Criteria andUpdateTimeLessThanOrEqualTo(java.util.Date value) {
 			addCriterion("update_time <=", value, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeLike(String value) {
-			addCriterion("update_time like", value, "updateTime");
-			return (Criteria) this;
-		}
-
-		public Criteria andUpdateTimeNotLike(String value) {
-			addCriterion("update_time not like", value, "updateTime");
-			return (Criteria) this;
-		}
-
-		public Criteria andUpdateTimeIn(List<String> values) {
+		public Criteria andUpdateTimeIn(List<java.util.Date> values) {
 			addCriterion("update_time in", values, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeNotIn(List<String> values) {
+		public Criteria andUpdateTimeNotIn(List<java.util.Date> values) {
 			addCriterion("update_time not in", values, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeBetween(String value1, String value2) {
+		public Criteria andUpdateTimeBetween(java.util.Date value1, java.util.Date value2) {
 			addCriterion("update_time between", value1, value2, "updateTime");
 			return (Criteria) this;
 		}
 
-		public Criteria andUpdateTimeNotBetween(String value1, String value2) {
+		public Criteria andUpdateTimeNotBetween(java.util.Date value1, java.util.Date value2) {
 			addCriterion("update_time not between", value1, value2, "updateTime");
 			return (Criteria) this;
 		}
